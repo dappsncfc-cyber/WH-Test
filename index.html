@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en-GB" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The White Horse Inn | Pub & Accommodation in Cromer, Norfolk</title>
+    <title>The White Horse Inn | Dining, Beer Garden, Table Bookings, Rooms & Beach Picnics in Cromer</title>
 
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -37,7 +37,7 @@
     </script>
 
     <style>
-        /* Glassmorphism Design Tokens */
+        /* Light Glassmorphism Styling Tokens */
         .glass-nav {
             background: rgba(243, 247, 244, 0.88);
             backdrop-filter: blur(16px);
@@ -54,7 +54,7 @@
         }
 
         .glass-modal-tile {
-            background: rgba(255, 255, 255, 0.94);
+            background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(24px);
             -webkit-backdrop-filter: blur(24px);
             border: 1px solid rgba(255, 255, 255, 0.95);
@@ -117,24 +117,21 @@
 </head>
 <body class="bg-mesh text-gray-800 font-sans antialiased min-h-screen relative selection:bg-pub-sage selection:text-white">
 
-    <!-- Top Announcement Bar -->
+    <!-- Announcement Header Bar -->
     <div class="bg-pub-deep text-white text-xs py-2 px-4 text-center font-medium tracking-wide flex items-center justify-center gap-2">
         <span class="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
         <span>Welcome to <strong>The White Horse Inn</strong>, 24 West Street, Cromer</span>
-        <span class="hidden sm:inline">• Live Sports &amp; Cask Ales Daily</span>
+        <span class="hidden sm:inline">• Fresh Food, Beer Garden, Real Ales, Rooms &amp; Table Reservations</span>
     </div>
 
     <!-- Navigation Header -->
     <header class="sticky top-0 z-40 glass-nav transition-all duration-300">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-20">
-                <!-- Brand Logo & Name -->
+                <!-- Brand Logo & Name (Horse's Head Logo) -->
                 <a href="#" class="flex items-center gap-3 group">
                     <div class="w-11 h-11 rounded-2xl glass-pill flex items-center justify-center text-pub-deep shadow-sm group-hover:scale-105 transition">
-                        <!-- Rearing Horse SVG Icon -->
-                        <svg class="w-7 h-7 fill-current text-pub-deep" viewBox="0 0 100 100">
-                            <path d="M72,18 C68,15 62,18 58,22 C52,18 45,15 38,20 C32,25 35,35 30,42 C26,48 20,52 18,60 C15,70 20,82 28,86 C32,88 38,85 40,80 C42,75 38,70 42,65 C45,61 52,62 56,66 C62,72 60,82 66,88 C70,92 78,90 80,82 C82,72 75,62 76,50 C77,40 85,32 82,24 C80,20 75,19 72,18 Z" opacity="0.85"/>
-                        </svg>
+                        <i class="fas fa-horse-head text-2xl text-pub-deep"></i>
                     </div>
                     <div>
                         <span class="font-serif text-xl sm:text-2xl font-bold text-pub-deep tracking-tight block leading-tight">White Horse Inn</span>
@@ -142,22 +139,21 @@
                     </div>
                 </a>
 
-                <!-- Desktop Navigation Menu -->
+                <!-- Desktop Navigation Links -->
                 <nav class="hidden md:flex items-center space-x-7">
-                    <a href="#about" class="text-sm font-semibold text-gray-700 hover:text-pub-deep transition">About Us</a>
                     <a href="#food" class="text-sm font-semibold text-gray-700 hover:text-pub-deep transition">Dine &amp; Drink</a>
+                    <a href="#garden" class="text-sm font-semibold text-gray-700 hover:text-pub-deep transition">Beer Garden</a>
                     <a href="#picnics" class="text-sm font-semibold text-gray-700 hover:text-pub-deep transition">Beach Picnics</a>
-                    <a href="#events" class="text-sm font-semibold text-gray-700 hover:text-pub-deep transition">What's On</a>
                     <a href="#rooms" class="text-sm font-semibold text-gray-700 hover:text-pub-deep transition">Rooms</a>
-                    <a href="#contact" class="text-sm font-semibold text-gray-700 hover:text-pub-deep transition">Contact</a>
+                    <a href="#contact" class="text-sm font-semibold text-gray-700 hover:text-pub-deep transition">Find Us</a>
                     
-                    <!-- Modal Trigger Button -->
+                    <!-- Table Booking Modal Trigger -->
                     <button type="button" onclick="openBookingModal('table')" class="glass-button-primary text-white text-xs font-bold px-5 py-2.5 rounded-xl inline-flex items-center gap-2 cursor-pointer uppercase tracking-wider">
                         <i class="fas fa-calendar-alt text-xs"></i> Make Reservation
                     </button>
                 </nav>
 
-                <!-- Mobile menu toggle button -->
+                <!-- Mobile Navigation Toggle -->
                 <div class="md:hidden flex items-center">
                     <button type="button" id="mobile-menu-btn" aria-label="Toggle Navigation Menu" class="glass-pill p-2.5 rounded-xl text-pub-deep hover:text-pub-sage focus:outline-none cursor-pointer">
                         <i class="fas fa-bars text-xl"></i>
@@ -166,15 +162,14 @@
             </div>
         </div>
 
-        <!-- Mobile Dropdown Navigation Menu -->
+        <!-- Mobile Menu Dropdown -->
         <div id="mobile-menu" class="hidden md:hidden glass-nav border-t border-emerald-900/10">
             <div class="px-4 pt-3 pb-6 space-y-3">
-                <a href="#about" onclick="toggleMobileMenu()" class="block px-4 py-2.5 rounded-lg text-base font-semibold text-pub-deep hover:bg-white/60">About Us</a>
                 <a href="#food" onclick="toggleMobileMenu()" class="block px-4 py-2.5 rounded-lg text-base font-semibold text-pub-deep hover:bg-white/60">Dine &amp; Drink</a>
-                <a href="#picnics" onclick="toggleMobileMenu()" class="block px-4 py-2.5 rounded-lg text-base font-semibold text-pub-deep hover:bg-white/60">Cromer Picnics</a>
-                <a href="#events" onclick="toggleMobileMenu()" class="block px-4 py-2.5 rounded-lg text-base font-semibold text-pub-deep hover:bg-white/60">What's On</a>
+                <a href="#garden" onclick="toggleMobileMenu()" class="block px-4 py-2.5 rounded-lg text-base font-semibold text-pub-deep hover:bg-white/60">Beer Garden</a>
+                <a href="#picnics" onclick="toggleMobileMenu()" class="block px-4 py-2.5 rounded-lg text-base font-semibold text-pub-deep hover:bg-white/60">Beach Picnics</a>
                 <a href="#rooms" onclick="toggleMobileMenu()" class="block px-4 py-2.5 rounded-lg text-base font-semibold text-pub-deep hover:bg-white/60">Sleep / Rooms</a>
-                <a href="#contact" onclick="toggleMobileMenu()" class="block px-4 py-2.5 rounded-lg text-base font-semibold text-pub-deep hover:bg-white/60">Contact</a>
+                <a href="#contact" onclick="toggleMobileMenu()" class="block px-4 py-2.5 rounded-lg text-base font-semibold text-pub-deep hover:bg-white/60">Find Us</a>
                 <button type="button" onclick="toggleMobileMenu(); openBookingModal('table');" class="w-full mt-2 glass-button-primary text-white font-semibold py-3 rounded-xl flex items-center justify-center gap-2 cursor-pointer">
                     <i class="fas fa-calendar-check text-sm"></i> Make Reservation
                 </button>
@@ -183,17 +178,17 @@
     </header>
 
     <!-- Hero Section -->
-    <section class="relative min-h-[80vh] flex items-center justify-center px-4 py-16 overflow-hidden">
+    <section class="relative min-h-[75vh] flex items-center justify-center px-4 py-16 overflow-hidden">
         <!-- Background Image -->
         <div class="absolute inset-0 z-0">
             <img src="https://images.unsplash.com/photo-1514933651103-005eec06c04b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80" 
-                 onerror="this.onerror=null; this.src='https://placehold.co/1920x1080/1b3a2b/ffffff?text=The+White+Horse+Inn+Cromer';"
+                 onerror="this.onerror=null; this.src='https://placehold.co/1920x1080/1b3a2b/ffffff?text=White+Horse+Inn+Cromer';"
                  alt="White Horse Inn Atmosphere" 
                  class="w-full h-full object-cover opacity-20 filter scale-105">
             <div class="absolute inset-0 bg-gradient-to-t from-[#f3f7f4] via-[#f3f7f4]/60 to-transparent"></div>
         </div>
 
-        <!-- Glass Hero Main Card -->
+        <!-- Glass Hero Card -->
         <div class="relative z-10 max-w-4xl w-full glass-card rounded-3xl p-8 sm:p-14 text-center border border-white/90 shadow-2xl backdrop-blur-2xl">
             <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-pill mb-6 text-xs sm:text-sm text-pub-deep uppercase tracking-widest font-bold">
                 <i class="fas fa-location-dot text-pub-sage"></i> 24 West Street, Cromer
@@ -208,7 +203,7 @@
             </p>
 
             <p class="text-base sm:text-lg text-gray-700 max-w-2xl mx-auto mb-8 font-normal leading-relaxed">
-                Step inside Cromer’s welcoming coastal pub on 24 West Street. Enjoy fine Norfolk cask ales, homemade pub dishes, live sports on HD screens, and comfortable B&amp;B rooms.
+                Experience warm Norfolk hospitality on West Street. Join us for fresh local seafood, pub classics, real cask ales, a sunny outdoor beer garden, seaside beach hampers and comfortable B&amp;B rooms.
             </p>
 
             <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -216,88 +211,40 @@
                     <i class="fas fa-utensils text-sm"></i> Make Table Reservation
                 </button>
                 <button type="button" onclick="openBookingModal('room')" class="w-full sm:w-auto glass-pill hover:bg-white/90 text-pub-deep px-8 py-4 rounded-xl font-bold text-base transition flex items-center justify-center gap-2 cursor-pointer uppercase text-xs">
-                    <i class="fas fa-bed text-sm text-pub-sage"></i> Book Room / Enquiry
+                    <i class="fas fa-bed text-sm text-pub-sage"></i> Enquire About Rooms
                 </button>
             </div>
         </div>
     </section>
 
-    <!-- Quick Info Feature Bar -->
+    <!-- Quick Highlights Bar -->
     <section class="max-w-7xl mx-auto px-4 -mt-8 relative z-20 mb-16">
         <div class="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
             <div class="glass-card p-4 rounded-2xl text-center flex flex-col items-center justify-center">
-                <i class="fas fa-map-pin text-xl text-pub-sage mb-1"></i>
-                <span class="text-xs font-bold text-pub-deep uppercase tracking-wider">Location</span>
-                <span class="text-xs text-gray-600 font-medium">24 West St, Cromer</span>
+                <i class="fas fa-utensils text-xl text-pub-sage mb-1"></i>
+                <span class="text-xs font-bold text-pub-deep uppercase tracking-wider">Fresh Food</span>
+                <span class="text-xs text-gray-600 font-medium">Local Seafood &amp; Roasts</span>
             </div>
             <div class="glass-card p-4 rounded-2xl text-center flex flex-col items-center justify-center">
-                <i class="fas fa-beer text-xl text-pub-sage mb-1"></i>
-                <span class="text-xs font-bold text-pub-deep uppercase tracking-wider">Cask Ales</span>
-                <span class="text-xs text-gray-600 font-medium">Local Norfolk Ales</span>
+                <i class="fas fa-sun text-xl text-pub-sage mb-1"></i>
+                <span class="text-xs font-bold text-pub-deep uppercase tracking-wider">Beer Garden</span>
+                <span class="text-xs text-gray-600 font-medium">Sunny Outdoor Seating</span>
             </div>
             <div class="glass-card p-4 rounded-2xl text-center flex flex-col items-center justify-center">
-                <i class="fas fa-dog text-xl text-pub-sage mb-1"></i>
-                <span class="text-xs font-bold text-pub-deep uppercase tracking-wider">Dog Friendly</span>
-                <span class="text-xs text-gray-600 font-medium">Pups Welcome</span>
+                <i class="fas fa-basket-shopping text-xl text-pub-sage mb-1"></i>
+                <span class="text-xs font-bold text-pub-deep uppercase tracking-wider">Beach Picnics</span>
+                <span class="text-xs text-gray-600 font-medium">Cromer Picnics Hampers</span>
             </div>
             <div class="glass-card p-4 rounded-2xl text-center flex flex-col items-center justify-center">
-                <i class="fas fa-tv text-xl text-pub-sage mb-1"></i>
-                <span class="text-xs font-bold text-pub-deep uppercase tracking-wider">Live Sports</span>
-                <span class="text-xs text-gray-600 font-medium">Sky &amp; TNT Sports</span>
-            </div>
-        </div>
-    </section>
-
-    <!-- About Section -->
-    <section id="about" class="py-12 sm:py-20 px-4 max-w-7xl mx-auto">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
-            <div class="glass-card rounded-3xl p-8 sm:p-10">
-                <span class="inline-block px-3.5 py-1 rounded-full glass-pill text-xs font-bold text-pub-sage uppercase tracking-wider mb-4">
-                    Heritage &amp; Hospitality
-                </span>
-                <h2 class="font-serif text-3xl sm:text-4xl font-bold text-pub-deep mb-4 leading-tight">
-                    A Classic Coastal Pub on West Street
-                </h2>
-                <p class="text-gray-700 text-sm sm:text-base leading-relaxed mb-4">
-                    Situated at 24 West Street in Cromer, <strong>The White Horse Inn</strong> is a traditional coastal pub offering warm Norfolk hospitality to locals and seaside visitors alike.
-                </p>
-                <p class="text-gray-700 text-sm sm:text-base leading-relaxed mb-6">
-                    Whether you are stopping by for a cold pint after a walk on Cromer beach, catching live sports on our HD screens, enjoying a plate of hearty pub food, or staying overnight in our en-suite rooms, we look forward to giving you a warm welcome.
-                </p>
-                <div class="pt-2 flex items-center gap-4">
-                    <button type="button" onclick="openBookingModal('table')" class="glass-button-primary text-white font-semibold text-xs px-6 py-3 rounded-xl cursor-pointer uppercase tracking-wider">
-                        Reserve a Table
-                    </button>
-                    <a href="#contact" class="text-xs font-bold text-pub-deep hover:text-pub-sage transition inline-flex items-center gap-1">
-                        Get Directions <i class="fas fa-arrow-right text-[10px]"></i>
-                    </a>
-                </div>
-            </div>
-
-            <div class="relative">
-                <div class="glass-card rounded-3xl overflow-hidden p-3 shadow-xl">
-                    <img src="https://images.unsplash.com/photo-1572116469696-31de0f17cc34?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" 
-                         onerror="this.onerror=null; this.src='https://placehold.co/1000x800/1b3a2b/ffffff?text=White+Horse+Inn+Interior';"
-                         alt="White Horse Inn Interior" 
-                         class="w-full h-80 sm:h-96 object-cover rounded-2xl">
-                </div>
-                <div class="absolute -bottom-5 -left-3 sm:left-6 glass-pill px-5 py-3 rounded-2xl shadow-lg border border-white/90 hidden sm:block">
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-xl bg-pub-deep text-white flex items-center justify-center font-bold">
-                            <i class="fas fa-shield-cat"></i>
-                        </div>
-                        <div>
-                            <span class="block text-xs font-bold text-pub-deep">Warm Local Atmosphere</span>
-                            <span class="block text-[11px] text-gray-600">Walk-ins &amp; Bookings Welcome</span>
-                        </div>
-                    </div>
-                </div>
+                <i class="fas fa-bed text-xl text-pub-sage mb-1"></i>
+                <span class="text-xs font-bold text-pub-deep uppercase tracking-wider">B&amp;B Rooms</span>
+                <span class="text-xs text-gray-600 font-medium">West Street Cromer</span>
             </div>
         </div>
     </section>
 
     <!-- Food & Drink Section -->
-    <section id="food" class="py-12 sm:py-20 px-4 max-w-7xl mx-auto">
+    <section id="food" class="py-12 sm:py-16 px-4 max-w-7xl mx-auto">
         <div class="text-center max-w-2xl mx-auto mb-10 sm:mb-14">
             <span class="inline-block px-3.5 py-1 rounded-full glass-pill text-xs font-bold text-pub-sage uppercase tracking-wider mb-3">
                 Food &amp; Drink
@@ -306,7 +253,7 @@
                 Dine &amp; Drink at The White Horse
             </h2>
             <p class="text-gray-600 text-sm sm:text-base">
-                Fresh local Norfolk produce, coastal seafood, traditional Sunday roasts, and a well-stocked bar featuring local real ales. Explore and download our full seasonal menus below.
+                Fresh local Norfolk produce, coastal seafood, traditional Sunday roasts and a well-stocked bar featuring local real ales. Download our full seasonal menus below.
             </p>
         </div>
 
@@ -333,7 +280,7 @@
                         <i class="fas fa-moon"></i>
                     </div>
                     <h3 class="font-serif font-bold text-lg text-pub-deep mb-1">Dinner Menu</h3>
-                    <p class="text-xs text-gray-600 mb-4">Hearty coastal classics, steak & ale pies, fresh catches & delicious desserts. Served 5pm - 9pm.</p>
+                    <p class="text-xs text-gray-600 mb-4">Hearty coastal favourites, steak & ale pies, fresh catches & delicious desserts. Served 5pm - 9pm.</p>
                 </div>
                 <a href="#download-dinner" onclick="downloadMenuPDF('Dinner Menu'); return false;" class="w-full glass-button-primary text-white text-xs font-bold py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 cursor-pointer uppercase tracking-wider transition">
                     <i class="fas fa-file-pdf"></i> Download PDF
@@ -439,186 +386,127 @@
             </div>
         </div>
 
-        <!-- Table Reservation Prompt Card -->
-        <div class="glass-card rounded-3xl p-6 sm:p-8 text-center max-w-2xl mx-auto mb-10">
-            <h3 class="font-serif font-bold text-2xl text-pub-deep mb-2">Join Us For Lunch, Dinner or Sunday Roast</h3>
-            <p class="text-xs sm:text-sm text-gray-600 mb-6">Bookings are recommended, especially for Sunday Roasts and evening dining. Walk-ins are always welcome in our main bar!</p>
+        <!-- Reservation Callout -->
+        <div class="glass-card rounded-3xl p-6 sm:p-8 text-center max-w-2xl mx-auto">
+            <h3 class="font-serif font-bold text-2xl text-pub-deep mb-2">Book Your Table Online</h3>
+            <p class="text-xs sm:text-sm text-gray-600 mb-6">Reservations are recommended for Sunday Roasts and evening dining. Walk-ins are always welcome in our main bar and beer garden!</p>
             <button type="button" onclick="openBookingModal('table')" class="glass-button-primary text-white font-bold text-xs px-8 py-3.5 rounded-xl uppercase tracking-wider cursor-pointer inline-flex items-center justify-center gap-2">
-                <i class="fas fa-utensils"></i> Reserve a Table via TableAgent
+                <i class="fas fa-utensils"></i> Reserve a Table Online
             </button>
         </div>
+    </section>
 
-        <!-- Cromer Picnics Local Partner Banner & Feature -->
-        <div id="picnics" class="mt-8 pt-6 border-t border-emerald-900/10">
-            <div class="glass-card rounded-3xl p-6 sm:p-8 border border-white/90">
-                <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
-                    <!-- Picnic Feature Image -->
-                    <div class="md:col-span-5 rounded-2xl overflow-hidden h-56 md:h-64 shadow-md relative group">
-                        <img src="https://images.unsplash.com/photo-1590077428563-f83d040bc82f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
-                             onerror="this.onerror=null; this.src='https://placehold.co/800x600/1b3a2b/ffffff?text=Cromer+Beach+Picnic+Hamper';"
-                             alt="Cromer Beach Picnic Hamper on Sandy Beach with Coastal Views" 
-                             class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-                        <div class="absolute top-3 left-3 glass-pill px-3 py-1 rounded-full text-[10px] font-bold text-pub-deep uppercase tracking-wider bg-white/90">
-                            Local Partner
+    <!-- Beer Garden Section -->
+    <section id="garden" class="py-12 sm:py-16 px-4 max-w-7xl mx-auto">
+        <div class="glass-card rounded-3xl p-6 sm:p-10 border border-white/90">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+                <!-- Beer Garden Text Content -->
+                <div class="md:col-span-7 flex flex-col justify-between space-y-4">
+                    <div class="flex items-center gap-3">
+                        <div class="w-12 h-12 rounded-2xl bg-pub-deep/10 text-pub-sage flex items-center justify-center text-xl shrink-0">
+                            <i class="fas fa-sun"></i>
+                        </div>
+                        <div>
+                            <span class="text-xs text-pub-sage font-bold uppercase tracking-wider block">Outdoor Drinking &amp; Dining</span>
+                            <h2 class="font-serif font-bold text-pub-deep text-2xl sm:text-4xl">Sunny Outdoor Beer Garden</h2>
                         </div>
                     </div>
 
-                    <!-- Picnic Description & Info -->
-                    <div class="md:col-span-7 flex flex-col justify-between space-y-3">
-                        <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-xl bg-pub-deep/10 text-pub-sage flex items-center justify-center text-lg shrink-0">
-                                <i class="fas fa-basket-shopping"></i>
-                            </div>
-                            <div>
-                                <h4 class="font-serif font-bold text-pub-deep text-xl sm:text-2xl">Heading to the Beach? Cromer Picnics</h4>
-                                <span class="text-xs text-pub-sage font-semibold uppercase tracking-wider">Fresh Coastal Hampers &amp; Gourmet Boxes</span>
-                            </div>
-                        </div>
+                    <p class="text-sm text-gray-700 leading-relaxed">
+                        Enjoy the coastal sea breeze in our spacious pub beer garden. It's the perfect sun trap to unwind with a chilled pint of local cask ale, gin &amp; tonic, or enjoy alfresco lunch with family and friends after a stroll along Cromer beach.
+                    </p>
 
-                        <p class="text-xs sm:text-sm text-gray-700 leading-relaxed">
-                            Exploring Cromer Pier, cliff-top coastal path walks, or relaxing on the sandy beach? Order freshly prepared coastal picnic boxes, beach hampers, and artisan grazing platters packed with delicious local Norfolk treats.
-                        </p>
+                    <ul class="space-y-2 text-xs sm:text-sm text-gray-700">
+                        <li class="flex items-center gap-2"><i class="fas fa-check text-pub-sage"></i> Ample outdoor wooden bench seating</li>
+                        <li class="flex items-center gap-2"><i class="fas fa-check text-pub-sage"></i> Dog-friendly outdoor garden area</li>
+                        <li class="flex items-center gap-2"><i class="fas fa-check text-pub-sage"></i> Outdoor tables operating on a first-come, walk-in basis</li>
+                        <li class="flex items-center gap-2"><i class="fas fa-check text-pub-sage"></i> Full bar service &amp; outdoor dining menu available</li>
+                    </ul>
+                </div>
 
-                        <div class="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-                            <a href="https://www.cromerpicnics.co.uk" target="_blank" rel="noopener noreferrer" class="glass-button-primary text-white font-bold text-xs px-6 py-3 rounded-xl uppercase tracking-wider inline-flex items-center justify-center gap-2 cursor-pointer hover:scale-105 transition">
-                                <span>Visit www.cromerpicnics.co.uk</span>
-                                <i class="fas fa-external-link-alt text-[10px]"></i>
-                            </a>
-                        </div>
+                <!-- Beer Garden Feature Image -->
+                <div class="md:col-span-5 rounded-2xl overflow-hidden h-64 md:h-80 shadow-md relative group">
+                    <img src="https://images.unsplash.com/photo-1572116469696-31de0f17cc34?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
+                         onerror="this.onerror=null; this.src='https://placehold.co/800x600/1b3a2b/ffffff?text=Sunny+Beer+Garden';"
+                         alt="Sunny Outdoor Beer Garden at The White Horse Inn" 
+                         class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                    <div class="absolute top-3 right-3 glass-pill px-3 py-1 rounded-full text-[10px] font-bold text-pub-deep uppercase tracking-wider bg-white/90">
+                        Outdoor Seating
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- What's On Events Section -->
-    <section id="events" class="py-12 sm:py-20 px-4 max-w-7xl mx-auto">
-        <div class="text-center max-w-2xl mx-auto mb-10">
-            <span class="inline-block px-3.5 py-1 rounded-full glass-pill text-xs font-bold text-pub-sage uppercase tracking-wider mb-3">
-                What's On
-            </span>
-            <h2 class="font-serif text-3xl sm:text-5xl font-bold text-pub-deep mb-3">
-                Events &amp; Entertainment
-            </h2>
-            <p class="text-gray-600 text-sm sm:text-base">
-                Join us for live music, charity pub quizzes, and major sporting events broadcast on our HD screens.
-            </p>
-        </div>
+    <!-- Cromer Picnics Local Partner Section -->
+    <section id="picnics" class="py-12 sm:py-16 px-4 max-w-7xl mx-auto">
+        <div class="glass-card rounded-3xl p-6 sm:p-10 border border-white/90">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+                <!-- Picnic Feature Image -->
+                <div class="md:col-span-5 rounded-2xl overflow-hidden h-64 md:h-80 shadow-md relative group">
+                    <img src="https://images.unsplash.com/photo-1590077428563-f83d040bc82f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
+                         onerror="this.onerror=null; this.src='https://placehold.co/800x600/1b3a2b/ffffff?text=Cromer+Beach+Picnic+Hamper';"
+                         alt="Cromer Beach Picnic Hamper on Sandy Beach with Coastal Views" 
+                         class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                    <div class="absolute top-3 left-3 glass-pill px-3 py-1 rounded-full text-[10px] font-bold text-pub-deep uppercase tracking-wider bg-white/90">
+                        Local Partner
+                    </div>
+                </div>
 
-        <!-- Filter Category Tabs -->
-        <div class="flex flex-wrap justify-center gap-2 mb-8">
-            <button type="button" onclick="filterEvents('all')" id="filter-all" class="event-filter-btn glass-button-primary text-white px-4 py-2 rounded-xl text-xs font-bold cursor-pointer">All Events</button>
-            <button type="button" onclick="filterEvents('music')" id="filter-music" class="event-filter-btn glass-pill text-pub-deep px-4 py-2 rounded-xl text-xs font-bold hover:bg-white/80 cursor-pointer">Live Music</button>
-            <button type="button" onclick="filterEvents('quiz')" id="filter-quiz" class="event-filter-btn glass-pill text-pub-deep px-4 py-2 rounded-xl text-xs font-bold hover:bg-white/80 cursor-pointer">Pub Quiz</button>
-            <button type="button" onclick="filterEvents('sports')" id="filter-sports" class="event-filter-btn glass-pill text-pub-deep px-4 py-2 rounded-xl text-xs font-bold hover:bg-white/80 cursor-pointer">Live Sports</button>
-        </div>
+                <!-- Picnic Info & Direct Link -->
+                <div class="md:col-span-7 flex flex-col justify-between space-y-4">
+                    <div class="flex items-center gap-3">
+                        <div class="w-12 h-12 rounded-2xl bg-pub-deep/10 text-pub-sage flex items-center justify-center text-xl shrink-0">
+                            <i class="fas fa-basket-shopping"></i>
+                        </div>
+                        <div>
+                            <h2 class="font-serif font-bold text-pub-deep text-2xl sm:text-3xl">Heading to the Beach? Why not try Cromer Picnics?</h2>
+                            <span class="text-xs text-pub-sage font-semibold uppercase tracking-wider">Fresh Coastal Hampers &amp; Artisan Grazing Boxes</span>
+                        </div>
+                    </div>
 
-        <!-- Event Cards Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <!-- Event 1: Music -->
-            <div class="event-card glass-card glass-card-hover rounded-3xl overflow-hidden flex flex-col" data-category="music">
-                <div class="h-48 relative overflow-hidden">
-                    <img src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
-                         onerror="this.onerror=null; this.src='https://placehold.co/800x600/1b3a2b/ffffff?text=Live+Music';"
-                         alt="Live Music" class="w-full h-full object-cover">
-                    <div class="absolute top-3 left-3 glass-pill px-3 py-1.5 rounded-xl text-center bg-white/90">
-                        <span class="block font-bold text-xs text-pub-deep">SAT 15 AUG</span>
-                    </div>
-                    <span class="absolute top-3 right-3 glass-pill px-2.5 py-1 rounded-full text-[10px] font-bold text-pub-deep bg-white/90">
-                        Live Music
-                    </span>
-                </div>
-                <div class="p-5 flex-1 flex flex-col justify-between">
-                    <div>
-                        <div class="text-xs font-bold text-pub-sage mb-1"><i class="far fa-clock mr-1"></i> From 8:30 PM</div>
-                        <h3 class="font-serif text-lg font-bold text-pub-deep mb-2">Coastal Acoustic Night</h3>
-                        <p class="text-xs text-gray-600 leading-relaxed mb-4">Enjoy fantastic live acoustic covers from local Norfolk musicians in our cozy main lounge.</p>
-                    </div>
-                    <button type="button" onclick="openBookingModal('table', 'Coastal Acoustic Session')" class="w-full glass-button-primary text-white font-bold text-xs py-2.5 rounded-xl cursor-pointer uppercase tracking-wider">
-                        Reserve Table
-                    </button>
-                </div>
-            </div>
+                    <p class="text-sm text-gray-700 leading-relaxed">
+                        Planning a day at Cromer Pier, cliff-top coastal path walks, or relaxing on the sandy beach? Order freshly prepared coastal picnic boxes, beach hampers and artisan grazing platters packed with delicious local Norfolk treats.
+                    </p>
 
-            <!-- Event 2: Pub Quiz -->
-            <div class="event-card glass-card glass-card-hover rounded-3xl overflow-hidden flex flex-col" data-category="quiz">
-                <div class="h-48 relative overflow-hidden">
-                    <img src="https://images.unsplash.com/photo-1543269865-cbf427effbad?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
-                         onerror="this.onerror=null; this.src='https://placehold.co/800x600/1b3a2b/ffffff?text=Pub+Quiz+Night';"
-                         alt="Pub Quiz" class="w-full h-full object-cover">
-                    <div class="absolute top-3 left-3 glass-pill px-3 py-1.5 rounded-xl text-center bg-white/90">
-                        <span class="block font-bold text-xs text-pub-deep">THU 20 AUG</span>
+                    <div class="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                        <a href="https://www.cromerpicnics.co.uk" target="_blank" rel="noopener noreferrer" class="glass-button-primary text-white font-bold text-xs px-6 py-3.5 rounded-xl uppercase tracking-wider inline-flex items-center justify-center gap-2 cursor-pointer hover:scale-105 transition text-center">
+                            <span>Visit www.cromerpicnics.co.uk</span>
+                            <i class="fas fa-external-link-alt text-[10px]"></i>
+                        </a>
                     </div>
-                    <span class="absolute top-3 right-3 glass-pill px-2.5 py-1 rounded-full text-[10px] font-bold text-pub-deep bg-white/90">
-                        Pub Quiz
-                    </span>
-                </div>
-                <div class="p-5 flex-1 flex flex-col justify-between">
-                    <div>
-                        <div class="text-xs font-bold text-pub-sage mb-1"><i class="far fa-clock mr-1"></i> 7:30 PM Start • £2 Entry</div>
-                        <h3 class="font-serif text-lg font-bold text-pub-deep mb-2">Monthly Charity Pub Quiz</h3>
-                        <p class="text-xs text-gray-600 leading-relaxed mb-4">Assemble your quiz team! Prizes include cash pot &amp; White Horse bar vouchers.</p>
-                    </div>
-                    <button type="button" onclick="openBookingModal('table', 'Charity Quiz Night')" class="w-full glass-button-primary text-white font-bold text-xs py-2.5 rounded-xl cursor-pointer uppercase tracking-wider">
-                        Reserve Team Table
-                    </button>
-                </div>
-            </div>
-
-            <!-- Event 3: Sports -->
-            <div class="event-card glass-card glass-card-hover rounded-3xl overflow-hidden flex flex-col" data-category="sports">
-                <div class="h-48 relative overflow-hidden">
-                    <img src="https://images.unsplash.com/photo-1508098682722-e99c43a406b2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
-                         onerror="this.onerror=null; this.src='https://placehold.co/800x600/1b3a2b/ffffff?text=Premier+League+Live+Sports';"
-                         alt="Premier League Match" class="w-full h-full object-cover">
-                    <div class="absolute top-3 left-3 glass-pill px-3 py-1.5 rounded-xl text-center bg-white/90">
-                        <span class="block font-bold text-xs text-pub-deep">SUN 23 AUG</span>
-                    </div>
-                    <span class="absolute top-3 right-3 glass-pill px-2.5 py-1 rounded-full text-[10px] font-bold text-pub-deep bg-white/90">
-                        Live Sports
-                    </span>
-                </div>
-                <div class="p-5 flex-1 flex flex-col justify-between">
-                    <div>
-                        <div class="text-xs font-bold text-pub-sage mb-1"><i class="far fa-clock mr-1"></i> Kickoff 4:30 PM</div>
-                        <h3 class="font-serif text-lg font-bold text-pub-deep mb-2">Premier League Sunday</h3>
-                        <p class="text-xs text-gray-600 leading-relaxed mb-4">Watch the match on our big HD screens with surround sound and matchday beer specials.</p>
-                    </div>
-                    <button type="button" onclick="openBookingModal('table', 'Premier League Sunday')" class="w-full glass-button-primary text-white font-bold text-xs py-2.5 rounded-xl cursor-pointer uppercase tracking-wider">
-                        Reserve Table
-                    </button>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Rooms Section -->
-    <section id="rooms" class="py-12 sm:py-20 px-4 max-w-7xl mx-auto">
-        <div class="glass-card rounded-3xl p-8 sm:p-12 overflow-hidden relative">
+    <!-- Rooms / Accommodation Section -->
+    <section id="rooms" class="py-12 sm:py-16 px-4 max-w-7xl mx-auto">
+        <div class="glass-card rounded-3xl p-8 sm:p-12 overflow-hidden relative border border-white/90">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
                 <div>
                     <span class="inline-block px-3.5 py-1 rounded-full glass-pill text-xs font-bold text-pub-sage uppercase tracking-wider mb-3">
                         Sleep • B&amp;B Rooms
                     </span>
                     <h2 class="font-serif text-3xl sm:text-4xl font-bold text-pub-deep mb-4">
-                        Stay on Cromer High Street
+                        Stay on West Street, Cromer
                     </h2>
                     <p class="text-gray-700 text-sm sm:text-base leading-relaxed mb-4">
-                        Make <strong>The White Horse Inn</strong> your base for exploring North Norfolk. Our comfortable en-suite rooms provide a welcoming retreat after a day on the coast.
+                        Make <strong>The White Horse Inn</strong> your base for exploring North Norfolk. Our comfortable en-suite guest rooms provide a welcoming retreat right in the heart of Cromer.
                     </p>
                     <ul class="space-y-2 mb-6 text-xs sm:text-sm text-gray-700">
-                        <li class="flex items-center gap-2"><i class="fas fa-check text-pub-sage"></i> Central West Street location near Cromer Pier</li>
-                        <li class="flex items-center gap-2"><i class="fas fa-check text-pub-sage"></i> Cooked breakfast included with your stay</li>
-                        <li class="flex items-center gap-2"><i class="fas fa-check text-pub-sage"></i> En-suite bathrooms, free Wi-Fi &amp; tea/coffee</li>
+                        <li class="flex items-center gap-2"><i class="fas fa-check text-pub-sage"></i> Central West Street location just moments from Cromer Pier &amp; beach</li>
+                        <li class="flex items-center gap-2"><i class="fas fa-check text-pub-sage"></i> Full cooked breakfast included with every stay</li>
+                        <li class="flex items-center gap-2"><i class="fas fa-check text-pub-sage"></i> En-suite bathrooms, free Wi-Fi &amp; tea/coffee making facilities</li>
                     </ul>
-                    <button type="button" onclick="openBookingModal('room')" class="glass-button-primary text-white font-bold text-xs px-6 py-3.5 rounded-xl cursor-pointer uppercase tracking-wider">
-                        Inquire About Room Booking
+                    <button type="button" onclick="openBookingModal('room')" class="glass-button-primary text-white font-bold text-xs px-6 py-3.5 rounded-xl cursor-pointer uppercase tracking-wider inline-flex items-center gap-2">
+                        <i class="fas fa-bed"></i> Enquire About Room Booking
                     </button>
                 </div>
                 <div>
                     <img src="https://images.unsplash.com/photo-1590490360182-c33d57733427?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" 
                          onerror="this.onerror=null; this.src='https://placehold.co/1000x800/1b3a2b/ffffff?text=Cozy+BB+Room';"
-                         alt="Cozy B&B Room" 
+                         alt="Cozy B&B Room at White Horse Inn" 
                          class="w-full h-72 sm:h-80 object-cover rounded-2xl shadow-lg">
                 </div>
             </div>
@@ -626,9 +514,9 @@
     </section>
 
     <!-- Contact & Map Section -->
-    <section id="contact" class="py-12 sm:py-20 px-4 max-w-7xl mx-auto">
+    <section id="contact" class="py-12 sm:py-16 px-4 max-w-7xl mx-auto">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <!-- Contact Card -->
+            <!-- Contact Info Card -->
             <div class="glass-card rounded-3xl p-8">
                 <h2 class="font-serif text-3xl font-bold text-pub-deep mb-4">Find Us</h2>
                 <p class="text-gray-600 text-sm mb-6">We are conveniently located in central Cromer on West Street.</p>
@@ -688,9 +576,9 @@
         </div>
     </footer>
 
-    <!-- GLASSMORPHIC RESERVATION POPUP MODAL -->
+    <!-- GLASSMORPHIC POPUP MODAL (TABLE & ROOM RESERVATIONS) -->
     <div id="booking-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-3 sm:p-4 bg-pub-dark/60 backdrop-blur-md transition-opacity duration-300">
-        <div class="glass-modal-tile rounded-3xl w-full max-w-2xl max-h-[92vh] flex flex-col overflow-hidden relative shadow-2xl animate-in fade-in zoom-in-95 duration-200">
+        <div class="glass-modal-tile rounded-3xl w-full max-w-2xl max-h-[92vh] flex flex-col overflow-hidden relative shadow-2xl">
             
             <!-- Modal Header -->
             <div class="px-6 py-4 border-b border-emerald-900/10 flex items-center justify-between bg-white/40">
@@ -710,7 +598,7 @@
                         <i class="fas fa-utensils mr-1"></i> Table Booking
                     </button>
                     <button type="button" id="tab-btn-room" onclick="switchModalTab('room')" class="flex-1 py-2 px-3 rounded-xl text-xs font-bold transition cursor-pointer text-pub-deep hover:bg-white/60">
-                        <i class="fas fa-bed mr-1"></i> Room &amp; General Enquiry
+                        <i class="fas fa-bed mr-1"></i> Room Enquiry
                     </button>
                 </div>
             </div>
@@ -718,21 +606,21 @@
             <!-- Modal Content Body -->
             <div class="p-4 sm:p-6 overflow-y-auto flex-1">
                 
-                <!-- Tab 1: Embedded TableAgent Iframe Widget -->
+                <!-- Tab 1: Embedded Table Reservation Iframe Widget -->
                 <div id="modal-tab-table-content" class="w-full flex justify-center">
-                    <div class="w-full min-h-[500px] sm:min-h-[560px] rounded-2xl overflow-hidden bg-white/80 border border-emerald-900/10 shadow-inner p-1">
+                    <div class="w-full min-h-[500px] sm:min-h-[540px] rounded-2xl overflow-hidden bg-white/80 border border-emerald-900/10 shadow-inner p-1">
                         <iframe
                             src="https://tableagent.com/iframe/white-horse-cromer/"
-                            style="border:0px none; min-width:300px; min-height:540px;"
+                            style="border:0px none; min-width:300px; min-height:520px;"
                             sandbox="allow-forms allow-modals allow-same-origin allow-scripts allow-top-navigation-by-user-activation"
                             width="100%"
                             height="100%"
-                            title="TableAgent Booking Engine">
+                            title="Table Reservation Engine">
                         </iframe>
                     </div>
                 </div>
 
-                <!-- Tab 2: Room Booking & General Enquiry Form -->
+                <!-- Tab 2: Room Enquiry Form -->
                 <div id="modal-tab-room-content" class="hidden">
                     <form id="room-inquiry-form" class="space-y-4">
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -746,22 +634,26 @@
                             </div>
                         </div>
 
-                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                             <div>
                                 <label class="block text-xs font-bold text-pub-deep mb-1">Phone Number *</label>
                                 <input type="tel" required placeholder="07123 456789" class="w-full px-3.5 py-2.5 rounded-xl glass-input text-xs text-gray-800">
                             </div>
                             <div>
-                                <label class="block text-xs font-bold text-pub-deep mb-1">Preferred Date</label>
-                                <input type="date" class="w-full px-3.5 py-2.5 rounded-xl glass-input text-xs text-gray-800">
+                                <label class="block text-xs font-bold text-pub-deep mb-1">Check-in Date *</label>
+                                <input type="date" required class="w-full px-3.5 py-2.5 rounded-xl glass-input text-xs text-gray-800">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-pub-deep mb-1">Check-out Date *</label>
+                                <input type="date" required class="w-full px-3.5 py-2.5 rounded-xl glass-input text-xs text-gray-800">
                             </div>
                             <div>
                                 <label class="block text-xs font-bold text-pub-deep mb-1">Number of Guests</label>
                                 <select class="w-full px-3.5 py-2.5 rounded-xl glass-input text-xs text-gray-800">
-                                    <option value="1">1 Person</option>
-                                    <option value="2" selected>2 People</option>
-                                    <option value="3">3 People</option>
-                                    <option value="4">4+ People</option>
+                                    <option value="1">1 Guest</option>
+                                    <option value="2" selected>2 Guests</option>
+                                    <option value="3">3 Guests</option>
+                                    <option value="4">4+ Guests</option>
                                 </select>
                             </div>
                         </div>
@@ -773,7 +665,7 @@
 
                         <!-- In-UI Success Message -->
                         <div id="inquiry-success-msg" class="hidden p-3 rounded-xl bg-emerald-100 border border-emerald-300 text-emerald-800 text-xs font-bold text-center">
-                            <i class="fas fa-check-circle mr-1"></i> Thank you! Your inquiry has been submitted. We will contact you shortly.
+                            <i class="fas fa-check-circle mr-1"></i> Thank you! Your room enquiry has been submitted. We will contact you shortly.
                         </div>
 
                         <button type="submit" class="w-full glass-button-primary text-white font-bold py-3 rounded-xl text-xs uppercase tracking-wider cursor-pointer">
@@ -786,10 +678,9 @@
         </div>
     </div>
 
-    <!-- JavaScript Application Script -->
+    <!-- JavaScript Application Handler -->
     <script>
-        
-        // Toggle mobile navigation drawer
+        // Toggle mobile menu drawer
         function toggleMobileMenu() {
             const mobileMenu = document.getElementById('mobile-menu');
             if (mobileMenu) {
@@ -797,29 +688,20 @@
             }
         }
 
-        // Open Booking Modal
-        function openBookingModal(tab = 'table', eventName = '') {
+        // Open Reservation Modal with Tab Selection
+        function openBookingModal(tab = 'table') {
             const modal = document.getElementById('booking-modal');
             if (!modal) return;
 
-            // Show modal with flex display
             modal.classList.remove('hidden');
             modal.classList.add('flex');
             document.body.style.overflow = 'hidden'; // Lock background scrolling
 
             // Switch to requested tab
             switchModalTab(tab);
-
-            // Populate inquiry notes if event passed
-            if (eventName) {
-                const notesInput = document.getElementById('inquiry-notes');
-                if (notesInput) {
-                    notesInput.value = `Inquiry regarding: ${eventName}`;
-                }
-            }
         }
 
-        // Close Booking Modal
+        // Close Reservation Modal
         function closeBookingModal() {
             const modal = document.getElementById('booking-modal');
             if (!modal) return;
@@ -827,8 +709,7 @@
             modal.classList.add('hidden');
             modal.classList.remove('flex');
             document.body.style.overflow = ''; // Restore background scrolling
-            
-            // Hide success message if visible
+
             const successMsg = document.getElementById('inquiry-success-msg');
             if (successMsg) successMsg.classList.add('hidden');
         }
@@ -846,48 +727,19 @@
                 tableContent.classList.remove('hidden');
                 roomContent.classList.add('hidden');
 
-                // Button active styles
                 btnTable.className = 'flex-1 py-2 px-3 rounded-xl text-xs font-bold transition cursor-pointer glass-button-primary text-white';
                 btnRoom.className = 'flex-1 py-2 px-3 rounded-xl text-xs font-bold transition cursor-pointer text-pub-deep hover:bg-white/60';
             } else {
                 tableContent.classList.add('hidden');
                 roomContent.classList.remove('hidden');
 
-                // Button active styles
                 btnRoom.className = 'flex-1 py-2 px-3 rounded-xl text-xs font-bold transition cursor-pointer glass-button-primary text-white';
                 btnTable.className = 'flex-1 py-2 px-3 rounded-xl text-xs font-bold transition cursor-pointer text-pub-deep hover:bg-white/60';
             }
         }
 
-        // Filter events by category
-        function filterEvents(category) {
-            const cards = document.querySelectorAll('.event-card');
-            const filterBtns = document.querySelectorAll('.event-filter-btn');
-
-            // Reset filter button styles
-            filterBtns.forEach(btn => {
-                btn.className = 'event-filter-btn glass-pill text-pub-deep px-4 py-2 rounded-xl text-xs font-bold hover:bg-white/80 cursor-pointer';
-            });
-
-            // Set active button style
-            const activeBtn = document.getElementById(`filter-${category}`);
-            if (activeBtn) {
-                activeBtn.className = 'event-filter-btn glass-button-primary text-white px-4 py-2 rounded-xl text-xs font-bold cursor-pointer';
-            }
-
-            // Show/Hide event cards
-            cards.forEach(card => {
-                if (category === 'all' || card.getAttribute('data-category') === category) {
-                    card.classList.remove('hidden');
-                } else {
-                    card.classList.add('hidden');
-                }
-            });
-        }
-
-        // Helper function for PDF menu downloads
+        // PDF Menu Download Notification Toast
         function downloadMenuPDF(menuName) {
-            // Shows a user-friendly notification prompt and opens sample/placeholder PDF link
             const note = document.createElement('div');
             note.className = 'fixed bottom-5 right-5 z-50 glass-modal-tile p-4 rounded-2xl shadow-2xl border border-pub-sage/30 flex items-center gap-3 text-pub-deep text-xs font-bold animate-bounce';
             note.innerHTML = `<i class="fas fa-file-pdf text-pub-sage text-lg"></i> Downloading ${menuName}...`;
@@ -898,9 +750,9 @@
             }, 3000);
         }
 
-        // Event Listeners setup on window load
+        // Initialize event listeners
         window.addEventListener('DOMContentLoaded', () => {
-            // Mobile Menu Button click listener
+            // Mobile Menu Button click handler
             const mobileBtn = document.getElementById('mobile-menu-btn');
             if (mobileBtn) {
                 mobileBtn.addEventListener('click', toggleMobileMenu);
@@ -916,7 +768,7 @@
                 });
             }
 
-            // Close modal on Escape key press
+            // Close modal on Escape key
             window.addEventListener('keydown', (e) => {
                 if (e.key === 'Escape') {
                     closeBookingModal();
@@ -934,7 +786,7 @@
                     }
                     setTimeout(() => {
                         inquiryForm.reset();
-                    }, 1000);
+                    }, 1500);
                 });
             }
         });
