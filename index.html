@@ -474,9 +474,9 @@
                 </div>
             </div>
 
-            <!-- Downloadable Menus Grid -->
+    <!-- View & Download Menus Grid -->
             <div class="mb-10 sm:mb-12">
-                <h3 class="font-serif text-xl sm:text-2xl font-bold text-pub-deep text-center mb-5 sm:mb-6">Download Our Menus</h3>
+        <h3 class="font-serif text-xl sm:text-2xl font-bold text-pub-deep text-center mb-5 sm:mb-6">Explore &amp; Download Our Menus</h3>
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-4">
                     <!-- Lunch Menu -->
                     <div class="glass-card glass-card-hover rounded-2xl p-4 sm:p-5 flex flex-col justify-between border border-white/90">
@@ -487,9 +487,14 @@
                             <h3 class="font-serif font-bold text-base sm:text-lg text-pub-deep mb-1">Lunch Menu</h3>
                             <p class="text-xs text-gray-600 mb-4">Light bites, local Cromer crab sandwiches, fish & chips & pub lunches. Served 12pm - 3pm.</p>
                         </div>
-                        <a href="#download-lunch" onclick="downloadMenuPDF('Lunch Menu'); return false;" class="w-full glass-button-primary text-white text-xs font-bold py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 cursor-pointer uppercase tracking-wider transition">
-                            <i class="fas fa-file-pdf"></i> Download PDF
-                        </a>
+                <div class="space-y-2">
+                    <button type="button" onclick="openMenuModal('lunch')" class="w-full glass-button-primary text-white text-xs font-bold py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 cursor-pointer uppercase tracking-wider transition">
+                        <i class="fas fa-eye"></i> View Menu
+                    </button>
+                    <button type="button" onclick="downloadMenuPDF('Lunch Menu')" class="w-full glass-pill hover:bg-white/90 text-pub-deep text-xs font-bold py-2 px-3 rounded-xl flex items-center justify-center gap-1.5 cursor-pointer transition">
+                        <i class="fas fa-file-pdf text-pub-sage"></i> Download PDF
+                    </button>
+                </div>
                     </div>
 
                     <!-- Dinner Menu -->
@@ -501,9 +506,14 @@
                             <h3 class="font-serif font-bold text-base sm:text-lg text-pub-deep mb-1">Dinner Menu</h3>
                             <p class="text-xs text-gray-600 mb-4">Hearty coastal favourites, steak & ale pies, fresh catches & delicious desserts. Served 5pm - 9pm.</p>
                         </div>
-                        <a href="#download-dinner" onclick="downloadMenuPDF('Dinner Menu'); return false;" class="w-full glass-button-primary text-white text-xs font-bold py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 cursor-pointer uppercase tracking-wider transition">
-                            <i class="fas fa-file-pdf"></i> Download PDF
-                        </a>
+                <div class="space-y-2">
+                    <button type="button" onclick="openMenuModal('dinner')" class="w-full glass-button-primary text-white text-xs font-bold py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 cursor-pointer uppercase tracking-wider transition">
+                        <i class="fas fa-eye"></i> View Menu
+                    </button>
+                    <button type="button" onclick="downloadMenuPDF('Dinner Menu')" class="w-full glass-pill hover:bg-white/90 text-pub-deep text-xs font-bold py-2 px-3 rounded-xl flex items-center justify-center gap-1.5 cursor-pointer transition">
+                        <i class="fas fa-file-pdf text-pub-sage"></i> Download PDF
+                    </button>
+                </div>
                     </div>
 
                     <!-- Vegetarian & Vegan Menu -->
@@ -515,9 +525,14 @@
                             <h3 class="font-serif font-bold text-base sm:text-lg text-pub-deep mb-1">Vegetarian &amp; Vegan</h3>
                             <p class="text-xs text-gray-600 mb-4">Plant-based burgers, roasted vegetable tarts, garden salads & gluten-free options.</p>
                         </div>
-                        <a href="#download-veg" onclick="downloadMenuPDF('Vegetarian & Vegan Menu'); return false;" class="w-full glass-button-primary text-white text-xs font-bold py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 cursor-pointer uppercase tracking-wider transition">
-                            <i class="fas fa-file-pdf"></i> Download PDF
-                        </a>
+                <div class="space-y-2">
+                    <button type="button" onclick="openMenuModal('veg')" class="w-full glass-button-primary text-white text-xs font-bold py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 cursor-pointer uppercase tracking-wider transition">
+                        <i class="fas fa-eye"></i> View Menu
+                    </button>
+                    <button type="button" onclick="downloadMenuPDF('Vegetarian & Vegan Menu')" class="w-full glass-pill hover:bg-white/90 text-pub-deep text-xs font-bold py-2 px-3 rounded-xl flex items-center justify-center gap-1.5 cursor-pointer transition">
+                        <i class="fas fa-file-pdf text-pub-sage"></i> Download PDF
+                    </button>
+                </div>
                     </div>
 
                     <!-- Sunday Roast Menu -->
@@ -529,9 +544,14 @@
                             <h3 class="font-serif font-bold text-base sm:text-lg text-pub-deep mb-1">Sunday Roast</h3>
                             <p class="text-xs text-gray-600 mb-4">Norfolk roast meats, giant Yorkshire puddings, roast potatoes & rich gravy. Served all day Sunday.</p>
                         </div>
-                        <a href="#download-sunday" onclick="downloadMenuPDF('Sunday Roast Menu'); return false;" class="w-full glass-button-primary text-white text-xs font-bold py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 cursor-pointer uppercase tracking-wider transition">
-                            <i class="fas fa-file-pdf"></i> Download PDF
-                        </a>
+                <div class="space-y-2">
+                    <button type="button" onclick="openMenuModal('sunday')" class="w-full glass-button-primary text-white text-xs font-bold py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 cursor-pointer uppercase tracking-wider transition">
+                        <i class="fas fa-eye"></i> View Menu
+                    </button>
+                    <button type="button" onclick="downloadMenuPDF('Sunday Roast Menu')" class="w-full glass-pill hover:bg-white/90 text-pub-deep text-xs font-bold py-2 px-3 rounded-xl flex items-center justify-center gap-1.5 cursor-pointer transition">
+                        <i class="fas fa-file-pdf text-pub-sage"></i> Download PDF
+                    </button>
+                </div>
                     </div>
                 </div>
             </div>
@@ -632,12 +652,17 @@
 
         <!-- Rooms / Accommodation Section -->
         <section id="rooms" class="py-10 sm:py-16 px-3 sm:px-4 max-w-7xl mx-auto">
-            <div class="glass-card rounded-3xl p-5 sm:p-10 md:p-12 overflow-hidden relative border border-white/90">
+            <div class="glass-card rounded-3xl p-5 sm:p-10 md:p-12 overflow-hidden relative border border-white/90 mb-8">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 items-center">
                     <div>
-                        <span class="inline-block px-3.5 py-1 rounded-full glass-pill text-xs font-bold text-pub-sage uppercase tracking-wider mb-3">
-                            Sleep • B&amp;B Rooms
-                        </span>
+                        <div class="flex items-center gap-2 mb-3">
+                            <span class="inline-block px-3.5 py-1 rounded-full glass-pill text-xs font-bold text-pub-sage uppercase tracking-wider">
+                                Sleep • B&amp;B Rooms
+                            </span>
+                            <span class="inline-block px-3 py-1 rounded-full bg-amber-100 text-amber-900 text-xs font-bold uppercase tracking-wider">
+                                From £95 / Night
+                            </span>
+                        </div>
                         <h2 class="font-serif text-2xl sm:text-4xl font-bold text-pub-deep mb-3 sm:mb-4">
                             Stay on West Street, Cromer
                         </h2>
@@ -646,8 +671,9 @@
                         </p>
                         <ul class="space-y-2 mb-6 text-xs sm:text-sm text-gray-700">
                             <li class="flex items-center gap-2"><i class="fas fa-check text-pub-sage shrink-0"></i> Central West Street location just moments from Cromer Pier &amp; beach</li>
-                            <li class="flex items-center gap-2"><i class="fas fa-check text-pub-sage shrink-0"></i> Full cooked breakfast included with every stay</li>
+                            <li class="flex items-center gap-2"><i class="fas fa-check text-pub-sage shrink-0"></i> Full cooked Norfolk breakfast included with every stay</li>
                             <li class="flex items-center gap-2"><i class="fas fa-check text-pub-sage shrink-0"></i> En-suite bathrooms, free Wi-Fi &amp; tea/coffee making facilities</li>
+                            <li class="flex items-center gap-2"><i class="fas fa-check text-pub-sage shrink-0"></i> Dog-friendly room options available upon request</li>
                         </ul>
                         <button type="button" onclick="openBookingModal('room')" class="glass-button-primary text-white font-bold text-xs px-6 py-3.5 rounded-xl cursor-pointer uppercase tracking-wider inline-flex items-center gap-2 max-w-full justify-center">
                             <i class="fas fa-bed"></i> Enquire About Room Booking
@@ -664,8 +690,9 @@
                                      onerror="this.onerror=null; this.src='https://placehold.co/1000x800/1b3a2b/ffffff?text=Deluxe+En-suite+Double';"
                                      alt="Deluxe En-suite Double Bedroom at White Horse Inn" 
                                      class="w-full h-full object-cover">
-                                <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent flex items-end p-3.5 sm:p-4">
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent flex items-end justify-between p-3.5 sm:p-4">
                                     <span class="glass-pill px-3 py-1 rounded-full text-xs font-bold text-pub-deep bg-white/90">Deluxe En-suite Double</span>
+                                    <span class="px-2.5 py-1 rounded-md bg-pub-deep text-white text-[11px] font-bold">From £110/night</span>
                                 </div>
                             </div>
 
@@ -675,8 +702,9 @@
                                      onerror="this.onerror=null; this.src='https://placehold.co/1000x800/1b3a2b/ffffff?text=Spacious+King+Room';"
                                      alt="Spacious King B&B Room" 
                                      class="w-full h-full object-cover">
-                                <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent flex items-end p-3.5 sm:p-4">
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent flex items-end justify-between p-3.5 sm:p-4">
                                     <span class="glass-pill px-3 py-1 rounded-full text-xs font-bold text-pub-deep bg-white/90">Spacious King Room</span>
+                                    <span class="px-2.5 py-1 rounded-md bg-pub-deep text-white text-[11px] font-bold">From £125/night</span>
                                 </div>
                             </div>
 
@@ -686,8 +714,9 @@
                                      onerror="this.onerror=null; this.src='https://placehold.co/1000x800/1b3a2b/ffffff?text=Comfortable+Twin+Room';"
                                      alt="Comfortable Twin Guest Room" 
                                      class="w-full h-full object-cover">
-                                <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent flex items-end p-3.5 sm:p-4">
-                                    <span class="glass-pill px-3 py-1 rounded-full text-xs font-bold text-pub-deep bg-white/90">Comfortable Twin Room</span>
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent flex items-end justify-between p-3.5 sm:p-4">
+                                    <span class="glass-pill px-3 py-1 rounded-full text-xs font-bold text-pub-deep bg-white/90">Standard Twin Room</span>
+                                    <span class="px-2.5 py-1 rounded-md bg-pub-deep text-white text-[11px] font-bold">From £95/night</span>
                                 </div>
                             </div>
 
@@ -697,8 +726,9 @@
                                      onerror="this.onerror=null; this.src='https://placehold.co/1000x800/1b3a2b/ffffff?text=Modern+En-suite+Bathroom';"
                                      alt="Modern En-suite Bathroom" 
                                      class="w-full h-full object-cover">
-                                <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent flex items-end p-3.5 sm:p-4">
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent flex items-end justify-between p-3.5 sm:p-4">
                                     <span class="glass-pill px-3 py-1 rounded-full text-xs font-bold text-pub-deep bg-white/90">Modern En-suite Bathroom</span>
+                                    <span class="px-2.5 py-1 rounded-md bg-pub-deep text-white text-[11px] font-bold">Walk-in Shower</span>
                                 </div>
                             </div>
                         </div>
@@ -719,6 +749,48 @@
                             <button type="button" onclick="setRoomSlide(3)" aria-label="Slide 4" class="room-dot w-2.5 h-2.5 rounded-full bg-white/50 transition-all cursor-pointer hover:bg-white"></button>
                         </div>
                     </div>
+                </div>
+            </div>
+
+            <!-- Room Options Summary Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="glass-card rounded-2xl p-4 flex flex-col justify-between border border-white/90">
+                    <div>
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="font-serif font-bold text-pub-deep text-base sm:text-lg">Standard Twin Room</h3>
+                            <span class="text-pub-sage text-xs font-bold bg-pub-sage/10 px-2 py-1 rounded-md">From £95/night</span>
+                        </div>
+                        <p class="text-xs text-gray-600 mb-3">Two comfortable single beds, en-suite bathroom, breakfast included.</p>
+                    </div>
+                    <button type="button" onclick="openBookingModal('room')" class="w-full glass-pill hover:bg-white text-pub-deep text-xs font-bold py-2 rounded-xl transition flex items-center justify-center gap-1">
+                        <i class="fas fa-calendar-alt text-pub-sage"></i> Book Twin Room
+                    </button>
+                </div>
+
+                <div class="glass-card rounded-2xl p-4 flex flex-col justify-between border border-white/90">
+                    <div>
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="font-serif font-bold text-pub-deep text-base sm:text-lg">Deluxe Double Room</h3>
+                            <span class="text-pub-sage text-xs font-bold bg-pub-sage/10 px-2 py-1 rounded-md">From £110/night</span>
+                        </div>
+                        <p class="text-xs text-gray-600 mb-3">Plush double bed, modern shower room, town view, breakfast included.</p>
+                    </div>
+                    <button type="button" onclick="openBookingModal('room')" class="w-full glass-pill hover:bg-white text-pub-deep text-xs font-bold py-2 rounded-xl transition flex items-center justify-center gap-1">
+                        <i class="fas fa-calendar-alt text-pub-sage"></i> Book Double Room
+                    </button>
+                </div>
+
+                <div class="glass-card rounded-2xl p-4 flex flex-col justify-between border border-white/90">
+                    <div>
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="font-serif font-bold text-pub-deep text-base sm:text-lg">Spacious King Suite</h3>
+                            <span class="text-pub-sage text-xs font-bold bg-pub-sage/10 px-2 py-1 rounded-md">From £125/night</span>
+                        </div>
+                        <p class="text-xs text-gray-600 mb-3">King size bed, seating area, premium en-suite, full breakfast included.</p>
+                    </div>
+                    <button type="button" onclick="openBookingModal('room')" class="w-full glass-pill hover:bg-white text-pub-deep text-xs font-bold py-2 rounded-xl transition flex items-center justify-center gap-1">
+                        <i class="fas fa-calendar-alt text-pub-sage"></i> Book King Suite
+                    </button>
                 </div>
             </div>
         </section>
@@ -833,6 +905,17 @@
         </section>
     </main>
 
+    <!-- Floating Action Buttons: Quick Booking & Back to Top -->
+    <div class="fixed bottom-6 right-6 z-40 flex flex-col gap-3">
+        <button type="button" id="back-to-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="hidden w-11 h-11 rounded-full glass-modal-tile text-pub-deep shadow-xl flex items-center justify-center hover:scale-110 transition cursor-pointer" aria-label="Back to top">
+            <i class="fas fa-arrow-up text-sm"></i>
+        </button>
+        <button type="button" onclick="openBookingModal('table')" class="glass-button-primary text-white p-3.5 rounded-full shadow-2xl flex items-center justify-center hover:scale-105 transition cursor-pointer group" title="Book a Table">
+            <i class="fas fa-utensils text-base"></i>
+            <span class="max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-300 ease-in-out whitespace-nowrap text-xs font-bold pl-0 group-hover:pl-2">Book Table</span>
+        </button>
+    </div>
+
     <!-- Footer -->
     <footer class="bg-pub-dark text-white py-10 sm:py-12 px-4 border-t border-emerald-900/30">
         <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
@@ -847,6 +930,40 @@
             </div>
         </div>
     </footer>
+
+    <!-- INTERACTIVE MENU VIEWER MODAL -->
+    <div id="menu-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-2.5 sm:p-4 bg-pub-dark/60 backdrop-blur-md transition-opacity duration-300">
+        <div class="glass-modal-tile rounded-3xl w-full max-w-3xl max-h-[90vh] flex flex-col overflow-hidden relative shadow-2xl">
+            <!-- Modal Header -->
+            <div class="px-4 sm:px-6 py-4 border-b border-emerald-900/10 flex items-center justify-between bg-white/40">
+                <div class="flex items-center gap-2">
+                    <i class="fas fa-utensils text-pub-sage text-lg"></i>
+                    <h3 id="menu-modal-title" class="font-serif font-bold text-pub-deep text-lg sm:text-xl">Menu Details</h3>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button type="button" id="menu-print-btn" onclick="window.print()" class="glass-pill px-3 py-1.5 rounded-xl text-xs font-bold text-pub-deep hover:bg-white flex items-center gap-1.5 transition">
+                        <i class="fas fa-print text-pub-sage"></i> Print Menu
+                    </button>
+                    <button type="button" onclick="closeMenuModal()" class="w-8 h-8 rounded-full glass-pill flex items-center justify-center text-gray-500 hover:text-pub-deep transition cursor-pointer" aria-label="Close menu modal">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Modal Content Body -->
+            <div id="menu-modal-content" class="p-4 sm:p-6 overflow-y-auto flex-1 space-y-6">
+                <!-- Dynamically populated via JS -->
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="px-4 sm:px-6 py-3.5 border-t border-emerald-900/10 bg-white/30 flex items-center justify-between">
+                <span class="text-xs text-gray-600 italic">* Produce sourced locally in Norfolk. Dietary requirements catered for.</span>
+                <button type="button" onclick="closeMenuModal(); openBookingModal('table');" class="glass-button-primary text-white text-xs font-bold px-4 py-2 rounded-xl">
+                    Book Table Now
+                </button>
+            </div>
+        </div>
+    </div>
 
     <!-- GLASSMORPHIC POPUP MODAL (TABLE & ROOM RESERVATIONS) -->
     <div id="booking-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-2.5 sm:p-4 bg-pub-dark/60 backdrop-blur-md transition-opacity duration-300">
@@ -952,6 +1069,139 @@
 
     <!-- JavaScript Application Handler -->
     <script>
+        // Menu Data Store
+        const menuData = {
+            lunch: {
+                title: "Lunch Menu (Served 12pm - 3pm)",
+                sections: [
+                    {
+                        category: "Light Bites & Starters",
+                        items: [
+                            { name: "Cromer Crab Soup", desc: "Served with warm crusty bread & salted butter", price: "£7.95", tags: ["GF Option"] },
+                            { name: "Crispy Squid Rings", desc: "With garlic aioli and fresh lemon wedge", price: "£8.50" },
+                            { name: "Garlic & Herb Wild Mushrooms", desc: "Sautéed wild mushrooms on toasted sourdough", price: "£7.25", tags: ["V", "VG Option"] }
+                        ]
+                    },
+                    {
+                        category: "Sandwiches & Light Mains",
+                        items: [
+                            { name: "Fresh Cromer Crab Dressed Sandwich", desc: "Local Cromer crab with lemon mayonnaise on brown bloomer", price: "£11.95", tags: ["Local Catch"] },
+                            { name: "Norfolk Ham & Mustard Sandwich", desc: "Honey roasted Norfolk ham with coarse grain mustard", price: "£8.95" },
+                            { name: "Beer Battered Fish & Chips (Lunch Portion)", desc: "Fresh North Sea cod in real ale batter, chips, minty peas", price: "£13.50" },
+                            { name: "Coastal Ploughman's Lunch", desc: "Local Norfolk cheeses, ham, pickles, chutney & crusty bread", price: "£12.50" }
+                        ]
+                    }
+                ]
+            },
+            dinner: {
+                title: "Dinner Menu (Served 5pm - 9pm)",
+                sections: [
+                    {
+                        category: "Starters",
+                        items: [
+                            { name: "Potted Cromer Shrimps", desc: "Spiced butter, toasted brioche and pickled cucumber", price: "£8.95" },
+                            { name: "Pan-Seared Scallops", desc: "Norfolk black pudding crumb and pea purée", price: "£10.50" },
+                            { name: "Soup of the Day", desc: "Artisan bread and sea salt butter", price: "£6.95", tags: ["V", "GF Option"] }
+                        ]
+                    },
+                    {
+                        category: "Main Courses",
+                        items: [
+                            { name: "Traditional Beer Battered North Sea Cod", desc: "Triple cooked chips, tartar sauce, mushy peas & lemon", price: "£16.95", tags: ["Popular"] },
+                            { name: "Slow-Cooked Beef & Norfolk Ale Pie", desc: "Butter mash, seasonal greens and rich red wine gravy", price: "£15.95" },
+                            { name: "8oz Norfolk Sirloin Steak", desc: "Roasted vine tomatoes, flat mushroom, hand-cut chips", price: "£23.50", tags: ["GF"] },
+                            { name: "Catch of the Day (Local Fisherman's Landing)", desc: "Pan-roasted sea bass with crushed new potatoes and samphire", price: "£18.95", tags: ["Local Catch"] }
+                        ]
+                    },
+                    {
+                        category: "Desserts",
+                        items: [
+                            { name: "Sticky Toffee Pudding", desc: "Butterscotch sauce and Norfolk vanilla ice cream", price: "£6.95", tags: ["V"] },
+                            { name: "Norfolk Berry Crumble", desc: "Served warm with custard or ice cream", price: "£6.50", tags: ["V"] }
+                        ]
+                    }
+                ]
+            },
+            veg: {
+                title: "Vegetarian & Vegan Menu",
+                sections: [
+                    {
+                        category: "Plant-Based Mains & Starters",
+                        items: [
+                            { name: "Roasted Beetroot & Goat's Cheese Salad", desc: "Candied walnuts, mixed leaves & balsamic glaze", price: "£7.50 / £13.50", tags: ["V", "GF"] },
+                            { name: "Moving Mountains Vegan Gourmet Burger", desc: "Vegan cheese, red onion chutney, brioche bun & skinny fries", price: "£14.95", tags: ["VG"] },
+                            { name: "Butternut Squash & Sage Risotto", desc: "Crispy sage leaves and toasted pine nuts", price: "£13.95", tags: ["VG", "GF"] },
+                            { name: "Mediterranean Vegetable & Lentil Pie", desc: "Served with roasted root veg & rich vegan gravy", price: "£14.50", tags: ["VG"] }
+                        ]
+                    }
+                ]
+            },
+            sunday: {
+                title: "Sunday Roast Menu (Served All Day Sunday)",
+                sections: [
+                    {
+                        category: "Traditional Norfolk Sunday Roasts",
+                        items: [
+                            { name: "Roast Topside of Norfolk Beef", desc: "Served with giant Yorkshire pudding, roast potatoes, seasonal veg & rich gravy", price: "£16.95", tags: ["Sunday Special"] },
+                            { name: "Roast Leg of Norfolk Lamb", desc: "Mint sauce, giant Yorkshire pudding, roast potatoes & seasonal veg", price: "£17.50" },
+                            { name: "Roast Loin of Pork with Crackling", desc: "Apple sauce, stuffing, giant Yorkshire pudding & roast potatoes", price: "£15.95" },
+                            { name: "Homemade Nut Roast", desc: "Vegetarian gravy, Yorkshire pudding & roast potatoes", price: "£14.50", tags: ["V", "VG Option"] }
+                        ]
+                    }
+                ]
+            }
+        };
+
+        // Open Menu Modal
+        function openMenuModal(menuKey) {
+            const modal = document.getElementById('menu-modal');
+            const titleEl = document.getElementById('menu-modal-title');
+            const contentEl = document.getElementById('menu-modal-content');
+
+            const data = menuData[menuKey];
+            if (!data || !modal || !titleEl || !contentEl) return;
+
+            titleEl.textContent = data.title;
+            contentEl.innerHTML = '';
+
+            data.sections.forEach(sec => {
+                const secDiv = document.createElement('div');
+                secDiv.className = 'border-b border-emerald-900/10 pb-4 last:border-b-0';
+
+                let itemsHtml = sec.items.map(item => `
+                    <div class="flex flex-col sm:flex-row sm:items-baseline justify-between py-2 border-b border-gray-100 last:border-b-0">
+                        <div class="pr-4">
+                            <div class="flex items-center gap-2">
+                                <span class="font-bold text-pub-deep text-sm">${item.name}</span>
+                                ${item.tags ? item.tags.map(t => `<span class="px-1.5 py-0.5 rounded text-[9px] font-bold bg-pub-sage/10 text-pub-sage">${t}</span>`).join('') : ''}
+                            </div>
+                            <p class="text-xs text-gray-600">${item.desc}</p>
+                        </div>
+                        <span class="font-bold text-pub-sage text-sm whitespace-nowrap mt-1 sm:mt-0">${item.price}</span>
+                    </div>
+                `).join('');
+
+                secDiv.innerHTML = `
+                    <h4 class="font-serif font-bold text-pub-deep text-base mb-2 text-pub-sage border-b border-pub-sage/20 pb-1">${sec.category}</h4>
+                    <div class="space-y-1">${itemsHtml}</div>
+                `;
+                contentEl.appendChild(secDiv);
+            });
+
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Close Menu Modal
+        function closeMenuModal() {
+            const modal = document.getElementById('menu-modal');
+            if (!modal) return;
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            document.body.style.overflow = '';
+        }
+
         // Toggle mobile menu drawer
         function toggleMobileMenu() {
             const mobileMenu = document.getElementById('mobile-menu');
@@ -1114,20 +1364,39 @@
                 mobileBtn.addEventListener('click', toggleMobileMenu);
             }
 
-            // Close modal when clicking dark backdrop
-            const modal = document.getElementById('booking-modal');
-            if (modal) {
-                modal.addEventListener('click', (e) => {
-                    if (e.target === modal) {
+            // Close modals when clicking dark backdrop
+            const bookingModal = document.getElementById('booking-modal');
+            if (bookingModal) {
+                bookingModal.addEventListener('click', (e) => {
+                    if (e.target === bookingModal) {
                         closeBookingModal();
                     }
                 });
             }
+            const menuModal = document.getElementById('menu-modal');
+            if (menuModal) {
+                menuModal.addEventListener('click', (e) => {
+                    if (e.target === menuModal) {
+                        closeMenuModal();
+                    }
+                });
+            }
+
+            // Scroll Handler for Back to Top Button
+            const backToTopBtn = document.getElementById('back-to-top');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 300) {
+                    backToTopBtn?.classList.remove('hidden');
+                } else {
+                    backToTopBtn?.classList.add('hidden');
+                }
+            });
 
             // Close modal on Escape key
             window.addEventListener('keydown', (e) => {
                 if (e.key === 'Escape') {
                     closeBookingModal();
+                    closeMenuModal();
                 }
             });
 
