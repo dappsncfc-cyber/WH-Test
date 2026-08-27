@@ -183,28 +183,38 @@
     <style>
         /* Print Styles for Menu Printing */
         @media print {
-            body * {
-                visibility: hidden;
-            }
-            #menu-modal, #menu-modal * {
-                visibility: visible;
+            body > *:not(#menu-modal) {
+                display: none !important;
             }
             #menu-modal {
-                position: absolute;
-                left: 0;
-                top: 0;
-                width: 100%;
-                height: auto;
+                display: block !important;
+                position: static !important;
+                width: 100% !important;
+                height: auto !important;
+                max-height: none !important;
                 background: white !important;
                 backdrop-filter: none !important;
                 padding: 0 !important;
+                box-shadow: none !important;
+                overflow: visible !important;
             }
-            .glass-modal-tile {
+            #menu-modal .glass-modal-tile {
                 box-shadow: none !important;
                 border: none !important;
                 background: white !important;
+                max-height: none !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                overflow: visible !important;
             }
-            #menu-print-btn, button[onclick="closeMenuModal()"], button[onclick="closeMenuModal(); openBookingModal('table');"] {
+            #menu-modal-content {
+                max-height: none !important;
+                overflow: visible !important;
+                padding: 0 !important;
+            }
+            #menu-print-btn,
+            button[onclick*="closeMenuModal"],
+            button[onclick*="openBookingModal"] {
                 display: none !important;
             }
         }
