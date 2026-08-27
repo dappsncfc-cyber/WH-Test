@@ -291,6 +291,9 @@
                     <a href="#rooms" class="text-sm font-semibold text-gray-700 hover:text-pub-deep transition">Rooms</a>
                     <a href="#faq" class="text-sm font-semibold text-gray-700 hover:text-pub-deep transition">FAQ</a>
                     <a href="#contact" class="text-sm font-semibold text-gray-700 hover:text-pub-deep transition">Find Us</a>
+                    <a href="admin.html" class="text-xs font-semibold text-pub-sage hover:text-pub-deep transition inline-flex items-center gap-1.5 glass-pill px-3 py-1.5 rounded-xl" title="Admin Portal">
+                        <i class="fas fa-lock text-xs"></i> Admin
+                    </a>
                     
                     <!-- Table Booking Modal Trigger -->
                     <button type="button" onclick="openBookingModal('table')" class="glass-button-primary text-white text-xs font-bold px-5 py-2.5 rounded-xl inline-flex items-center gap-2 cursor-pointer uppercase tracking-wider">
@@ -316,6 +319,9 @@
                 <a href="#rooms" onclick="toggleMobileMenu()" class="block px-4 py-2.5 rounded-lg text-base font-semibold text-pub-deep hover:bg-white/60">Sleep / Rooms</a>
                 <a href="#faq" onclick="toggleMobileMenu()" class="block px-4 py-2.5 rounded-lg text-base font-semibold text-pub-deep hover:bg-white/60">FAQ</a>
                 <a href="#contact" onclick="toggleMobileMenu()" class="block px-4 py-2.5 rounded-lg text-base font-semibold text-pub-deep hover:bg-white/60">Find Us</a>
+                <a href="admin.html" class="block px-4 py-2.5 rounded-lg text-base font-semibold text-pub-sage hover:bg-white/60 flex items-center gap-2">
+                    <i class="fas fa-lock text-xs"></i> Staff Admin Portal
+                </a>
                 <button type="button" onclick="toggleMobileMenu(); openBookingModal('table');" class="w-full mt-2 glass-button-primary text-white font-semibold py-3 rounded-xl flex items-center justify-center gap-2 cursor-pointer">
                     <i class="fas fa-calendar-check text-sm"></i> Make a Table Reservation
                 </button>
@@ -925,11 +931,12 @@
                 <p class="text-xs text-gray-400 mt-2">24 West Street, Cromer, Norfolk, NR27 9DS</p>
             </div>
             <div class="text-xs text-gray-400 space-y-1">
-                <p>&copy; 2026 The White Horse Inn, Cromer. All rights reserved.</p>
+                <p>&copy; 2026 The White Horse Inn, Cromer. All rights reserved. | <a href="admin.html" class="text-pub-sage hover:underline"><i class="fas fa-user-shield"></i> Staff Admin Portal</a></p>
                 <p class="text-[11px] text-gray-400">Heading out on the coast? Order bespoke beach hampers at <a href="https://www.cromerpicnics.co.uk" target="_blank" rel="noopener noreferrer" class="text-pub-sage hover:underline font-semibold">www.cromerpicnics.co.uk</a></p>
             </div>
         </div>
     </footer>
+
 
     <!-- INTERACTIVE MENU VIEWER MODAL -->
     <div id="menu-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-2.5 sm:p-4 bg-pub-dark/60 backdrop-blur-md transition-opacity duration-300">
@@ -1069,26 +1076,26 @@
 
     <!-- JavaScript Application Handler -->
     <script>
-        // Menu Data Store
-        const menuData = {
+        // Default Factory Menu Data
+        const defaultMenuData = {
             lunch: {
                 title: "Lunch Menu (Served 12pm - 3pm)",
                 sections: [
                     {
                         category: "Light Bites & Starters",
                         items: [
-                            { name: "Cromer Crab Soup", desc: "Served with warm crusty bread & salted butter", price: "£7.95", tags: ["GF Option"] },
-                            { name: "Crispy Squid Rings", desc: "With garlic aioli and fresh lemon wedge", price: "£8.50" },
+                            { name: "Cromer Crab Soup", desc: "Served with warm crusty bread & salted butter", price: "£7.95", tags: ["GF Option", "Crustaceans"] },
+                            { name: "Crispy Squid Rings", desc: "With garlic aioli and fresh lemon wedge", price: "£8.50", tags: [] },
                             { name: "Garlic & Herb Wild Mushrooms", desc: "Sautéed wild mushrooms on toasted sourdough", price: "£7.25", tags: ["V", "VG Option"] }
                         ]
                     },
                     {
                         category: "Sandwiches & Light Mains",
                         items: [
-                            { name: "Fresh Cromer Crab Dressed Sandwich", desc: "Local Cromer crab with lemon mayonnaise on brown bloomer", price: "£11.95", tags: ["Local Catch"] },
-                            { name: "Norfolk Ham & Mustard Sandwich", desc: "Honey roasted Norfolk ham with coarse grain mustard", price: "£8.95" },
-                            { name: "Beer Battered Fish & Chips (Lunch Portion)", desc: "Fresh North Sea cod in real ale batter, chips, minty peas", price: "£13.50" },
-                            { name: "Coastal Ploughman's Lunch", desc: "Local Norfolk cheeses, ham, pickles, chutney & crusty bread", price: "£12.50" }
+                            { name: "Fresh Cromer Crab Dressed Sandwich", desc: "Local Cromer crab with lemon mayonnaise on brown bloomer", price: "£11.95", tags: ["Local Catch", "Crustaceans"] },
+                            { name: "Norfolk Ham & Mustard Sandwich", desc: "Honey roasted Norfolk ham with coarse grain mustard", price: "£8.95", tags: ["Mustard"] },
+                            { name: "Beer Battered Fish & Chips (Lunch Portion)", desc: "Fresh North Sea cod in real ale batter, chips, minty peas", price: "£13.50", tags: ["Popular"] },
+                            { name: "Coastal Ploughman's Lunch", desc: "Local Norfolk cheeses, ham, pickles, chutney & crusty bread", price: "£12.50", tags: ["V Option"] }
                         ]
                     }
                 ]
@@ -1099,8 +1106,8 @@
                     {
                         category: "Starters",
                         items: [
-                            { name: "Potted Cromer Shrimps", desc: "Spiced butter, toasted brioche and pickled cucumber", price: "£8.95" },
-                            { name: "Pan-Seared Scallops", desc: "Norfolk black pudding crumb and pea purée", price: "£10.50" },
+                            { name: "Potted Cromer Shrimps", desc: "Spiced butter, toasted brioche and pickled cucumber", price: "£8.95", tags: ["Crustaceans"] },
+                            { name: "Pan-Seared Scallops", desc: "Norfolk black pudding crumb and pea purée", price: "£10.50", tags: ["Crustaceans"] },
                             { name: "Soup of the Day", desc: "Artisan bread and sea salt butter", price: "£6.95", tags: ["V", "GF Option"] }
                         ]
                     },
@@ -1108,9 +1115,9 @@
                         category: "Main Courses",
                         items: [
                             { name: "Traditional Beer Battered North Sea Cod", desc: "Triple cooked chips, tartar sauce, mushy peas & lemon", price: "£16.95", tags: ["Popular"] },
-                            { name: "Slow-Cooked Beef & Norfolk Ale Pie", desc: "Butter mash, seasonal greens and rich red wine gravy", price: "£15.95" },
+                            { name: "Slow-Cooked Beef & Norfolk Ale Pie", desc: "Butter mash, seasonal greens and rich red wine gravy", price: "£15.95", tags: [] },
                             { name: "8oz Norfolk Sirloin Steak", desc: "Roasted vine tomatoes, flat mushroom, hand-cut chips", price: "£23.50", tags: ["GF"] },
-                            { name: "Catch of the Day (Local Fisherman's Landing)", desc: "Pan-roasted sea bass with crushed new potatoes and samphire", price: "£18.95", tags: ["Local Catch"] }
+                            { name: "Catch of the Day (Local Fisherman's Landing)", desc: "Pan-roasted sea bass with crushed new potatoes and samphire", price: "£18.95", tags: ["Local Catch", "GF"] }
                         ]
                     },
                     {
@@ -1128,9 +1135,9 @@
                     {
                         category: "Plant-Based Mains & Starters",
                         items: [
-                            { name: "Roasted Beetroot & Goat's Cheese Salad", desc: "Candied walnuts, mixed leaves & balsamic glaze", price: "£7.50 / £13.50", tags: ["V", "GF"] },
+                            { name: "Roasted Beetroot & Goat's Cheese Salad", desc: "Candied walnuts, mixed leaves & balsamic glaze", price: "£7.50 / £13.50", tags: ["V", "GF", "Nuts"] },
                             { name: "Moving Mountains Vegan Gourmet Burger", desc: "Vegan cheese, red onion chutney, brioche bun & skinny fries", price: "£14.95", tags: ["VG"] },
-                            { name: "Butternut Squash & Sage Risotto", desc: "Crispy sage leaves and toasted pine nuts", price: "£13.95", tags: ["VG", "GF"] },
+                            { name: "Butternut Squash & Sage Risotto", desc: "Crispy sage leaves and toasted pine nuts", price: "£13.95", tags: ["VG", "GF", "Nuts"] },
                             { name: "Mediterranean Vegetable & Lentil Pie", desc: "Served with roasted root veg & rich vegan gravy", price: "£14.50", tags: ["VG"] }
                         ]
                     }
@@ -1143,14 +1150,30 @@
                         category: "Traditional Norfolk Sunday Roasts",
                         items: [
                             { name: "Roast Topside of Norfolk Beef", desc: "Served with giant Yorkshire pudding, roast potatoes, seasonal veg & rich gravy", price: "£16.95", tags: ["Sunday Special"] },
-                            { name: "Roast Leg of Norfolk Lamb", desc: "Mint sauce, giant Yorkshire pudding, roast potatoes & seasonal veg", price: "£17.50" },
-                            { name: "Roast Loin of Pork with Crackling", desc: "Apple sauce, stuffing, giant Yorkshire pudding & roast potatoes", price: "£15.95" },
-                            { name: "Homemade Nut Roast", desc: "Vegetarian gravy, Yorkshire pudding & roast potatoes", price: "£14.50", tags: ["V", "VG Option"] }
+                            { name: "Roast Leg of Norfolk Lamb", desc: "Mint sauce, giant Yorkshire pudding, roast potatoes & seasonal veg", price: "£17.50", tags: [] },
+                            { name: "Roast Loin of Pork with Crackling", desc: "Apple sauce, stuffing, giant Yorkshire pudding & roast potatoes", price: "£15.95", tags: [] },
+                            { name: "Homemade Nut Roast", desc: "Vegetarian gravy, Yorkshire pudding & roast potatoes", price: "£14.50", tags: ["V", "VG Option", "Nuts"] }
                         ]
                     }
                 ]
             }
         };
+
+        // Active Menu Data Store loaded from LocalStorage
+        let menuData = loadMenuData();
+
+        function loadMenuData() {
+            try {
+                const stored = localStorage.getItem('white_horse_menu_data');
+                if (stored) {
+                    return JSON.parse(stored);
+                }
+            } catch (e) {
+                console.error('Error loading menu data from localStorage:', e);
+            }
+            return JSON.parse(JSON.stringify(defaultMenuData));
+        }
+
 
         // Open Menu Modal
         function openMenuModal(menuKey) {
@@ -1419,6 +1442,7 @@
                     }, 1000);
                 });
             }
+
         });
     </script>
 </body>
