@@ -477,7 +477,29 @@
     <!-- View & Download Menus Grid -->
             <div class="mb-10 sm:mb-12">
         <h3 class="font-serif text-xl sm:text-2xl font-bold text-pub-deep text-center mb-5 sm:mb-6">Explore &amp; Download Our Menus</h3>
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3.5 sm:gap-4">
+                    <!-- Today's Specials Card -->
+                    <div class="glass-card glass-card-hover rounded-2xl p-4 sm:p-5 flex flex-col justify-between border border-emerald-500/30 bg-emerald-50/40 relative overflow-hidden">
+                        <div class="absolute top-2 right-2 bg-amber-400 text-pub-dark text-[10px] font-extrabold px-2 py-0.5 rounded-full uppercase tracking-wider shadow-sm">
+                            Fresh Today
+                        </div>
+                        <div>
+                            <div class="w-10 h-10 rounded-xl bg-pub-sage text-white flex items-center justify-center text-lg mb-3 shadow-sm">
+                                <i class="fas fa-star text-amber-300"></i>
+                            </div>
+                            <h3 class="font-serif font-bold text-base sm:text-lg text-pub-deep mb-1">Today's Specials</h3>
+                            <p class="text-xs text-gray-600 mb-4">Chef's daily coastal creations, seasonal catches & specialty dishes prepared fresh daily.</p>
+                        </div>
+                        <div class="space-y-2">
+                            <button type="button" onclick="openMenuModal('specials')" class="w-full glass-button-primary text-white text-xs font-bold py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 cursor-pointer uppercase tracking-wider transition">
+                                <i class="fas fa-eye"></i> View Specials
+                            </button>
+                            <button type="button" onclick="downloadMenuPDF('Todays Specials Board')" class="w-full glass-pill hover:bg-white/90 text-pub-deep text-xs font-bold py-2 px-3 rounded-xl flex items-center justify-center gap-1.5 cursor-pointer transition">
+                                <i class="fas fa-file-pdf text-pub-sage"></i> Download PDF
+                            </button>
+                        </div>
+                    </div>
+
                     <!-- Lunch Menu -->
                     <div class="glass-card glass-card-hover rounded-2xl p-4 sm:p-5 flex flex-col justify-between border border-white/90">
                         <div>
@@ -487,14 +509,14 @@
                             <h3 class="font-serif font-bold text-base sm:text-lg text-pub-deep mb-1">Lunch Menu</h3>
                             <p class="text-xs text-gray-600 mb-4">Light bites, local Cromer crab sandwiches, fish & chips & pub lunches. Served 12pm - 3pm.</p>
                         </div>
-                <div class="space-y-2">
-                    <button type="button" onclick="openMenuModal('lunch')" class="w-full glass-button-primary text-white text-xs font-bold py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 cursor-pointer uppercase tracking-wider transition">
-                        <i class="fas fa-eye"></i> View Menu
-                    </button>
-                    <button type="button" onclick="downloadMenuPDF('Lunch Menu')" class="w-full glass-pill hover:bg-white/90 text-pub-deep text-xs font-bold py-2 px-3 rounded-xl flex items-center justify-center gap-1.5 cursor-pointer transition">
-                        <i class="fas fa-file-pdf text-pub-sage"></i> Download PDF
-                    </button>
-                </div>
+                        <div class="space-y-2">
+                            <button type="button" onclick="openMenuModal('lunch')" class="w-full glass-button-primary text-white text-xs font-bold py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 cursor-pointer uppercase tracking-wider transition">
+                                <i class="fas fa-eye"></i> View Menu
+                            </button>
+                            <button type="button" onclick="downloadMenuPDF('Lunch Menu')" class="w-full glass-pill hover:bg-white/90 text-pub-deep text-xs font-bold py-2 px-3 rounded-xl flex items-center justify-center gap-1.5 cursor-pointer transition">
+                                <i class="fas fa-file-pdf text-pub-sage"></i> Download PDF
+                            </button>
+                        </div>
                     </div>
 
                     <!-- Dinner Menu -->
@@ -506,14 +528,14 @@
                             <h3 class="font-serif font-bold text-base sm:text-lg text-pub-deep mb-1">Dinner Menu</h3>
                             <p class="text-xs text-gray-600 mb-4">Hearty coastal favourites, steak & ale pies, fresh catches & delicious desserts. Served 5pm - 9pm.</p>
                         </div>
-                <div class="space-y-2">
-                    <button type="button" onclick="openMenuModal('dinner')" class="w-full glass-button-primary text-white text-xs font-bold py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 cursor-pointer uppercase tracking-wider transition">
-                        <i class="fas fa-eye"></i> View Menu
-                    </button>
-                    <button type="button" onclick="downloadMenuPDF('Dinner Menu')" class="w-full glass-pill hover:bg-white/90 text-pub-deep text-xs font-bold py-2 px-3 rounded-xl flex items-center justify-center gap-1.5 cursor-pointer transition">
-                        <i class="fas fa-file-pdf text-pub-sage"></i> Download PDF
-                    </button>
-                </div>
+                        <div class="space-y-2">
+                            <button type="button" onclick="openMenuModal('dinner')" class="w-full glass-button-primary text-white text-xs font-bold py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 cursor-pointer uppercase tracking-wider transition">
+                                <i class="fas fa-eye"></i> View Menu
+                            </button>
+                            <button type="button" onclick="downloadMenuPDF('Dinner Menu')" class="w-full glass-pill hover:bg-white/90 text-pub-deep text-xs font-bold py-2 px-3 rounded-xl flex items-center justify-center gap-1.5 cursor-pointer transition">
+                                <i class="fas fa-file-pdf text-pub-sage"></i> Download PDF
+                            </button>
+                        </div>
                     </div>
 
                     <!-- Vegetarian & Vegan Menu -->
@@ -525,14 +547,14 @@
                             <h3 class="font-serif font-bold text-base sm:text-lg text-pub-deep mb-1">Vegetarian &amp; Vegan</h3>
                             <p class="text-xs text-gray-600 mb-4">Plant-based burgers, roasted vegetable tarts, garden salads & gluten-free options.</p>
                         </div>
-                <div class="space-y-2">
-                    <button type="button" onclick="openMenuModal('veg')" class="w-full glass-button-primary text-white text-xs font-bold py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 cursor-pointer uppercase tracking-wider transition">
-                        <i class="fas fa-eye"></i> View Menu
-                    </button>
-                    <button type="button" onclick="downloadMenuPDF('Vegetarian & Vegan Menu')" class="w-full glass-pill hover:bg-white/90 text-pub-deep text-xs font-bold py-2 px-3 rounded-xl flex items-center justify-center gap-1.5 cursor-pointer transition">
-                        <i class="fas fa-file-pdf text-pub-sage"></i> Download PDF
-                    </button>
-                </div>
+                        <div class="space-y-2">
+                            <button type="button" onclick="openMenuModal('veg')" class="w-full glass-button-primary text-white text-xs font-bold py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 cursor-pointer uppercase tracking-wider transition">
+                                <i class="fas fa-eye"></i> View Menu
+                            </button>
+                            <button type="button" onclick="downloadMenuPDF('Vegetarian & Vegan Menu')" class="w-full glass-pill hover:bg-white/90 text-pub-deep text-xs font-bold py-2 px-3 rounded-xl flex items-center justify-center gap-1.5 cursor-pointer transition">
+                                <i class="fas fa-file-pdf text-pub-sage"></i> Download PDF
+                            </button>
+                        </div>
                     </div>
 
                     <!-- Sunday Roast Menu -->
@@ -544,14 +566,14 @@
                             <h3 class="font-serif font-bold text-base sm:text-lg text-pub-deep mb-1">Sunday Roast</h3>
                             <p class="text-xs text-gray-600 mb-4">Norfolk roast meats, giant Yorkshire puddings, roast potatoes & rich gravy. Served all day Sunday.</p>
                         </div>
-                <div class="space-y-2">
-                    <button type="button" onclick="openMenuModal('sunday')" class="w-full glass-button-primary text-white text-xs font-bold py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 cursor-pointer uppercase tracking-wider transition">
-                        <i class="fas fa-eye"></i> View Menu
-                    </button>
-                    <button type="button" onclick="downloadMenuPDF('Sunday Roast Menu')" class="w-full glass-pill hover:bg-white/90 text-pub-deep text-xs font-bold py-2 px-3 rounded-xl flex items-center justify-center gap-1.5 cursor-pointer transition">
-                        <i class="fas fa-file-pdf text-pub-sage"></i> Download PDF
-                    </button>
-                </div>
+                        <div class="space-y-2">
+                            <button type="button" onclick="openMenuModal('sunday')" class="w-full glass-button-primary text-white text-xs font-bold py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 cursor-pointer uppercase tracking-wider transition">
+                                <i class="fas fa-eye"></i> View Menu
+                            </button>
+                            <button type="button" onclick="downloadMenuPDF('Sunday Roast Menu')" class="w-full glass-pill hover:bg-white/90 text-pub-deep text-xs font-bold py-2 px-3 rounded-xl flex items-center justify-center gap-1.5 cursor-pointer transition">
+                                <i class="fas fa-file-pdf text-pub-sage"></i> Download PDF
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1147,6 +1169,19 @@
                             { name: "Roast Leg of Norfolk Lamb", desc: "Mint sauce, giant Yorkshire pudding, roast potatoes & seasonal veg", price: "£17.50", tags: [] },
                             { name: "Roast Loin of Pork with Crackling", desc: "Apple sauce, stuffing, giant Yorkshire pudding & roast potatoes", price: "£15.95", tags: [] },
                             { name: "Homemade Nut Roast", desc: "Vegetarian gravy, Yorkshire pudding & roast potatoes", price: "£14.50", tags: ["V", "VG Option", "Nuts"] }
+                        ]
+                    }
+                ]
+            },
+            specials: {
+                title: "Today's Specials Board",
+                sections: [
+                    {
+                        category: "Chef's Daily Specials",
+                        items: [
+                            { name: "Fresh Cromer Crab Thermidor", desc: "Local dressed crab baked with rich mustard cream, Gruyère sauce, served with skinny fries & house salad", price: "£19.95", tags: ["Chef's Special", "Local Catch", "Crustaceans"] },
+                            { name: "Norfolk Venison Haunch Steak", desc: "Pan-roasted venison, fondant potato, red cabbage & blackberry jus", price: "£21.50", tags: ["Chef's Special", "GF"] },
+                            { name: "Wild Mushroom & Truffle Tagliatelle", desc: "Fresh handmade pasta, roasted pine nuts & shaved Parmesan", price: "£15.95", tags: ["V", "Nuts"] }
                         ]
                     }
                 ]

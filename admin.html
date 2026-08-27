@@ -188,6 +188,9 @@
                 <button type="button" id="admin-tab-sunday" onclick="switchAdminMenuTab('sunday')" class="py-2.5 px-4 rounded-2xl text-xs sm:text-sm font-bold transition cursor-pointer text-pub-deep glass-pill hover:bg-white whitespace-nowrap">
                     <i class="fas fa-utensils mr-1.5"></i> Sunday Roast
                 </button>
+                <button type="button" id="admin-tab-specials" onclick="switchAdminMenuTab('specials')" class="py-2.5 px-4 rounded-2xl text-xs sm:text-sm font-bold transition cursor-pointer text-pub-deep glass-pill hover:bg-white whitespace-nowrap">
+                    <i class="fas fa-star mr-1.5"></i> Today's Specials
+                </button>
             </div>
 
             <!-- Toast Notification -->
@@ -292,6 +295,10 @@
                             <input type="checkbox" value="Sunday Special" class="dish-tag-checkbox rounded text-pub-sage">
                             <span class="font-medium">Sunday Special</span>
                         </label>
+                        <label class="flex items-center gap-1.5 cursor-pointer">
+                            <input type="checkbox" value="Chef's Special" class="dish-tag-checkbox rounded text-pub-sage">
+                            <span class="font-medium">Chef's Special</span>
+                        </label>
                     </div>
                 </div>
 
@@ -389,6 +396,19 @@
                         ]
                     }
                 ]
+            },
+            specials: {
+                title: "Today's Specials Board",
+                sections: [
+                    {
+                        category: "Chef's Daily Specials",
+                        items: [
+                            { name: "Fresh Cromer Crab Thermidor", desc: "Local dressed crab baked with rich mustard cream, Gruyère sauce, served with skinny fries & house salad", price: "£19.95", tags: ["Chef's Special", "Local Catch", "Crustaceans"] },
+                            { name: "Norfolk Venison Haunch Steak", desc: "Pan-roasted venison, fondant potato, red cabbage & blackberry jus", price: "£21.50", tags: ["Chef's Special", "GF"] },
+                            { name: "Wild Mushroom & Truffle Tagliatelle", desc: "Fresh handmade pasta, roasted pine nuts & shaved Parmesan", price: "£15.95", tags: ["V", "Nuts"] }
+                        ]
+                    }
+                ]
             }
         };
 
@@ -428,7 +448,7 @@
 
         function switchAdminMenuTab(menuKey) {
             activeAdminMenuKey = menuKey;
-            ['lunch', 'dinner', 'veg', 'sunday'].forEach(k => {
+            ['lunch', 'dinner', 'veg', 'sunday', 'specials'].forEach(k => {
                 const btn = document.getElementById(`admin-tab-${k}`);
                 if (!btn) return;
                 if (k === menuKey) {
