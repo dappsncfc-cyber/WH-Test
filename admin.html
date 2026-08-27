@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en-GB" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staff Admin Portal | The White Horse Inn Cromer</title>
+    <meta name="robots" content="noindex, nofollow">
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,500;1,600&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'pub-deep': '#1b3a2b',
+                        'pub-sage': '#2d5a44',
+                        'pub-light': '#f3f7f4',
+                        'pub-gold': '#d4af37',
+                        'pub-dark': '#0f2319',
+                    },
+                    fontFamily: {
+                        serif: ['Playfair Display', 'serif'],
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        .glass-nav {
+            background: rgba(243, 247, 244, 0.88);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.8);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.82);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.9);
+            box-shadow: 0 16px 40px -10px rgba(27, 58, 43, 0.08), 0 4px 12px rgba(0, 0, 0, 0.03);
+        }
+
+        .glass-modal-tile {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.95);
+            box-shadow: 0 25px 50px -12px rgba(15, 35, 25, 0.3);
+        }
+
+        .glass-pill {
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.85);
+            box-shadow: 0 2px 8px rgba(27, 58, 43, 0.04);
+        }
+
+        .glass-button-primary {
+            background: linear-gradient(135deg, #1b3a2b 0%, #2a543f 100%);
+            box-shadow: 0 8px 20px -6px rgba(27, 58, 43, 0.35);
+            transition: all 0.25s ease;
+        }
+
+        .glass-button-primary:hover {
+            background: linear-gradient(135deg, #132b1f 0%, #204332 100%);
+            box-shadow: 0 12px 25px -6px rgba(27, 58, 43, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .glass-input {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(27, 58, 43, 0.2);
+            transition: all 0.2s ease;
+        }
+
+        .glass-input:focus {
+            background: rgba(255, 255, 255, 0.98);
+            border-color: #1b3a2b;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(27, 58, 43, 0.12);
+        }
+
+        .bg-mesh {
+            background-color: #f3f7f4;
+            background-image:
+                radial-gradient(at 10% 10%, rgba(45, 90, 68, 0.08) 0px, transparent 50%),
+                radial-gradient(at 90% 20%, rgba(212, 175, 55, 0.06) 0px, transparent 50%),
+                radial-gradient(at 50% 80%, rgba(27, 58, 43, 0.07) 0px, transparent 50%);
+        }
+    </style>
+</head>
+<body class="bg-mesh text-gray-800 font-sans antialiased min-h-screen flex flex-col selection:bg-pub-sage selection:text-white">
+
+    <!-- Header -->
+    <header class="sticky top-0 z-40 glass-nav">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <a href="index.html" class="flex items-center gap-3 group">
+                    <div class="w-11 h-11 rounded-2xl glass-pill flex items-center justify-center text-pub-deep shadow-sm group-hover:scale-105 transition">
+                        <i class="fas fa-horse-head text-2xl text-pub-deep"></i>
+                    </div>
+                    <div>
+                        <span class="font-serif text-xl sm:text-2xl font-bold text-pub-deep tracking-tight block leading-tight">White Horse Inn</span>
+                        <span class="text-[10px] font-medium tracking-widest text-pub-sage uppercase block font-serif">Staff Admin Portal</span>
+                    </div>
+                </a>
+
+                <div class="flex items-center gap-3">
+                    <a href="index.html" class="glass-pill text-pub-deep hover:bg-white text-xs font-bold px-4 py-2 rounded-xl flex items-center gap-2 transition">
+                        <i class="fas fa-arrow-left text-pub-sage"></i> Back to Main Site
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-1 max-w-6xl w-full mx-auto p-4 sm:p-6 md:p-8">
+
+        <!-- PIN Authentication Screen -->
+        <div id="admin-auth-screen" class="glass-card rounded-3xl p-6 sm:p-12 text-center max-w-md mx-auto my-12 border border-white/90 shadow-2xl">
+            <div class="w-16 h-16 rounded-2xl bg-pub-sage/10 text-pub-sage flex items-center justify-center text-3xl mx-auto mb-5 shadow-inner">
+                <i class="fas fa-user-shield"></i>
+            </div>
+            <h1 class="font-serif font-bold text-pub-deep text-2xl sm:text-3xl mb-2">Staff Portal Access</h1>
+                <p class="text-xs text-gray-600 mb-6 font-medium">Please enter the staff security PIN to manage White Horse Inn menus &amp; dishes.</p>
+
+            <form id="admin-pin-form" class="space-y-4">
+                <div>
+                        <input type="password" id="admin-pin-input" maxlength="6" placeholder="Enter Staff PIN" required class="w-full text-center tracking-widest text-xl font-bold px-4 py-3.5 rounded-xl glass-input text-gray-800">
+                </div>
+                <div id="admin-pin-error" class="hidden text-xs text-red-600 font-bold p-2.5 rounded-xl bg-red-50 border border-red-200">
+                    <i class="fas fa-exclamation-circle mr-1"></i> Incorrect PIN code. Please try again.
+                </div>
+                <button type="submit" class="w-full glass-button-primary text-white font-bold py-3.5 rounded-xl text-xs uppercase tracking-wider cursor-pointer shadow-lg">
+                    Unlock Staff Admin
+                </button>
+            </form>
+        </div>
+
+        <!-- Dashboard / Editor Interface (Hidden until PIN verified) -->
+        <div id="admin-dashboard-screen" class="hidden space-y-6">
+
+            <!-- Top Controls Bar -->
+            <div class="glass-card rounded-3xl p-4 sm:p-6 border border-white/90 flex flex-wrap items-center justify-between gap-4">
+                <div>
+                    <div class="flex items-center gap-2">
+                        <span class="w-3 h-3 rounded-full bg-emerald-500 animate-pulse"></span>
+                        <h2 class="font-serif font-bold text-pub-deep text-xl sm:text-2xl">Menu &amp; Dish Editor</h2>
+                    </div>
+                    <p class="text-xs text-gray-600 mt-1">Manage dishes, prices, descriptions and allergen tags in real-time across the website.</p>
+                </div>
+
+                <div class="flex items-center gap-2">
+                    <button type="button" onclick="confirmResetMenuData()" class="glass-pill px-3.5 py-2 rounded-xl text-xs font-bold text-red-600 hover:bg-red-50 transition flex items-center gap-1.5 cursor-pointer">
+                        <i class="fas fa-rotate-left"></i> Reset Defaults
+                    </button>
+                    <button type="button" onclick="openAddDishModal()" class="glass-button-primary text-white text-xs font-bold px-4 py-2.5 rounded-xl flex items-center gap-2 cursor-pointer uppercase tracking-wider">
+                        <i class="fas fa-plus"></i> Add New Dish
+                    </button>
+                </div>
+            </div>
+
+            <!-- Menu Selector Tabs -->
+            <div class="flex gap-2 overflow-x-auto pb-1">
+                <button type="button" id="admin-tab-lunch" onclick="switchAdminMenuTab('lunch')" class="py-2.5 px-4 rounded-2xl text-xs sm:text-sm font-bold transition cursor-pointer glass-button-primary text-white whitespace-nowrap">
+                    <i class="fas fa-sun mr-1.5"></i> Lunch Menu
+                </button>
+                <button type="button" id="admin-tab-dinner" onclick="switchAdminMenuTab('dinner')" class="py-2.5 px-4 rounded-2xl text-xs sm:text-sm font-bold transition cursor-pointer text-pub-deep glass-pill hover:bg-white whitespace-nowrap">
+                    <i class="fas fa-moon mr-1.5"></i> Dinner Menu
+                </button>
+                <button type="button" id="admin-tab-veg" onclick="switchAdminMenuTab('veg')" class="py-2.5 px-4 rounded-2xl text-xs sm:text-sm font-bold transition cursor-pointer text-pub-deep glass-pill hover:bg-white whitespace-nowrap">
+                    <i class="fas fa-leaf mr-1.5"></i> Vegetarian &amp; Vegan
+                </button>
+                <button type="button" id="admin-tab-sunday" onclick="switchAdminMenuTab('sunday')" class="py-2.5 px-4 rounded-2xl text-xs sm:text-sm font-bold transition cursor-pointer text-pub-deep glass-pill hover:bg-white whitespace-nowrap">
+                    <i class="fas fa-utensils mr-1.5"></i> Sunday Roast
+                </button>
+                <button type="button" id="admin-tab-specials" onclick="switchAdminMenuTab('specials')" class="py-2.5 px-4 rounded-2xl text-xs sm:text-sm font-bold transition cursor-pointer text-pub-deep glass-pill hover:bg-white whitespace-nowrap">
+                    <i class="fas fa-star mr-1.5"></i> Today's Specials
+                </button>
+            </div>
+
+            <!-- Toast Notification -->
+            <div id="admin-save-toast" class="hidden p-3 rounded-2xl bg-emerald-100 border border-emerald-300 text-emerald-900 text-xs font-bold text-center shadow-sm">
+                <i class="fas fa-check-circle mr-1 text-pub-sage"></i> Menu changes saved successfully!
+            </div>
+
+            <!-- Container for Category Cards & Dish List -->
+            <div id="admin-menu-editor-container" class="space-y-6">
+                <!-- Dynamically populated via JS -->
+            </div>
+        </div>
+    </main>
+
+    <!-- DISH EDITOR MODAL -->
+    <div id="dish-editor-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-2.5 sm:p-4 bg-pub-dark/70 backdrop-blur-md transition-opacity duration-300">
+        <div class="glass-modal-tile rounded-3xl w-full max-w-lg flex flex-col overflow-hidden relative shadow-2xl">
+            <!-- Header -->
+            <div class="px-4 sm:px-6 py-4 border-b border-emerald-900/10 flex items-center justify-between bg-white/40">
+                <div class="flex items-center gap-2">
+                    <i class="fas fa-edit text-pub-sage text-lg"></i>
+                    <h3 id="dish-editor-modal-title" class="font-serif font-bold text-pub-deep text-base sm:text-lg">Edit Dish Item</h3>
+                </div>
+                <button type="button" onclick="closeDishEditorModal()" class="w-8 h-8 rounded-full glass-pill flex items-center justify-center text-gray-500 hover:text-pub-deep transition cursor-pointer">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <!-- Form Body -->
+            <form id="dish-editor-form" class="p-4 sm:p-6 overflow-y-auto max-h-[75vh] space-y-4">
+                <input type="hidden" id="dish-edit-menu-key">
+                <input type="hidden" id="dish-edit-sec-index">
+                <input type="hidden" id="dish-edit-item-index">
+
+                <div>
+                    <label class="block text-xs font-bold text-pub-deep mb-1">Menu Category *</label>
+                    <select id="dish-edit-category" class="w-full px-3 py-2.5 rounded-xl glass-input text-xs text-gray-800 font-medium">
+                        <!-- Populated dynamically -->
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-pub-deep mb-1">Dish Name *</label>
+                    <input type="text" id="dish-edit-name" required placeholder="e.g. Fresh Cromer Crab Dressed Sandwich" class="w-full px-3 py-2.5 rounded-xl glass-input text-xs text-gray-800 font-semibold">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-pub-deep mb-1">Price *</label>
+                    <input type="text" id="dish-edit-price" required placeholder="e.g. £11.95 or £7.50 / £13.50" class="w-full px-3 py-2.5 rounded-xl glass-input text-xs text-gray-800 font-semibold">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-pub-deep mb-1">Description</label>
+                    <textarea id="dish-edit-desc" rows="3" placeholder="Description of the dish, ingredients or preparation..." class="w-full px-3 py-2.5 rounded-xl glass-input text-xs text-gray-800"></textarea>
+                </div>
+
+                <!-- Allergen & Dietary Tags -->
+                <div>
+                    <label class="block text-xs font-bold text-pub-deep mb-1.5">Allergen &amp; Dietary Tags</label>
+                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 bg-white/40 p-3 rounded-2xl border border-emerald-900/10 text-xs">
+                        <label class="flex items-center gap-1.5 cursor-pointer">
+                            <input type="checkbox" value="V" class="dish-tag-checkbox rounded text-pub-sage">
+                            <span class="font-medium">V (Vegetarian)</span>
+                        </label>
+                        <label class="flex items-center gap-1.5 cursor-pointer">
+                            <input type="checkbox" value="VG" class="dish-tag-checkbox rounded text-pub-sage">
+                            <span class="font-medium">VG (Vegan)</span>
+                        </label>
+                        <label class="flex items-center gap-1.5 cursor-pointer">
+                            <input type="checkbox" value="GF" class="dish-tag-checkbox rounded text-pub-sage">
+                            <span class="font-medium">GF (Gluten-Free)</span>
+                        </label>
+                        <label class="flex items-center gap-1.5 cursor-pointer">
+                            <input type="checkbox" value="GF Option" class="dish-tag-checkbox rounded text-pub-sage">
+                            <span class="font-medium">GF Option</span>
+                        </label>
+                        <label class="flex items-center gap-1.5 cursor-pointer">
+                            <input type="checkbox" value="DF" class="dish-tag-checkbox rounded text-pub-sage">
+                            <span class="font-medium">DF (Dairy-Free)</span>
+                        </label>
+                        <label class="flex items-center gap-1.5 cursor-pointer">
+                            <input type="checkbox" value="Nuts" class="dish-tag-checkbox rounded text-pub-sage">
+                            <span class="font-medium">Nuts</span>
+                        </label>
+                        <label class="flex items-center gap-1.5 cursor-pointer">
+                            <input type="checkbox" value="Crustaceans" class="dish-tag-checkbox rounded text-pub-sage">
+                            <span class="font-medium">Crustaceans</span>
+                        </label>
+                        <label class="flex items-center gap-1.5 cursor-pointer">
+                            <input type="checkbox" value="Mustard" class="dish-tag-checkbox rounded text-pub-sage">
+                            <span class="font-medium">Mustard</span>
+                        </label>
+                        <label class="flex items-center gap-1.5 cursor-pointer">
+                            <input type="checkbox" value="Local Catch" class="dish-tag-checkbox rounded text-pub-sage">
+                            <span class="font-medium">Local Catch</span>
+                        </label>
+                        <label class="flex items-center gap-1.5 cursor-pointer">
+                            <input type="checkbox" value="Popular" class="dish-tag-checkbox rounded text-pub-sage">
+                            <span class="font-medium">Popular</span>
+                        </label>
+                        <label class="flex items-center gap-1.5 cursor-pointer">
+                            <input type="checkbox" value="Sunday Special" class="dish-tag-checkbox rounded text-pub-sage">
+                            <span class="font-medium">Sunday Special</span>
+                        </label>
+                        <label class="flex items-center gap-1.5 cursor-pointer">
+                            <input type="checkbox" value="Chef's Special" class="dish-tag-checkbox rounded text-pub-sage">
+                            <span class="font-medium">Chef's Special</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-pub-deep mb-1">Custom Tag / Additional Allergen</label>
+                    <input type="text" id="dish-edit-custom-tag" placeholder="e.g. Celery, Sesame, Soya" class="w-full px-3 py-2 rounded-xl glass-input text-xs text-gray-800">
+                </div>
+
+                <div class="pt-2 flex items-center justify-end gap-2">
+                    <button type="button" onclick="closeDishEditorModal()" class="glass-pill px-4 py-2 rounded-xl text-xs font-bold text-gray-600 cursor-pointer">Cancel</button>
+                    <button type="submit" class="glass-button-primary text-white text-xs font-bold px-5 py-2 rounded-xl uppercase tracking-wider cursor-pointer">Save Dish Item</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- JavaScript Data & Logic Handler -->
+    <script>
+        const defaultMenuData = {
+            lunch: {
+                title: "Lunch Menu (Served 12pm - 3pm)",
+                sections: [
+                    {
+                        category: "Light Bites & Starters",
+                        items: [
+                            { name: "Cromer Crab Soup", desc: "Served with warm crusty bread & salted butter", price: "£7.95", tags: ["GF Option", "Crustaceans"] },
+                            { name: "Crispy Squid Rings", desc: "With garlic aioli and fresh lemon wedge", price: "£8.50", tags: [] },
+                            { name: "Garlic & Herb Wild Mushrooms", desc: "Sautéed wild mushrooms on toasted sourdough", price: "£7.25", tags: ["V", "VG Option"] }
+                        ]
+                    },
+                    {
+                        category: "Sandwiches & Light Mains",
+                        items: [
+                            { name: "Fresh Cromer Crab Dressed Sandwich", desc: "Local Cromer crab with lemon mayonnaise on brown bloomer", price: "£11.95", tags: ["Local Catch", "Crustaceans"] },
+                            { name: "Norfolk Ham & Mustard Sandwich", desc: "Honey roasted Norfolk ham with coarse grain mustard", price: "£8.95", tags: ["Mustard"] },
+                            { name: "Beer Battered Fish & Chips (Lunch Portion)", desc: "Fresh North Sea cod in real ale batter, chips, minty peas", price: "£13.50", tags: ["Popular"] },
+                            { name: "Coastal Ploughman's Lunch", desc: "Local Norfolk cheeses, ham, pickles, chutney & crusty bread", price: "£12.50", tags: ["V Option"] }
+                        ]
+                    }
+                ]
+            },
+            dinner: {
+                title: "Dinner Menu (Served 5pm - 9pm)",
+                sections: [
+                    {
+                        category: "Starters",
+                        items: [
+                            { name: "Potted Cromer Shrimps", desc: "Spiced butter, toasted brioche and pickled cucumber", price: "£8.95", tags: ["Crustaceans"] },
+                            { name: "Pan-Seared Scallops", desc: "Norfolk black pudding crumb and pea purée", price: "£10.50", tags: ["Crustaceans"] },
+                            { name: "Soup of the Day", desc: "Artisan bread and sea salt butter", price: "£6.95", tags: ["V", "GF Option"] }
+                        ]
+                    },
+                    {
+                        category: "Main Courses",
+                        items: [
+                            { name: "Traditional Beer Battered North Sea Cod", desc: "Triple cooked chips, tartar sauce, mushy peas & lemon", price: "£16.95", tags: ["Popular"] },
+                            { name: "Slow-Cooked Beef & Norfolk Ale Pie", desc: "Butter mash, seasonal greens and rich red wine gravy", price: "£15.95", tags: [] },
+                            { name: "8oz Norfolk Sirloin Steak", desc: "Roasted vine tomatoes, flat mushroom, hand-cut chips", price: "£23.50", tags: ["GF"] },
+                            { name: "Catch of the Day (Local Fisherman's Landing)", desc: "Pan-roasted sea bass with crushed new potatoes and samphire", price: "£18.95", tags: ["Local Catch", "GF"] }
+                        ]
+                    },
+                    {
+                        category: "Desserts",
+                        items: [
+                            { name: "Sticky Toffee Pudding", desc: "Butterscotch sauce and Norfolk vanilla ice cream", price: "£6.95", tags: ["V"] },
+                            { name: "Norfolk Berry Crumble", desc: "Served warm with custard or ice cream", price: "£6.50", tags: ["V"] }
+                        ]
+                    }
+                ]
+            },
+            veg: {
+                title: "Vegetarian & Vegan Menu",
+                sections: [
+                    {
+                        category: "Plant-Based Mains & Starters",
+                        items: [
+                            { name: "Roasted Beetroot & Goat's Cheese Salad", desc: "Candied walnuts, mixed leaves & balsamic glaze", price: "£7.50 / £13.50", tags: ["V", "GF", "Nuts"] },
+                            { name: "Moving Mountains Vegan Gourmet Burger", desc: "Vegan cheese, red onion chutney, brioche bun & skinny fries", price: "£14.95", tags: ["VG"] },
+                            { name: "Butternut Squash & Sage Risotto", desc: "Crispy sage leaves and toasted pine nuts", price: "£13.95", tags: ["VG", "GF", "Nuts"] },
+                            { name: "Mediterranean Vegetable & Lentil Pie", desc: "Served with roasted root veg & rich vegan gravy", price: "£14.50", tags: ["VG"] }
+                        ]
+                    }
+                ]
+            },
+            sunday: {
+                title: "Sunday Roast Menu (Served All Day Sunday)",
+                sections: [
+                    {
+                        category: "Traditional Norfolk Sunday Roasts",
+                        items: [
+                            { name: "Roast Topside of Norfolk Beef", desc: "Served with giant Yorkshire pudding, roast potatoes, seasonal veg & rich gravy", price: "£16.95", tags: ["Sunday Special"] },
+                            { name: "Roast Leg of Norfolk Lamb", desc: "Mint sauce, giant Yorkshire pudding, roast potatoes & seasonal veg", price: "£17.50", tags: [] },
+                            { name: "Roast Loin of Pork with Crackling", desc: "Apple sauce, stuffing, giant Yorkshire pudding & roast potatoes", price: "£15.95", tags: [] },
+                            { name: "Homemade Nut Roast", desc: "Vegetarian gravy, Yorkshire pudding & roast potatoes", price: "£14.50", tags: ["V", "VG Option", "Nuts"] }
+                        ]
+                    }
+                ]
+            },
+            specials: {
+                title: "Today's Specials Board",
+                sections: [
+                    {
+                        category: "Chef's Daily Specials",
+                        items: [
+                            { name: "Fresh Cromer Crab Thermidor", desc: "Local dressed crab baked with rich mustard cream, Gruyère sauce, served with skinny fries & house salad", price: "£19.95", tags: ["Chef's Special", "Local Catch", "Crustaceans"] },
+                            { name: "Norfolk Venison Haunch Steak", desc: "Pan-roasted venison, fondant potato, red cabbage & blackberry jus", price: "£21.50", tags: ["Chef's Special", "GF"] },
+                            { name: "Wild Mushroom & Truffle Tagliatelle", desc: "Fresh handmade pasta, roasted pine nuts & shaved Parmesan", price: "£15.95", tags: ["V", "Nuts"] }
+                        ]
+                    }
+                ]
+            }
+        };
+
+        let menuData = loadMenuData();
+        let activeAdminMenuKey = 'lunch';
+
+        function loadMenuData() {
+            try {
+                const stored = localStorage.getItem('white_horse_menu_data');
+                if (stored) return JSON.parse(stored);
+            } catch (e) {
+                console.error('Error loading menu data:', e);
+            }
+            return JSON.parse(JSON.stringify(defaultMenuData));
+        }
+
+        function saveMenuData() {
+            try {
+                localStorage.setItem('white_horse_menu_data', JSON.stringify(menuData));
+                const toast = document.getElementById('admin-save-toast');
+                if (toast) {
+                    toast.classList.remove('hidden');
+                    setTimeout(() => toast.classList.add('hidden'), 2500);
+                }
+            } catch (e) {
+                console.error('Error saving menu data:', e);
+            }
+        }
+
+        function confirmResetMenuData() {
+            if (confirm("Are you sure you want to reset all menus to factory default settings?")) {
+                menuData = JSON.parse(JSON.stringify(defaultMenuData));
+                saveMenuData();
+                renderAdminEditor();
+            }
+        }
+
+        function switchAdminMenuTab(menuKey) {
+            activeAdminMenuKey = menuKey;
+            ['lunch', 'dinner', 'veg', 'sunday', 'specials'].forEach(k => {
+                const btn = document.getElementById(`admin-tab-${k}`);
+                if (!btn) return;
+                if (k === menuKey) {
+                    btn.className = 'py-2.5 px-4 rounded-2xl text-xs sm:text-sm font-bold transition cursor-pointer glass-button-primary text-white whitespace-nowrap';
+                } else {
+                    btn.className = 'py-2.5 px-4 rounded-2xl text-xs sm:text-sm font-bold transition cursor-pointer text-pub-deep glass-pill hover:bg-white whitespace-nowrap';
+                }
+            });
+            renderAdminEditor();
+        }
+
+        function renderAdminEditor() {
+            const container = document.getElementById('admin-menu-editor-container');
+            if (!container) return;
+
+            const mData = menuData[activeAdminMenuKey];
+            if (!mData) return;
+
+            container.innerHTML = '';
+
+            mData.sections.forEach((sec, secIdx) => {
+                const secDiv = document.createElement('div');
+                secDiv.className = 'glass-card rounded-3xl p-5 sm:p-6 border border-white/90 space-y-4';
+
+                let itemsHtml = sec.items.map((item, itemIdx) => `
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between p-3.5 sm:p-4 rounded-2xl bg-white/80 border border-emerald-900/10 gap-3 hover:shadow-sm transition">
+                        <div class="flex-1 pr-2">
+                            <div class="flex items-center gap-2 flex-wrap mb-1">
+                                <span class="font-bold text-pub-deep text-sm sm:text-base">${item.name}</span>
+                                <span class="font-bold text-pub-sage text-xs bg-pub-sage/10 px-2.5 py-0.5 rounded-lg">${item.price}</span>
+                                ${item.tags ? item.tags.map(t => `<span class="px-2 py-0.5 rounded-md text-[10px] font-bold bg-amber-100 text-amber-900">${t}</span>`).join('') : ''}
+                            </div>
+                            <p class="text-xs text-gray-600 leading-relaxed">${item.desc || 'No description provided.'}</p>
+                        </div>
+                        <div class="flex items-center gap-2 shrink-0 self-end sm:self-center">
+                            <button type="button" onclick="openEditDishModal('${activeAdminMenuKey}', ${secIdx}, ${itemIdx})" class="glass-pill hover:bg-white text-pub-sage px-3.5 py-2 rounded-xl text-xs font-bold transition cursor-pointer flex items-center gap-1.5 shadow-sm">
+                                <i class="fas fa-edit"></i> Edit
+                            </button>
+                            <button type="button" onclick="deleteDishItem('${activeAdminMenuKey}', ${secIdx}, ${itemIdx})" class="glass-pill hover:bg-red-100 text-red-600 px-3 py-2 rounded-xl text-xs font-bold transition cursor-pointer" title="Delete Dish">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+
+                secDiv.innerHTML = `
+                    <div class="flex items-center justify-between border-b border-emerald-900/10 pb-3">
+                        <h3 class="font-serif font-bold text-pub-deep text-lg text-pub-sage">${sec.category}</h3>
+                        <span class="text-xs font-bold text-gray-500 bg-white/60 px-2.5 py-1 rounded-full">${sec.items.length} Dishes</span>
+                    </div>
+                    <div class="space-y-3">${itemsHtml}</div>
+                `;
+
+                container.appendChild(secDiv);
+            });
+        }
+
+        function openAddDishModal() {
+            openEditDishModal(activeAdminMenuKey, 0, -1);
+        }
+
+        function openEditDishModal(menuKey, secIdx, itemIdx) {
+            const modal = document.getElementById('dish-editor-modal');
+            const titleEl = document.getElementById('dish-editor-modal-title');
+            const catSelect = document.getElementById('dish-edit-category');
+            const nameInput = document.getElementById('dish-edit-name');
+            const priceInput = document.getElementById('dish-edit-price');
+            const descInput = document.getElementById('dish-edit-desc');
+            const customTagInput = document.getElementById('dish-edit-custom-tag');
+            const checkboxes = document.querySelectorAll('.dish-tag-checkbox');
+
+            document.getElementById('dish-edit-menu-key').value = menuKey;
+            document.getElementById('dish-edit-sec-index').value = secIdx;
+            document.getElementById('dish-edit-item-index').value = itemIdx;
+
+            const mData = menuData[menuKey];
+            if (!mData || !modal) return;
+
+            catSelect.innerHTML = mData.sections.map((s, idx) => `<option value="${idx}" ${idx === secIdx ? 'selected' : ''}>${s.category}</option>`).join('');
+            checkboxes.forEach(cb => cb.checked = false);
+            customTagInput.value = '';
+
+            if (itemIdx >= 0) {
+                const item = mData.sections[secIdx].items[itemIdx];
+                titleEl.textContent = 'Edit Dish Item';
+                nameInput.value = item.name || '';
+                priceInput.value = item.price || '';
+                descInput.value = item.desc || '';
+
+                if (item.tags) {
+                    const customTags = [];
+                    item.tags.forEach(t => {
+                        const cb = Array.from(checkboxes).find(c => c.value === t);
+                        if (cb) cb.checked = true;
+                        else customTags.push(t);
+                    });
+                    customTagInput.value = customTags.join(', ');
+                }
+            } else {
+                titleEl.textContent = 'Add New Dish Item';
+                nameInput.value = '';
+                priceInput.value = '£';
+                descInput.value = '';
+            }
+
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeDishEditorModal() {
+            const modal = document.getElementById('dish-editor-modal');
+            if (modal) {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }
+        }
+
+        function deleteDishItem(menuKey, secIdx, itemIdx) {
+            const item = menuData[menuKey]?.sections[secIdx]?.items[itemIdx];
+            if (!item) return;
+
+            if (confirm(`Are you sure you want to delete "${item.name}" from the menu?`)) {
+                menuData[menuKey].sections[secIdx].items.splice(itemIdx, 1);
+                saveMenuData();
+                renderAdminEditor();
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            // PIN Form Submit
+            const pinForm = document.getElementById('admin-pin-form');
+            if (pinForm) {
+                pinForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    const pinInput = document.getElementById('admin-pin-input');
+                    const pinError = document.getElementById('admin-pin-error');
+                    const authScreen = document.getElementById('admin-auth-screen');
+                    const dashScreen = document.getElementById('admin-dashboard-screen');
+
+                    if (pinInput && pinInput.value.trim() === '1982') {
+                        pinError?.classList.add('hidden');
+                        authScreen?.classList.add('hidden');
+                        dashScreen?.classList.remove('hidden');
+                        switchAdminMenuTab('lunch');
+                    } else {
+                        pinError?.classList.remove('hidden');
+                    }
+                });
+            }
+
+            // Dish Editor Form Submit
+            const dishForm = document.getElementById('dish-editor-form');
+            if (dishForm) {
+                dishForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+
+                    const menuKey = document.getElementById('dish-edit-menu-key').value || activeAdminMenuKey;
+                    const origSecIdx = parseInt(document.getElementById('dish-edit-sec-index').value, 10);
+                    const catSelectIdx = parseInt(document.getElementById('dish-edit-category').value, 10);
+                    const itemIdx = parseInt(document.getElementById('dish-edit-item-index').value, 10);
+
+                    const name = document.getElementById('dish-edit-name').value.trim();
+                    const price = document.getElementById('dish-edit-price').value.trim();
+                    const desc = document.getElementById('dish-edit-desc').value.trim();
+                    const customTagsRaw = document.getElementById('dish-edit-custom-tag').value.trim();
+
+                    const checkedTags = Array.from(document.querySelectorAll('.dish-tag-checkbox:checked')).map(cb => cb.value);
+                    if (customTagsRaw) {
+                        const customTags = customTagsRaw.split(',').map(t => t.trim()).filter(Boolean);
+                        customTags.forEach(t => {
+                            if (!checkedTags.includes(t)) checkedTags.push(t);
+                        });
+                    }
+
+                    const newItemObj = { name, price, desc, tags: checkedTags };
+
+                    if (menuData[menuKey] && menuData[menuKey].sections[catSelectIdx]) {
+                        if (itemIdx >= 0) {
+                            if (catSelectIdx !== origSecIdx && menuData[menuKey].sections[origSecIdx]) {
+                                // Category changed: Remove from original section, add to new section
+                                menuData[menuKey].sections[origSecIdx].items.splice(itemIdx, 1);
+                                menuData[menuKey].sections[catSelectIdx].items.push(newItemObj);
+                            } else {
+                                // Update existing item in place
+                                menuData[menuKey].sections[catSelectIdx].items[itemIdx] = newItemObj;
+                            }
+                        } else {
+                            menuData[menuKey].sections[catSelectIdx].items.push(newItemObj);
+                        }
+
+                        saveMenuData();
+                        closeDishEditorModal();
+                        renderAdminEditor();
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

@@ -477,7 +477,29 @@
     <!-- View & Download Menus Grid -->
             <div class="mb-10 sm:mb-12">
         <h3 class="font-serif text-xl sm:text-2xl font-bold text-pub-deep text-center mb-5 sm:mb-6">Explore &amp; Download Our Menus</h3>
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3.5 sm:gap-4">
+                    <!-- Today's Specials Card -->
+                    <div class="glass-card glass-card-hover rounded-2xl p-4 sm:p-5 flex flex-col justify-between border border-emerald-500/30 bg-emerald-50/40 relative overflow-hidden">
+                        <div class="absolute top-2 right-2 bg-amber-400 text-pub-dark text-[10px] font-extrabold px-2 py-0.5 rounded-full uppercase tracking-wider shadow-sm">
+                            Fresh Today
+                        </div>
+                        <div>
+                            <div class="w-10 h-10 rounded-xl bg-pub-sage text-white flex items-center justify-center text-lg mb-3 shadow-sm">
+                                <i class="fas fa-star text-amber-300"></i>
+                            </div>
+                            <h3 class="font-serif font-bold text-base sm:text-lg text-pub-deep mb-1">Today's Specials</h3>
+                            <p class="text-xs text-gray-600 mb-4">Chef's daily coastal creations, seasonal catches & specialty dishes prepared fresh daily.</p>
+                        </div>
+                        <div class="space-y-2">
+                            <button type="button" onclick="openMenuModal('specials')" class="w-full glass-button-primary text-white text-xs font-bold py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 cursor-pointer uppercase tracking-wider transition">
+                                <i class="fas fa-eye"></i> View Specials
+                            </button>
+                            <button type="button" onclick="downloadMenuPDF('Todays Specials Board')" class="w-full glass-pill hover:bg-white/90 text-pub-deep text-xs font-bold py-2 px-3 rounded-xl flex items-center justify-center gap-1.5 cursor-pointer transition">
+                                <i class="fas fa-file-pdf text-pub-sage"></i> Download PDF
+                            </button>
+                        </div>
+                    </div>
+
                     <!-- Lunch Menu -->
                     <div class="glass-card glass-card-hover rounded-2xl p-4 sm:p-5 flex flex-col justify-between border border-white/90">
                         <div>
@@ -487,14 +509,14 @@
                             <h3 class="font-serif font-bold text-base sm:text-lg text-pub-deep mb-1">Lunch Menu</h3>
                             <p class="text-xs text-gray-600 mb-4">Light bites, local Cromer crab sandwiches, fish & chips & pub lunches. Served 12pm - 3pm.</p>
                         </div>
-                <div class="space-y-2">
-                    <button type="button" onclick="openMenuModal('lunch')" class="w-full glass-button-primary text-white text-xs font-bold py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 cursor-pointer uppercase tracking-wider transition">
-                        <i class="fas fa-eye"></i> View Menu
-                    </button>
-                    <button type="button" onclick="downloadMenuPDF('Lunch Menu')" class="w-full glass-pill hover:bg-white/90 text-pub-deep text-xs font-bold py-2 px-3 rounded-xl flex items-center justify-center gap-1.5 cursor-pointer transition">
-                        <i class="fas fa-file-pdf text-pub-sage"></i> Download PDF
-                    </button>
-                </div>
+                        <div class="space-y-2">
+                            <button type="button" onclick="openMenuModal('lunch')" class="w-full glass-button-primary text-white text-xs font-bold py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 cursor-pointer uppercase tracking-wider transition">
+                                <i class="fas fa-eye"></i> View Menu
+                            </button>
+                            <button type="button" onclick="downloadMenuPDF('Lunch Menu')" class="w-full glass-pill hover:bg-white/90 text-pub-deep text-xs font-bold py-2 px-3 rounded-xl flex items-center justify-center gap-1.5 cursor-pointer transition">
+                                <i class="fas fa-file-pdf text-pub-sage"></i> Download PDF
+                            </button>
+                        </div>
                     </div>
 
                     <!-- Dinner Menu -->
@@ -506,14 +528,14 @@
                             <h3 class="font-serif font-bold text-base sm:text-lg text-pub-deep mb-1">Dinner Menu</h3>
                             <p class="text-xs text-gray-600 mb-4">Hearty coastal favourites, steak & ale pies, fresh catches & delicious desserts. Served 5pm - 9pm.</p>
                         </div>
-                <div class="space-y-2">
-                    <button type="button" onclick="openMenuModal('dinner')" class="w-full glass-button-primary text-white text-xs font-bold py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 cursor-pointer uppercase tracking-wider transition">
-                        <i class="fas fa-eye"></i> View Menu
-                    </button>
-                    <button type="button" onclick="downloadMenuPDF('Dinner Menu')" class="w-full glass-pill hover:bg-white/90 text-pub-deep text-xs font-bold py-2 px-3 rounded-xl flex items-center justify-center gap-1.5 cursor-pointer transition">
-                        <i class="fas fa-file-pdf text-pub-sage"></i> Download PDF
-                    </button>
-                </div>
+                        <div class="space-y-2">
+                            <button type="button" onclick="openMenuModal('dinner')" class="w-full glass-button-primary text-white text-xs font-bold py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 cursor-pointer uppercase tracking-wider transition">
+                                <i class="fas fa-eye"></i> View Menu
+                            </button>
+                            <button type="button" onclick="downloadMenuPDF('Dinner Menu')" class="w-full glass-pill hover:bg-white/90 text-pub-deep text-xs font-bold py-2 px-3 rounded-xl flex items-center justify-center gap-1.5 cursor-pointer transition">
+                                <i class="fas fa-file-pdf text-pub-sage"></i> Download PDF
+                            </button>
+                        </div>
                     </div>
 
                     <!-- Vegetarian & Vegan Menu -->
@@ -525,14 +547,14 @@
                             <h3 class="font-serif font-bold text-base sm:text-lg text-pub-deep mb-1">Vegetarian &amp; Vegan</h3>
                             <p class="text-xs text-gray-600 mb-4">Plant-based burgers, roasted vegetable tarts, garden salads & gluten-free options.</p>
                         </div>
-                <div class="space-y-2">
-                    <button type="button" onclick="openMenuModal('veg')" class="w-full glass-button-primary text-white text-xs font-bold py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 cursor-pointer uppercase tracking-wider transition">
-                        <i class="fas fa-eye"></i> View Menu
-                    </button>
-                    <button type="button" onclick="downloadMenuPDF('Vegetarian & Vegan Menu')" class="w-full glass-pill hover:bg-white/90 text-pub-deep text-xs font-bold py-2 px-3 rounded-xl flex items-center justify-center gap-1.5 cursor-pointer transition">
-                        <i class="fas fa-file-pdf text-pub-sage"></i> Download PDF
-                    </button>
-                </div>
+                        <div class="space-y-2">
+                            <button type="button" onclick="openMenuModal('veg')" class="w-full glass-button-primary text-white text-xs font-bold py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 cursor-pointer uppercase tracking-wider transition">
+                                <i class="fas fa-eye"></i> View Menu
+                            </button>
+                            <button type="button" onclick="downloadMenuPDF('Vegetarian & Vegan Menu')" class="w-full glass-pill hover:bg-white/90 text-pub-deep text-xs font-bold py-2 px-3 rounded-xl flex items-center justify-center gap-1.5 cursor-pointer transition">
+                                <i class="fas fa-file-pdf text-pub-sage"></i> Download PDF
+                            </button>
+                        </div>
                     </div>
 
                     <!-- Sunday Roast Menu -->
@@ -544,14 +566,14 @@
                             <h3 class="font-serif font-bold text-base sm:text-lg text-pub-deep mb-1">Sunday Roast</h3>
                             <p class="text-xs text-gray-600 mb-4">Norfolk roast meats, giant Yorkshire puddings, roast potatoes & rich gravy. Served all day Sunday.</p>
                         </div>
-                <div class="space-y-2">
-                    <button type="button" onclick="openMenuModal('sunday')" class="w-full glass-button-primary text-white text-xs font-bold py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 cursor-pointer uppercase tracking-wider transition">
-                        <i class="fas fa-eye"></i> View Menu
-                    </button>
-                    <button type="button" onclick="downloadMenuPDF('Sunday Roast Menu')" class="w-full glass-pill hover:bg-white/90 text-pub-deep text-xs font-bold py-2 px-3 rounded-xl flex items-center justify-center gap-1.5 cursor-pointer transition">
-                        <i class="fas fa-file-pdf text-pub-sage"></i> Download PDF
-                    </button>
-                </div>
+                        <div class="space-y-2">
+                            <button type="button" onclick="openMenuModal('sunday')" class="w-full glass-button-primary text-white text-xs font-bold py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 cursor-pointer uppercase tracking-wider transition">
+                                <i class="fas fa-eye"></i> View Menu
+                            </button>
+                            <button type="button" onclick="downloadMenuPDF('Sunday Roast Menu')" class="w-full glass-pill hover:bg-white/90 text-pub-deep text-xs font-bold py-2 px-3 rounded-xl flex items-center justify-center gap-1.5 cursor-pointer transition">
+                                <i class="fas fa-file-pdf text-pub-sage"></i> Download PDF
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -931,6 +953,7 @@
         </div>
     </footer>
 
+
     <!-- INTERACTIVE MENU VIEWER MODAL -->
     <div id="menu-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-2.5 sm:p-4 bg-pub-dark/60 backdrop-blur-md transition-opacity duration-300">
         <div class="glass-modal-tile rounded-3xl w-full max-w-3xl max-h-[90vh] flex flex-col overflow-hidden relative shadow-2xl">
@@ -1069,26 +1092,26 @@
 
     <!-- JavaScript Application Handler -->
     <script>
-        // Menu Data Store
-        const menuData = {
+        // Default Factory Menu Data
+        const defaultMenuData = {
             lunch: {
                 title: "Lunch Menu (Served 12pm - 3pm)",
                 sections: [
                     {
                         category: "Light Bites & Starters",
                         items: [
-                            { name: "Cromer Crab Soup", desc: "Served with warm crusty bread & salted butter", price: "£7.95", tags: ["GF Option"] },
-                            { name: "Crispy Squid Rings", desc: "With garlic aioli and fresh lemon wedge", price: "£8.50" },
+                            { name: "Cromer Crab Soup", desc: "Served with warm crusty bread & salted butter", price: "£7.95", tags: ["GF Option", "Crustaceans"] },
+                            { name: "Crispy Squid Rings", desc: "With garlic aioli and fresh lemon wedge", price: "£8.50", tags: [] },
                             { name: "Garlic & Herb Wild Mushrooms", desc: "Sautéed wild mushrooms on toasted sourdough", price: "£7.25", tags: ["V", "VG Option"] }
                         ]
                     },
                     {
                         category: "Sandwiches & Light Mains",
                         items: [
-                            { name: "Fresh Cromer Crab Dressed Sandwich", desc: "Local Cromer crab with lemon mayonnaise on brown bloomer", price: "£11.95", tags: ["Local Catch"] },
-                            { name: "Norfolk Ham & Mustard Sandwich", desc: "Honey roasted Norfolk ham with coarse grain mustard", price: "£8.95" },
-                            { name: "Beer Battered Fish & Chips (Lunch Portion)", desc: "Fresh North Sea cod in real ale batter, chips, minty peas", price: "£13.50" },
-                            { name: "Coastal Ploughman's Lunch", desc: "Local Norfolk cheeses, ham, pickles, chutney & crusty bread", price: "£12.50" }
+                            { name: "Fresh Cromer Crab Dressed Sandwich", desc: "Local Cromer crab with lemon mayonnaise on brown bloomer", price: "£11.95", tags: ["Local Catch", "Crustaceans"] },
+                            { name: "Norfolk Ham & Mustard Sandwich", desc: "Honey roasted Norfolk ham with coarse grain mustard", price: "£8.95", tags: ["Mustard"] },
+                            { name: "Beer Battered Fish & Chips (Lunch Portion)", desc: "Fresh North Sea cod in real ale batter, chips, minty peas", price: "£13.50", tags: ["Popular"] },
+                            { name: "Coastal Ploughman's Lunch", desc: "Local Norfolk cheeses, ham, pickles, chutney & crusty bread", price: "£12.50", tags: ["V Option"] }
                         ]
                     }
                 ]
@@ -1099,8 +1122,8 @@
                     {
                         category: "Starters",
                         items: [
-                            { name: "Potted Cromer Shrimps", desc: "Spiced butter, toasted brioche and pickled cucumber", price: "£8.95" },
-                            { name: "Pan-Seared Scallops", desc: "Norfolk black pudding crumb and pea purée", price: "£10.50" },
+                            { name: "Potted Cromer Shrimps", desc: "Spiced butter, toasted brioche and pickled cucumber", price: "£8.95", tags: ["Crustaceans"] },
+                            { name: "Pan-Seared Scallops", desc: "Norfolk black pudding crumb and pea purée", price: "£10.50", tags: ["Crustaceans"] },
                             { name: "Soup of the Day", desc: "Artisan bread and sea salt butter", price: "£6.95", tags: ["V", "GF Option"] }
                         ]
                     },
@@ -1108,9 +1131,9 @@
                         category: "Main Courses",
                         items: [
                             { name: "Traditional Beer Battered North Sea Cod", desc: "Triple cooked chips, tartar sauce, mushy peas & lemon", price: "£16.95", tags: ["Popular"] },
-                            { name: "Slow-Cooked Beef & Norfolk Ale Pie", desc: "Butter mash, seasonal greens and rich red wine gravy", price: "£15.95" },
+                            { name: "Slow-Cooked Beef & Norfolk Ale Pie", desc: "Butter mash, seasonal greens and rich red wine gravy", price: "£15.95", tags: [] },
                             { name: "8oz Norfolk Sirloin Steak", desc: "Roasted vine tomatoes, flat mushroom, hand-cut chips", price: "£23.50", tags: ["GF"] },
-                            { name: "Catch of the Day (Local Fisherman's Landing)", desc: "Pan-roasted sea bass with crushed new potatoes and samphire", price: "£18.95", tags: ["Local Catch"] }
+                            { name: "Catch of the Day (Local Fisherman's Landing)", desc: "Pan-roasted sea bass with crushed new potatoes and samphire", price: "£18.95", tags: ["Local Catch", "GF"] }
                         ]
                     },
                     {
@@ -1128,9 +1151,9 @@
                     {
                         category: "Plant-Based Mains & Starters",
                         items: [
-                            { name: "Roasted Beetroot & Goat's Cheese Salad", desc: "Candied walnuts, mixed leaves & balsamic glaze", price: "£7.50 / £13.50", tags: ["V", "GF"] },
+                            { name: "Roasted Beetroot & Goat's Cheese Salad", desc: "Candied walnuts, mixed leaves & balsamic glaze", price: "£7.50 / £13.50", tags: ["V", "GF", "Nuts"] },
                             { name: "Moving Mountains Vegan Gourmet Burger", desc: "Vegan cheese, red onion chutney, brioche bun & skinny fries", price: "£14.95", tags: ["VG"] },
-                            { name: "Butternut Squash & Sage Risotto", desc: "Crispy sage leaves and toasted pine nuts", price: "£13.95", tags: ["VG", "GF"] },
+                            { name: "Butternut Squash & Sage Risotto", desc: "Crispy sage leaves and toasted pine nuts", price: "£13.95", tags: ["VG", "GF", "Nuts"] },
                             { name: "Mediterranean Vegetable & Lentil Pie", desc: "Served with roasted root veg & rich vegan gravy", price: "£14.50", tags: ["VG"] }
                         ]
                     }
@@ -1143,14 +1166,43 @@
                         category: "Traditional Norfolk Sunday Roasts",
                         items: [
                             { name: "Roast Topside of Norfolk Beef", desc: "Served with giant Yorkshire pudding, roast potatoes, seasonal veg & rich gravy", price: "£16.95", tags: ["Sunday Special"] },
-                            { name: "Roast Leg of Norfolk Lamb", desc: "Mint sauce, giant Yorkshire pudding, roast potatoes & seasonal veg", price: "£17.50" },
-                            { name: "Roast Loin of Pork with Crackling", desc: "Apple sauce, stuffing, giant Yorkshire pudding & roast potatoes", price: "£15.95" },
-                            { name: "Homemade Nut Roast", desc: "Vegetarian gravy, Yorkshire pudding & roast potatoes", price: "£14.50", tags: ["V", "VG Option"] }
+                            { name: "Roast Leg of Norfolk Lamb", desc: "Mint sauce, giant Yorkshire pudding, roast potatoes & seasonal veg", price: "£17.50", tags: [] },
+                            { name: "Roast Loin of Pork with Crackling", desc: "Apple sauce, stuffing, giant Yorkshire pudding & roast potatoes", price: "£15.95", tags: [] },
+                            { name: "Homemade Nut Roast", desc: "Vegetarian gravy, Yorkshire pudding & roast potatoes", price: "£14.50", tags: ["V", "VG Option", "Nuts"] }
+                        ]
+                    }
+                ]
+            },
+            specials: {
+                title: "Today's Specials Board",
+                sections: [
+                    {
+                        category: "Chef's Daily Specials",
+                        items: [
+                            { name: "Fresh Cromer Crab Thermidor", desc: "Local dressed crab baked with rich mustard cream, Gruyère sauce, served with skinny fries & house salad", price: "£19.95", tags: ["Chef's Special", "Local Catch", "Crustaceans"] },
+                            { name: "Norfolk Venison Haunch Steak", desc: "Pan-roasted venison, fondant potato, red cabbage & blackberry jus", price: "£21.50", tags: ["Chef's Special", "GF"] },
+                            { name: "Wild Mushroom & Truffle Tagliatelle", desc: "Fresh handmade pasta, roasted pine nuts & shaved Parmesan", price: "£15.95", tags: ["V", "Nuts"] }
                         ]
                     }
                 ]
             }
         };
+
+        // Active Menu Data Store loaded from LocalStorage
+        let menuData = loadMenuData();
+
+        function loadMenuData() {
+            try {
+                const stored = localStorage.getItem('white_horse_menu_data');
+                if (stored) {
+                    return JSON.parse(stored);
+                }
+            } catch (e) {
+                console.error('Error loading menu data from localStorage:', e);
+            }
+            return JSON.parse(JSON.stringify(defaultMenuData));
+        }
+
 
         // Open Menu Modal
         function openMenuModal(menuKey) {
@@ -1419,6 +1471,7 @@
                     }, 1000);
                 });
             }
+
         });
     </script>
 </body>
