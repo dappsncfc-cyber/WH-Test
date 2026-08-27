@@ -136,11 +136,11 @@
                 <i class="fas fa-user-shield"></i>
             </div>
             <h1 class="font-serif font-bold text-pub-deep text-2xl sm:text-3xl mb-2">Staff Portal Access</h1>
-            <p class="text-xs text-gray-600 mb-6 font-medium">Please enter the staff security PIN to manage White Horse Inn menus &amp; dishes. (Default PIN: <strong>1234</strong>)</p>
+                <p class="text-xs text-gray-600 mb-6 font-medium">Please enter the staff security PIN to manage White Horse Inn menus &amp; dishes.</p>
 
             <form id="admin-pin-form" class="space-y-4">
                 <div>
-                    <input type="password" id="admin-pin-input" maxlength="6" placeholder="Enter Staff PIN (e.g. 1234)" required class="w-full text-center tracking-widest text-xl font-bold px-4 py-3.5 rounded-xl glass-input text-gray-800">
+                        <input type="password" id="admin-pin-input" maxlength="6" placeholder="Enter Staff PIN" required class="w-full text-center tracking-widest text-xl font-bold px-4 py-3.5 rounded-xl glass-input text-gray-800">
                 </div>
                 <div id="admin-pin-error" class="hidden text-xs text-red-600 font-bold p-2.5 rounded-xl bg-red-50 border border-red-200">
                     <i class="fas fa-exclamation-circle mr-1"></i> Incorrect PIN code. Please try again.
@@ -568,7 +568,7 @@
                     const authScreen = document.getElementById('admin-auth-screen');
                     const dashScreen = document.getElementById('admin-dashboard-screen');
 
-                    if (pinInput && pinInput.value.trim() === '1234') {
+                    if (pinInput && pinInput.value.trim() === '1982') {
                         pinError?.classList.add('hidden');
                         authScreen?.classList.add('hidden');
                         dashScreen?.classList.remove('hidden');
@@ -586,6 +586,7 @@
                     e.preventDefault();
 
                     const menuKey = document.getElementById('dish-edit-menu-key').value || activeAdminMenuKey;
+                    const origSecIdx = parseInt(document.getElementById('dish-edit-sec-index').value, 10);
                     const catSelectIdx = parseInt(document.getElementById('dish-edit-category').value, 10);
                     const itemIdx = parseInt(document.getElementById('dish-edit-item-index').value, 10);
 
