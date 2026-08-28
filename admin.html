@@ -20,7 +20,6 @@
     <!-- Firebase SDK Compat Scripts (Supporting both Firestore and Realtime Database) -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
 
     <script>
         tailwind.config = {
@@ -578,7 +577,6 @@
         const firebaseConfig = {
             apiKey: "AIzaSyCBPyGHrS4Is0_PpAWToEdnOKsCfHi2Ff8",
             authDomain: "studio-7295675373-ec35e.firebaseapp.com",
-            databaseURL: "https://studio-7295675373-ec35e-default-rtdb.firebaseio.com",
             projectId: "studio-7295675373-ec35e",
             storageBucket: "studio-7295675373-ec35e.firebasestorage.app",
             messagingSenderId: "1015073229231",
@@ -586,7 +584,6 @@
         };
 
         let firestoreDb = null;
-        let realtimeDb = null;
         let menuData = loadMenuData();
         let foodCards = loadFoodCards();
         let activeAdminMenuKey = 'lunch';
@@ -612,14 +609,14 @@
         }
 
         try {
-            if (typeof firebase !== 'undefined' && firebaseConfig.apiKey) {
-                if (!firebase.apps.length) {
-                    firebase.initializeApp(firebaseConfig);
+            if (typeof window.firebase !== 'undefined' && firebaseConfig.apiKey) {
+                if (!window.firebase.apps.length) {
+                    window.firebase.initializeApp(firebaseConfig);
                 }
 
                 // Initialise Firestore
                 try {
-                    firestoreDb = firebase.firestore();
+                    firestoreDb = window.firebase.firestore();
                     console.log("Cloud Firestore initialised.");
                     
                     // Listen to Firestore
@@ -638,9 +635,8 @@
                             updateSyncStatus('connected', 'Firestore Live');
                             setDiagStatus('diag-firestore-status', 'Connected & Synchronized', 'text-emerald-600');
                         } else {
-                            console.log("Firestore document empty. Pre-populating default data now...");
-                            pushAllDataToFirebase(false);
-                            setDiagStatus('diag-firestore-status', 'Seeded Initial Data', 'text-emerald-600');
+                            console.log("Firestore document empty. Ready for initial push.");
+                            setDiagStatus('diag-firestore-status', 'Ready (No Data Yet)', 'text-amber-600');
                         }
                     }, (err) => {
                         console.warn("Firestore listener warning:", err);
@@ -649,50 +645,6 @@
                 } catch (fsErr) {
                     console.warn("Firestore initialization failed:", fsErr);
                     setDiagStatus('diag-firestore-status', 'Failed: ' + fsErr.message, 'text-red-600');
-                }
-
-                // Initialise Realtime Database
-                try {
-                    realtimeDb = firebase.database();
-                    realtimeDb.ref('.info/connected').on('value', (snap) => {
-                        if (snap.val() === true) {
-                            setDiagStatus('diag-rtdb-status', 'Connected', 'text-emerald-600');
-                            if (!firestoreDb) updateSyncStatus('connected', 'Realtime DB Live');
-                        } else {
-                            setDiagStatus('diag-rtdb-status', 'Disconnected/Idle', 'text-gray-500');
-                        }
-                    });
-
-                    realtimeDb.ref('white_horse_menu_data').on('value', (snap) => {
-                        const val = snap.val();
-                        if (val) {
-                            menuData = val;
-                            localStorage.setItem('white_horse_menu_data', JSON.stringify(val));
-                            renderAdminEditor();
-                        } else {
-                            console.log("Realtime DB menuData empty. Seeding defaults...");
-                            realtimeDb.ref('white_horse_menu_data').set(defaultMenuData);
-                        }
-                    }, (err) => {
-                        setDiagStatus('diag-rtdb-status', 'Rule Error: ' + err.message, 'text-red-600');
-                    });
-
-                    realtimeDb.ref('white_horse_food_cards').on('value', (snap) => {
-                        const val = snap.val();
-                        if (val) {
-                            foodCards = val;
-                            localStorage.setItem('white_horse_food_cards', JSON.stringify(val));
-                            renderAdminEditor();
-                        } else {
-                            console.log("Realtime DB foodCards empty. Seeding defaults...");
-                            realtimeDb.ref('white_horse_food_cards').set(defaultFoodCards);
-                        }
-                    }, (err) => {
-                        setDiagStatus('diag-rtdb-status', 'Rule Error: ' + err.message, 'text-red-600');
-                    });
-                } catch (rtdbErr) {
-                    console.warn("Realtime DB initialization warning:", rtdbErr);
-                    setDiagStatus('diag-rtdb-status', 'Not provisioned: ' + rtdbErr.message, 'text-gray-500');
                 }
 
                 updateSyncStatus('connected', 'Cloud Ready');
@@ -776,23 +728,6 @@
                 }
             }
 
-            // 2. Write to Realtime Database
-            if (realtimeDb) {
-                try {
-                    await Promise.all([
-                        realtimeDb.ref('white_horse_menu_data').set(menuData),
-                        realtimeDb.ref('white_horse_food_cards').set(foodCards)
-                    ]);
-                    console.log("Successfully written payload to Realtime Database.");
-                    writtenToAny = true;
-                    setDiagStatus('diag-rtdb-status', 'Write Succeeded', 'text-emerald-600');
-                } catch (rtdbErr) {
-                    console.error("Realtime DB Write Failed:", rtdbErr);
-                    if (!lastError) lastError = rtdbErr;
-                    setDiagStatus('diag-rtdb-status', 'Write Error: ' + rtdbErr.message, 'text-red-600');
-                }
-            }
-
             // Also guarantee local storage sync
             localStorage.setItem('white_horse_menu_data', JSON.stringify(menuData));
             localStorage.setItem('white_horse_food_cards', JSON.stringify(foodCards));
@@ -810,7 +745,7 @@
                 if (toastSuccess) toastSuccess.classList.add('hidden');
                 if (toastError) {
                     if (toastErrorMsg) {
-                        toastErrorMsg.innerHTML = `<strong>Firebase Error:</strong> ${lastError?.message || 'Permission denied. Please check Firestore / Database rules in Firebase Console.'}`;
+                        toastErrorMsg.innerHTML = `<strong>Firebase Error:</strong> ${lastError?.message || 'Permission denied. Please check Firestore rules.'}`;
                     }
                     toastError.classList.remove('hidden');
                 }
