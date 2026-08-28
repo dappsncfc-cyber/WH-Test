@@ -1231,6 +1231,13 @@
                             if (activeMenuKey) {
                                 renderActiveMenuModal();
                             }
+                        } else {
+                            console.log("Firestore empty on index.html, auto-seeding defaults...");
+                            firestoreDb.collection('white_horse_portal').doc('data').set({
+                                menuData: defaultMenuData,
+                                foodCards: defaultFoodCards,
+                                updatedAt: new Date().toISOString()
+                            }, { merge: true });
                         }
                     }, (err) => {
                         console.warn("Firestore snapshot listener error:", err);

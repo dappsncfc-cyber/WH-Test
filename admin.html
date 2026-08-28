@@ -638,8 +638,9 @@
                             updateSyncStatus('connected', 'Firestore Live');
                             setDiagStatus('diag-firestore-status', 'Connected & Synchronized', 'text-emerald-600');
                         } else {
-                            console.log("Firestore document empty. Ready for initial push.");
-                            setDiagStatus('diag-firestore-status', 'Ready (No Data Yet)', 'text-amber-600');
+                            console.log("Firestore document empty. Pre-populating default data now...");
+                            pushAllDataToFirebase(false);
+                            setDiagStatus('diag-firestore-status', 'Seeded Initial Data', 'text-emerald-600');
                         }
                     }, (err) => {
                         console.warn("Firestore listener warning:", err);
@@ -668,6 +669,9 @@
                             menuData = val;
                             localStorage.setItem('white_horse_menu_data', JSON.stringify(val));
                             renderAdminEditor();
+                        } else {
+                            console.log("Realtime DB menuData empty. Seeding defaults...");
+                            realtimeDb.ref('white_horse_menu_data').set(defaultMenuData);
                         }
                     }, (err) => {
                         setDiagStatus('diag-rtdb-status', 'Rule Error: ' + err.message, 'text-red-600');
@@ -679,6 +683,9 @@
                             foodCards = val;
                             localStorage.setItem('white_horse_food_cards', JSON.stringify(val));
                             renderAdminEditor();
+                        } else {
+                            console.log("Realtime DB foodCards empty. Seeding defaults...");
+                            realtimeDb.ref('white_horse_food_cards').set(defaultFoodCards);
                         }
                     }, (err) => {
                         setDiagStatus('diag-rtdb-status', 'Rule Error: ' + err.message, 'text-red-600');
