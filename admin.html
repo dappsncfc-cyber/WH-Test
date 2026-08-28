@@ -656,7 +656,7 @@
         };
 
         // Firebase Configuration for project: studio-7295675373-ec35e
-        const firebaseConfig = {
+        const firebaseConfig = window.FIREBASE_CONFIG || {
             apiKey: "AIzaSyCBPyGHrS4Is0_PpAWToEdnOKsCfHi2Ff8",
             authDomain: "studio-7295675373-ec35e.firebaseapp.com",
             databaseURL: "https://studio-7295675373-ec35e-default-rtdb.firebaseio.com",
@@ -694,14 +694,14 @@
         }
 
         try {
-            if (typeof firebase !== 'undefined' && firebaseConfig.apiKey) {
-                if (!firebase.apps.length) {
-                    firebase.initializeApp(firebaseConfig);
+            if (typeof window.firebase !== 'undefined' && firebaseConfig.apiKey) {
+                if (!window.firebase.apps.length) {
+                    window.firebase.initializeApp(firebaseConfig);
                 }
 
                 // Initialise Firestore
                 try {
-                    firestoreDb = firebase.firestore();
+                    firestoreDb = window.firebase.firestore();
                     console.log("Cloud Firestore initialised.");
                     
                     // Listen to Firestore
@@ -739,57 +739,60 @@
 
                 // Initialise Realtime Database
                 try {
-                    realtimeDb = firebase.database();
-                    realtimeDb.ref('.info/connected').on('value', (snap) => {
-                        if (snap.val() === true) {
-                            setDiagStatus('diag-rtdb-status', 'Connected', 'text-emerald-600');
-                            if (!firestoreDb) updateSyncStatus('connected', 'Realtime DB Live');
-                        } else {
-                            setDiagStatus('diag-rtdb-status', 'Disconnected/Idle', 'text-gray-500');
-                        }
-                    });
+                    const fb = window.firebase || (typeof firebase !== 'undefined' ? firebase : null);
+                    if (fb && typeof fb.database === 'function') {
+                        realtimeDb = fb.database();
+                        realtimeDb.ref('.info/connected').on('value', (snap) => {
+                            if (snap.val() === true) {
+                                setDiagStatus('diag-rtdb-status', 'Connected', 'text-emerald-600');
+                                if (!firestoreDb) updateSyncStatus('connected', 'Realtime DB Live');
+                            } else {
+                                setDiagStatus('diag-rtdb-status', 'Disconnected/Idle', 'text-gray-500');
+                            }
+                        });
 
-                    realtimeDb.ref('white_horse_menu_data').on('value', (snap) => {
-                        const val = snap.val();
-                        if (val) {
-                            menuData = val;
-                            localStorage.setItem('white_horse_menu_data', JSON.stringify(val));
-                            renderAdminEditor();
-                        } else {
-                            console.log("Realtime DB menuData empty. Seeding defaults...");
-                            realtimeDb.ref('white_horse_menu_data').set(defaultMenuData);
-                        }
-                    }, (err) => {
-                        setDiagStatus('diag-rtdb-status', 'Rule Error: ' + err.message, 'text-red-600');
-                    });
+                        realtimeDb.ref('white_horse_menu_data').on('value', (snap) => {
+                            const val = snap.val();
+                            if (val) {
+                                menuData = val;
+                                localStorage.setItem('white_horse_menu_data', JSON.stringify(val));
+                                renderAdminEditor();
+                            } else {
+                                console.log("Realtime DB menuData empty. Seeding defaults...");
+                                realtimeDb.ref('white_horse_menu_data').set(defaultMenuData);
+                            }
+                        }, (err) => {
+                            setDiagStatus('diag-rtdb-status', 'Rule Error: ' + err.message, 'text-red-600');
+                        });
 
-                    realtimeDb.ref('white_horse_events').on('value', (snap) => {
-                        const val = snap.val();
-                        if (val) {
-                            eventsData = val;
-                            localStorage.setItem('white_horse_events', JSON.stringify(val));
-                            renderAdminEditor();
-                        } else {
-                            console.log("Realtime DB events empty. Seeding defaults...");
-                            realtimeDb.ref('white_horse_events').set(defaultEvents);
-                        }
-                    }, (err) => {
-                        setDiagStatus('diag-rtdb-status', 'Rule Error: ' + err.message, 'text-red-600');
-                    });
+                        realtimeDb.ref('white_horse_events').on('value', (snap) => {
+                            const val = snap.val();
+                            if (val) {
+                                eventsData = val;
+                                localStorage.setItem('white_horse_events', JSON.stringify(val));
+                                renderAdminEditor();
+                            } else {
+                                console.log("Realtime DB events empty. Seeding defaults...");
+                                realtimeDb.ref('white_horse_events').set(defaultEvents);
+                            }
+                        }, (err) => {
+                            setDiagStatus('diag-rtdb-status', 'Rule Error: ' + err.message, 'text-red-600');
+                        });
 
-                    realtimeDb.ref('white_horse_food_cards').on('value', (snap) => {
-                        const val = snap.val();
-                        if (val) {
-                            foodCards = val;
-                            localStorage.setItem('white_horse_food_cards', JSON.stringify(val));
-                            renderAdminEditor();
-                        } else {
-                            console.log("Realtime DB foodCards empty. Seeding defaults...");
-                            realtimeDb.ref('white_horse_food_cards').set(defaultFoodCards);
-                        }
-                    }, (err) => {
-                        setDiagStatus('diag-rtdb-status', 'Rule Error: ' + err.message, 'text-red-600');
-                    });
+                        realtimeDb.ref('white_horse_food_cards').on('value', (snap) => {
+                            const val = snap.val();
+                            if (val) {
+                                foodCards = val;
+                                localStorage.setItem('white_horse_food_cards', JSON.stringify(val));
+                                renderAdminEditor();
+                            } else {
+                                console.log("Realtime DB foodCards empty. Seeding defaults...");
+                                realtimeDb.ref('white_horse_food_cards').set(defaultFoodCards);
+                            }
+                        }, (err) => {
+                            setDiagStatus('diag-rtdb-status', 'Rule Error: ' + err.message, 'text-red-600');
+                        });
+                    }
                 } catch (rtdbErr) {
                     console.warn("Realtime DB initialization warning:", rtdbErr);
                     setDiagStatus('diag-rtdb-status', 'Not provisioned: ' + rtdbErr.message, 'text-gray-500');
@@ -923,7 +926,7 @@
                 if (toastSuccess) toastSuccess.classList.add('hidden');
                 if (toastError) {
                     if (toastErrorMsg) {
-                        toastErrorMsg.innerHTML = `<strong>Firebase Error:</strong> ${lastError?.message || 'Permission denied. Please check Firestore / Database rules in Firebase Console.'}`;
+                        toastErrorMsg.innerHTML = `<strong>Firebase Error:</strong> ${lastError?.message || 'Permission denied. Please check Firestore rules.'}`;
                     }
                     toastError.classList.remove('hidden');
                 }
