@@ -206,6 +206,9 @@
                 <button type="button" id="admin-tab-cards" onclick="switchAdminMenuTab('cards')" class="py-2.5 px-4 rounded-2xl text-xs sm:text-sm font-bold transition cursor-pointer text-pub-deep glass-pill hover:bg-white whitespace-nowrap">
                     <i class="fas fa-images mr-1.5"></i> Food Showcase Cards
                 </button>
+                <button type="button" id="admin-tab-events" onclick="switchAdminMenuTab('events')" class="py-2.5 px-4 rounded-2xl text-xs sm:text-sm font-bold transition cursor-pointer text-pub-deep glass-pill hover:bg-white whitespace-nowrap">
+                    <i class="fas fa-calendar-alt mr-1.5"></i> Upcoming Events
+                </button>
             </div>
 
             <!-- Toast Notifications -->
@@ -293,6 +296,56 @@
                     <button type="button" onclick="closeDiagnosticsModal()" class="glass-pill px-4 py-2 rounded-xl font-bold text-gray-600">Close</button>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- EVENT EDITOR MODAL -->
+    <div id="event-editor-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-2.5 sm:p-4 bg-pub-dark/70 backdrop-blur-md">
+        <div class="glass-modal-tile rounded-3xl w-full max-w-lg flex flex-col overflow-hidden relative shadow-2xl">
+            <div class="px-4 sm:px-6 py-4 border-b border-emerald-900/10 flex items-center justify-between bg-white/40">
+                <div class="flex items-center gap-2">
+                    <i class="fas fa-calendar-alt text-pub-sage text-lg"></i>
+                    <h3 id="event-editor-modal-title" class="font-serif font-bold text-pub-deep text-base sm:text-lg">Edit Event</h3>
+                </div>
+                <button type="button" onclick="closeEventEditorModal()" class="w-8 h-8 rounded-full glass-pill flex items-center justify-center text-gray-500 hover:text-pub-deep transition cursor-pointer">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <form id="event-editor-form" class="p-4 sm:p-6 overflow-y-auto max-h-[75vh] space-y-4">
+                <input type="hidden" id="event-edit-id">
+
+                <div>
+                    <label class="block text-xs font-bold text-pub-deep mb-1">Event Title *</label>
+                    <input type="text" id="event-edit-title" required placeholder="e.g. Friday Night Live Music" class="w-full px-3 py-2.5 rounded-xl glass-input text-xs text-gray-800 font-semibold">
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold text-pub-deep mb-1">Event Date *</label>
+                        <input type="date" id="event-edit-date" required class="w-full px-3 py-2.5 rounded-xl glass-input text-xs text-gray-800 font-semibold">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-pub-deep mb-1">Start Time *</label>
+                        <input type="text" id="event-edit-time" required placeholder="e.g. 20:00" class="w-full px-3 py-2.5 rounded-xl glass-input text-xs text-gray-800 font-semibold">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-pub-deep mb-1">Image URL *</label>
+                    <input type="text" id="event-edit-image" required placeholder="https://images.unsplash.com/..." class="w-full px-3 py-2.5 rounded-xl glass-input text-xs text-gray-800 font-mono">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-pub-deep mb-1">Event Description *</label>
+                    <textarea id="event-edit-desc" rows="3" required placeholder="Describe the event details..." class="w-full px-3 py-2.5 rounded-xl glass-input text-xs text-gray-800"></textarea>
+                </div>
+
+                <div class="pt-2 flex items-center justify-end gap-2">
+                    <button type="button" onclick="closeEventEditorModal()" class="glass-pill px-4 py-2 rounded-xl text-xs font-bold text-gray-600 cursor-pointer">Cancel</button>
+                    <button type="submit" class="glass-button-primary text-white text-xs font-bold px-5 py-2 rounded-xl uppercase tracking-wider cursor-pointer">Save Event</button>
+                </div>
+            </form>
         </div>
     </div>
 
@@ -478,6 +531,33 @@
             }
         ];
 
+        const defaultEvents = [
+            {
+                id: "evt-1",
+                title: "Friday Night Live Acoustic Session",
+                date: "2026-09-15",
+                time: "20:00",
+                image: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                description: "Enjoy relaxing acoustic covers from talented local Norfolk musicians alongside our finest cask ales and gin specials."
+            },
+            {
+                id: "evt-2",
+                title: "Pub Quiz & Curry Night",
+                date: "2026-09-20",
+                time: "19:30",
+                image: "https://images.unsplash.com/photo-1517457373958-b7bdd4587205?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                description: "Gather your team for our popular pub quiz! Great prizes to be won, plus chef's homemade curry specials served all evening."
+            },
+            {
+                id: "evt-3",
+                title: "Cromer Seafood & Wine Evening",
+                date: "2026-10-05",
+                time: "18:30",
+                image: "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                description: "A special 5-course coastal tasting menu showcasing fresh Cromer crab, local sea bass and Norfolk samphire with wine pairings."
+            }
+        ];
+
         const defaultMenuData = {
             lunch: {
                 title: "Lunch Menu (Served 12pm - 3pm)",
@@ -586,7 +666,40 @@
         let firestoreDb = null;
         let menuData = loadMenuData();
         let foodCards = loadFoodCards();
+        let eventsData = loadEventsData();
         let activeAdminMenuKey = 'lunch';
+
+        function getTodayDateString() {
+            const today = new Date();
+            const yyyy = today.getFullYear();
+            const mm = String(today.getMonth() + 1).padStart(2, '0');
+            const dd = String(today.getDate()).padStart(2, '0');
+            return `${yyyy}-${mm}-${dd}`;
+        }
+
+        function cleanAndSortEvents(rawEvents) {
+            if (!Array.isArray(rawEvents)) return [];
+            const todayStr = getTodayDateString();
+            const valid = rawEvents.filter(evt => evt && evt.date && evt.date >= todayStr);
+            valid.sort((a, b) => {
+                const dateCompare = a.date.localeCompare(b.date);
+                if (dateCompare !== 0) return dateCompare;
+                return (a.time || '').localeCompare(b.time || '');
+            });
+            return valid;
+        }
+
+        function loadEventsData() {
+            try {
+                const stored = localStorage.getItem('white_horse_events');
+                if (stored) {
+                    return cleanAndSortEvents(JSON.parse(stored));
+                }
+            } catch (e) {
+                console.error('Error loading events:', e);
+            }
+            return cleanAndSortEvents(defaultEvents);
+        }
 
         function updateSyncStatus(status, message) {
             const syncDot = document.getElementById('sync-dot');
@@ -630,6 +743,10 @@
                             if (val.foodCards) {
                                 foodCards = val.foodCards;
                                 localStorage.setItem('white_horse_food_cards', JSON.stringify(foodCards));
+                            }
+                            if (val.events) {
+                                eventsData = cleanAndSortEvents(val.events);
+                                localStorage.setItem('white_horse_events', JSON.stringify(eventsData));
                             }
                             renderAdminEditor();
                             updateSyncStatus('connected', 'Firestore Live');
@@ -705,9 +822,11 @@
             const toastError = document.getElementById('admin-error-toast');
             const toastErrorMsg = document.getElementById('admin-error-msg');
 
+            eventsData = cleanAndSortEvents(eventsData);
             const payload = {
                 menuData: menuData,
                 foodCards: foodCards,
+                events: eventsData,
                 updatedAt: new Date().toISOString()
             };
 
@@ -731,6 +850,7 @@
             // Also guarantee local storage sync
             localStorage.setItem('white_horse_menu_data', JSON.stringify(menuData));
             localStorage.setItem('white_horse_food_cards', JSON.stringify(foodCards));
+            localStorage.setItem('white_horse_events', JSON.stringify(eventsData));
 
             if (writtenToAny) {
                 updateSyncStatus('connected', 'Live Cloud Sync');
@@ -757,9 +877,10 @@
         }
 
         function confirmResetMenuData() {
-            if (confirm("Are you sure you want to reset all menus and food showcase cards to factory default settings?")) {
+            if (confirm("Are you sure you want to reset all menus, food showcase cards, and events to factory default settings?")) {
                 menuData = JSON.parse(JSON.stringify(defaultMenuData));
                 foodCards = JSON.parse(JSON.stringify(defaultFoodCards));
+                eventsData = cleanAndSortEvents(defaultEvents);
                 saveMenuData();
                 renderAdminEditor();
             }
@@ -767,7 +888,7 @@
 
         function switchAdminMenuTab(menuKey) {
             activeAdminMenuKey = menuKey;
-            ['lunch', 'dinner', 'veg', 'sunday', 'specials', 'cards'].forEach(k => {
+            ['lunch', 'dinner', 'veg', 'sunday', 'specials', 'cards', 'events'].forEach(k => {
                 const btn = document.getElementById(`admin-tab-${k}`);
                 if (!btn) return;
                 if (k === menuKey) {
@@ -785,6 +906,11 @@
 
             if (activeAdminMenuKey === 'cards') {
                 renderFoodCardsAdminEditor(container);
+                return;
+            }
+
+            if (activeAdminMenuKey === 'events') {
+                renderEventsAdminEditor(container);
                 return;
             }
 
@@ -874,12 +1000,123 @@
             container.appendChild(secDiv);
         }
 
+        function renderEventsAdminEditor(container) {
+            container.innerHTML = '';
+            eventsData = cleanAndSortEvents(eventsData);
+            const secDiv = document.createElement('div');
+            secDiv.className = 'glass-card rounded-3xl p-5 sm:p-6 border border-white/90 space-y-4';
+
+            let eventsHtml = eventsData.map((evt) => `
+                <div class="flex flex-col md:flex-row items-center justify-between p-4 rounded-2xl bg-white/80 border border-emerald-900/10 gap-4 hover:shadow-sm transition">
+                    <div class="flex items-center gap-4 w-full md:w-auto">
+                        <div class="w-20 h-16 rounded-xl overflow-hidden shrink-0 bg-gray-100 border border-gray-200">
+                            <img src="${evt.image || ''}" onerror="this.onerror=null; this.src='https://placehold.co/200x160/1b3a2b/ffffff?text=Event';" alt="${evt.title || ''}" class="w-full h-full object-cover">
+                        </div>
+                        <div>
+                            <div class="flex items-center gap-2 mb-1">
+                                <span class="px-2 py-0.5 rounded-md bg-pub-sage/10 text-pub-sage text-[10px] font-bold uppercase tracking-wider">${evt.date || ''}</span>
+                                <span class="text-xs text-gray-500 font-bold"><i class="fas fa-clock mr-1"></i>${evt.time || ''}</span>
+                            </div>
+                            <h4 class="font-serif font-bold text-pub-deep text-base">${evt.title || ''}</h4>
+                            <p class="text-xs text-gray-600 line-clamp-1 max-w-md">${evt.description || ''}</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2 shrink-0 w-full md:w-auto justify-end">
+                        <button type="button" onclick="openEditEventModal('${evt.id}')" class="glass-pill hover:bg-white text-pub-sage px-3.5 py-2 rounded-xl text-xs font-bold transition cursor-pointer flex items-center gap-1.5 shadow-sm">
+                            <i class="fas fa-edit"></i> Edit Event
+                        </button>
+                        <button type="button" onclick="deleteEvent('${evt.id}')" class="glass-pill hover:bg-red-100 text-red-600 px-3 py-2 rounded-xl text-xs font-bold transition cursor-pointer" title="Delete Event">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+
+            secDiv.innerHTML = `
+                <div class="flex items-center justify-between border-b border-emerald-900/10 pb-3">
+                    <div>
+                        <h3 class="font-serif font-bold text-pub-deep text-lg text-pub-sage">Upcoming Events</h3>
+                        <p class="text-xs text-gray-600">Events are sorted by date automatically and auto-delete after the date passes.</p>
+                    </div>
+                    <button type="button" onclick="openAddEventModal()" class="glass-button-primary text-white text-xs font-bold px-3.5 py-2 rounded-xl flex items-center gap-1.5 cursor-pointer uppercase tracking-wider">
+                        <i class="fas fa-plus"></i> Add Event
+                    </button>
+                </div>
+                <div class="space-y-3">${eventsHtml || '<p class="text-xs text-gray-500 py-4 text-center">No upcoming events scheduled. Click "Add Event" to create one.</p>'}</div>
+            `;
+
+            container.appendChild(secDiv);
+        }
+
         function openAddDishModal() {
             if (activeAdminMenuKey === 'cards') {
                 openAddCardModal();
                 return;
             }
+            if (activeAdminMenuKey === 'events') {
+                openAddEventModal();
+                return;
+            }
             openEditDishModal(activeAdminMenuKey, 0, -1);
+        }
+
+        function openAddEventModal() {
+            openEditEventModal(null);
+        }
+
+        function openEditEventModal(eventId) {
+            const modal = document.getElementById('event-editor-modal');
+            const titleEl = document.getElementById('event-editor-modal-title');
+            const titleInput = document.getElementById('event-edit-title');
+            const dateInput = document.getElementById('event-edit-date');
+            const timeInput = document.getElementById('event-edit-time');
+            const imageInput = document.getElementById('event-edit-image');
+            const descInput = document.getElementById('event-edit-desc');
+            const idInput = document.getElementById('event-edit-id');
+
+            if (!modal) return;
+
+            idInput.value = eventId || '';
+
+            if (eventId) {
+                const evt = eventsData.find(e => e.id === eventId);
+                if (evt) {
+                    titleEl.textContent = 'Edit Event';
+                    titleInput.value = evt.title || '';
+                    dateInput.value = evt.date || '';
+                    timeInput.value = evt.time || '';
+                    imageInput.value = evt.image || '';
+                    descInput.value = evt.description || '';
+                }
+            } else {
+                titleEl.textContent = 'Add Upcoming Event';
+                titleInput.value = '';
+                dateInput.value = getTodayDateString();
+                timeInput.value = '19:00';
+                imageInput.value = 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80';
+                descInput.value = '';
+            }
+
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeEventEditorModal() {
+            const modal = document.getElementById('event-editor-modal');
+            if (modal) {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }
+        }
+
+        function deleteEvent(eventId) {
+            const evt = eventsData.find(e => e.id === eventId);
+            if (!evt) return;
+            if (confirm(`Are you sure you want to delete event "${evt.title}"?`)) {
+                eventsData = eventsData.filter(e => e.id !== eventId);
+                saveMenuData();
+                renderAdminEditor();
+            }
         }
 
         function openAddCardModal() {
@@ -1045,6 +1282,42 @@
 
                     saveMenuData();
                     closeCardEditorModal();
+                    renderAdminEditor();
+                });
+            }
+
+            // Event Editor Form Submit
+            const eventForm = document.getElementById('event-editor-form');
+            if (eventForm) {
+                eventForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    const eventId = document.getElementById('event-edit-id').value;
+                    const title = document.getElementById('event-edit-title').value.trim();
+                    const date = document.getElementById('event-edit-date').value;
+                    const time = document.getElementById('event-edit-time').value.trim();
+                    const image = document.getElementById('event-edit-image').value.trim();
+                    const description = document.getElementById('event-edit-desc').value.trim();
+
+                    if (eventId) {
+                        const idx = eventsData.findIndex(evt => evt.id === eventId);
+                        if (idx !== -1) {
+                            eventsData[idx] = { id: eventId, title, date, time, image, description };
+                        }
+                    } else {
+                        const newEvt = {
+                            id: 'evt-' + Date.now(),
+                            title,
+                            date,
+                            time,
+                            image,
+                            description
+                        };
+                        eventsData.push(newEvt);
+                    }
+
+                    eventsData = cleanAndSortEvents(eventsData);
+                    saveMenuData();
+                    closeEventEditorModal();
                     renderAdminEditor();
                 });
             }
