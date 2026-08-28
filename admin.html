@@ -17,6 +17,10 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,500;1,600&display=swap" rel="stylesheet">
 
+    <!-- Firebase SDK Compat Scripts (For Real-time Multi-device Live Menu Updates) -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
+
     <script>
         tailwind.config = {
             theme: {
@@ -489,6 +493,28 @@
             }
         };
 
+        // Firebase Configuration (Replace with actual Firebase project credentials for live production sync)
+        const firebaseConfig = window.FIREBASE_CONFIG || {
+            apiKey: "YOUR_FIREBASE_API_KEY",
+            authDomain: "white-horse-inn-cromer.firebaseapp.com",
+            databaseURL: "https://white-horse-inn-cromer-default-rtdb.firebaseio.com",
+            projectId: "white-horse-inn-cromer",
+            storageBucket: "white-horse-inn-cromer.appspot.com",
+            messagingSenderId: "1234567890",
+            appId: "1:1234567890:web:abcdef123456"
+        };
+
+        let db = null;
+        try {
+            if (typeof firebase !== 'undefined' && firebaseConfig.apiKey !== "YOUR_FIREBASE_API_KEY") {
+                firebase.initializeApp(firebaseConfig);
+                db = firebase.database();
+                console.log("Firebase Realtime Database initialized for Admin Portal.");
+            }
+        } catch (e) {
+            console.warn("Firebase initialization skipped or failed. Falling back to local storage sync.", e);
+        }
+
         let menuData = loadMenuData();
         let foodCards = loadFoodCards();
         let activeAdminMenuKey = 'lunch';
@@ -523,6 +549,13 @@
                 menuData.foodCards = foodCards;
                 localStorage.setItem('white_horse_menu_data', JSON.stringify(menuData));
                 localStorage.setItem('white_horse_food_cards', JSON.stringify(foodCards));
+
+                // Real-time Cloud Synchronization via Firebase
+                if (db) {
+                    db.ref('white_horse_menu_data').set(menuData);
+                    db.ref('white_horse_food_cards').set(foodCards);
+                }
+
                 const toast = document.getElementById('admin-save-toast');
                 if (toast) {
                     toast.classList.remove('hidden');
