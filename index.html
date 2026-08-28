@@ -1190,23 +1190,23 @@
             }
         };
 
-        // Firebase Configuration (Replace with actual Firebase project credentials for live production sync)
+        // Firebase Configuration
         const firebaseConfig = window.FIREBASE_CONFIG || {
-            apiKey: "YOUR_FIREBASE_API_KEY",
-            authDomain: "white-horse-inn-cromer.firebaseapp.com",
-            databaseURL: "https://white-horse-inn-cromer-default-rtdb.firebaseio.com",
-            projectId: "white-horse-inn-cromer",
-            storageBucket: "white-horse-inn-cromer.appspot.com",
-            messagingSenderId: "1234567890",
-            appId: "1:1234567890:web:abcdef123456"
+            apiKey: "AIzaSyCBPyGHrS4Is0_PpAWToEdnOKsCfHi2Ff8",
+            authDomain: "studio-7295675373-ec35e.firebaseapp.com",
+            databaseURL: "https://studio-7295675373-ec35e-default-rtdb.firebaseio.com",
+            projectId: "studio-7295675373-ec35e",
+            storageBucket: "studio-7295675373-ec35e.firebasestorage.app",
+            messagingSenderId: "1015073229231",
+            appId: "1:1015073229231:web:b2122da1d5aa25ebbc475a"
         };
 
         let db = null;
         try {
-            if (typeof firebase !== 'undefined' && firebaseConfig.apiKey !== "YOUR_FIREBASE_API_KEY") {
+            if (typeof firebase !== 'undefined') {
                 firebase.initializeApp(firebaseConfig);
                 db = firebase.database();
-                console.log("Firebase Realtime Database initialized for Main Site.");
+                console.log("Firebase Realtime Database initialised for Main Site.");
 
                 // Live Sync Listeners
                 db.ref('white_horse_menu_data').on('value', (snapshot) => {
@@ -1226,7 +1226,7 @@
                 });
             }
         } catch (e) {
-            console.warn("Firebase initialization skipped or failed. Falling back to local storage sync.", e);
+            console.warn("Firebase initialisation skipped or failed. Falling back to local storage sync.", e);
         }
 
         // Active Menu Data Store loaded from LocalStorage
