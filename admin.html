@@ -17,8 +17,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,500;1,600&display=swap" rel="stylesheet">
 
-    <!-- Firebase SDK Compat Scripts (Real-time Live Sync) -->
+    <!-- Firebase SDK Compat Scripts (Supporting both Firestore and Realtime Database) -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
 
     <script>
@@ -58,7 +59,7 @@
         }
 
         .glass-modal-tile {
-            background: rgba(255, 255, 255, 0.95);
+            background: rgba(255, 255, 255, 0.96);
             backdrop-filter: blur(24px);
             -webkit-backdrop-filter: blur(24px);
             border: 1px solid rgba(255, 255, 255, 0.95);
@@ -123,12 +124,13 @@
                     </div>
                 </a>
 
-                <div class="flex items-center gap-3">
-                    <div id="cloud-sync-status" class="glass-pill px-3 py-1.5 rounded-xl text-[11px] font-bold text-gray-500 flex items-center gap-2">
+                <div class="flex items-center gap-2 sm:gap-3">
+                    <button type="button" onclick="openDiagnosticsModal()" id="cloud-sync-status" class="glass-pill px-3 py-1.5 rounded-xl text-[11px] font-bold text-gray-600 flex items-center gap-2 hover:bg-white transition cursor-pointer shadow-sm">
                         <span id="sync-dot" class="w-2.5 h-2.5 rounded-full bg-amber-400"></span>
-                        <span id="sync-text">Connecting...</span>
-                    </div>
-                    <a href="index.html" class="glass-pill text-pub-deep hover:bg-white text-xs font-bold px-4 py-2 rounded-xl flex items-center gap-2 transition">
+                        <span id="sync-text">Checking Cloud...</span>
+                        <i class="fas fa-wrench text-[10px] text-gray-400"></i>
+                    </button>
+                    <a href="index.html" class="glass-pill text-pub-deep hover:bg-white text-xs font-bold px-3.5 py-2 rounded-xl flex items-center gap-1.5 transition">
                         <i class="fas fa-arrow-left text-pub-sage"></i> Back to Main Site
                     </a>
                 </div>
@@ -148,10 +150,10 @@
 
             <form id="admin-pin-form" class="space-y-4">
                 <div>
-                    <input type="password" id="admin-pin-input" maxlength="6" placeholder="Enter Staff PIN" required class="w-full text-center tracking-widest text-xl font-bold px-4 py-3.5 rounded-xl glass-input text-gray-800">
+                    <input type="password" id="admin-pin-input" maxlength="6" placeholder="Enter Staff PIN (Default: 1982)" required class="w-full text-center tracking-widest text-xl font-bold px-4 py-3.5 rounded-xl glass-input text-gray-800">
                 </div>
                 <div id="admin-pin-error" class="hidden text-xs text-red-600 font-bold p-2.5 rounded-xl bg-red-50 border border-red-200">
-                    <i class="fas fa-exclamation-circle mr-1"></i> Incorrect PIN code. Please try again.
+                    <i class="fas fa-exclamation-circle mr-1"></i> Incorrect PIN code. Default is 1982.
                 </div>
                 <button type="submit" class="w-full glass-button-primary text-white font-bold py-3.5 rounded-xl text-xs uppercase tracking-wider cursor-pointer shadow-lg">
                     Unlock Staff Admin
@@ -172,7 +174,10 @@
                     <p class="text-xs text-gray-600 mt-1">Manage dishes, prices, descriptions, and allergen tags in real-time across all visitor devices.</p>
                 </div>
 
-                <div class="flex items-center gap-2">
+                <div class="flex items-center gap-2 flex-wrap">
+                    <button type="button" onclick="pushAllDataToFirebase(true)" class="bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold px-3.5 py-2.5 rounded-xl flex items-center gap-1.5 cursor-pointer shadow-md transition">
+                        <i class="fas fa-cloud-arrow-up"></i> Push All to Cloud DB
+                    </button>
                     <button type="button" onclick="confirmResetMenuData()" class="glass-pill px-3.5 py-2 rounded-xl text-xs font-bold text-red-600 hover:bg-red-50 transition flex items-center gap-1.5 cursor-pointer">
                         <i class="fas fa-rotate-left"></i> Reset Defaults
                     </button>
@@ -205,12 +210,21 @@
             </div>
 
             <!-- Toast Notifications -->
-            <div id="admin-save-toast" class="hidden p-3 rounded-2xl bg-emerald-100 border border-emerald-300 text-emerald-900 text-xs font-bold text-center shadow-sm">
-                <i class="fas fa-check-circle mr-1 text-pub-sage"></i> Menu changes saved and synced to Firebase successfully!
+            <div id="admin-save-toast" class="hidden p-3.5 rounded-2xl bg-emerald-100 border border-emerald-300 text-emerald-900 text-xs font-bold text-center shadow-sm">
+                <i class="fas fa-check-circle mr-1 text-pub-sage"></i> Menu changes saved and synced to Firebase Cloud successfully!
             </div>
 
-            <div id="admin-error-toast" class="hidden p-3 rounded-2xl bg-red-100 border border-red-300 text-red-900 text-xs font-bold text-center shadow-sm">
-                <i class="fas fa-triangle-exclamation mr-1 text-red-600"></i> <span id="admin-error-msg">Save failed. Saved to local storage only.</span>
+            <div id="admin-error-toast" class="hidden p-4 rounded-2xl bg-red-50 border border-red-200 text-red-900 text-xs font-medium shadow-sm">
+                <div class="flex items-start justify-between gap-2">
+                    <div class="flex items-start gap-2">
+                        <i class="fas fa-triangle-exclamation text-red-600 mt-0.5"></i>
+                        <div>
+                            <p class="font-bold text-red-800">Firebase Cloud Sync Alert</p>
+                            <p id="admin-error-msg" class="mt-0.5 text-red-700">Save failed. Saved to local browser storage only.</p>
+                        </div>
+                    </div>
+                    <button type="button" onclick="openDiagnosticsModal()" class="text-[11px] underline font-bold text-red-800 shrink-0">Open Diagnostics</button>
+                </div>
             </div>
 
             <!-- Container for Category Cards & Dish List -->
@@ -220,8 +234,71 @@
         </div>
     </main>
 
+    <!-- FIREBASE DIAGNOSTICS & SETUP MODAL -->
+    <div id="diagnostics-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-3 sm:p-4 bg-pub-dark/75 backdrop-blur-md">
+        <div class="glass-modal-tile rounded-3xl w-full max-w-xl flex flex-col overflow-hidden relative shadow-2xl">
+            <div class="px-5 py-4 border-b border-emerald-900/10 flex items-center justify-between bg-white/40">
+                <div class="flex items-center gap-2">
+                    <i class="fas fa-database text-pub-sage text-lg"></i>
+                    <h3 class="font-serif font-bold text-pub-deep text-lg">Firebase Connection Diagnostics</h3>
+                </div>
+                <button type="button" onclick="closeDiagnosticsModal()" class="w-8 h-8 rounded-full glass-pill flex items-center justify-center text-gray-500 hover:text-pub-deep transition cursor-pointer">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <div class="p-5 overflow-y-auto max-h-[75vh] space-y-4 text-xs">
+                <div class="bg-white/80 p-3.5 rounded-2xl border border-gray-200 space-y-2">
+                    <div class="flex justify-between items-center">
+                        <span class="font-bold text-gray-700">Project ID:</span>
+                        <code class="bg-gray-100 px-2 py-0.5 rounded text-pub-sage font-mono">studio-7295675373-ec35e</code>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="font-bold text-gray-700">Cloud Firestore Status:</span>
+                        <span id="diag-firestore-status" class="font-bold text-amber-600">Checking...</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="font-bold text-gray-700">Realtime DB Status:</span>
+                        <span id="diag-rtdb-status" class="font-bold text-amber-600">Checking...</span>
+                    </div>
+                    <div class="pt-2 border-t border-gray-100 flex justify-between items-center">
+                        <span class="font-bold text-gray-700">Active Storage Layer:</span>
+                        <span id="diag-active-layer" class="font-bold text-pub-sage">Local Storage + Cloud</span>
+                    </div>
+                </div>
+
+                <div class="space-y-2">
+                    <h4 class="font-bold text-pub-deep">If your database is empty or showing permission errors:</h4>
+                    <p class="text-gray-600 leading-relaxed">
+                        1. Open the <a href="https://console.firebase.google.com/project/studio-7295675373-ec35e/firestore/rules" target="_blank" class="text-pub-sage font-bold underline">Firestore Rules Console</a> or <a href="https://console.firebase.google.com/project/studio-7295675373-ec35e/database/rules" target="_blank" class="text-pub-sage font-bold underline">Realtime DB Rules</a>.
+                    </p>
+                    <p class="text-gray-600 leading-relaxed">
+                        2. Set rules to test/open mode for development:
+                    </p>
+                    <div class="bg-gray-900 text-emerald-400 p-3 rounded-xl font-mono text-[11px] overflow-x-auto">
+                        rules_version = '2';<br>
+                        service cloud.firestore {<br>
+                        &nbsp;&nbsp;match /databases/{database}/documents {<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;match /{document=**} {<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;allow read, write: if true;<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;}<br>
+                        &nbsp;&nbsp;}<br>
+                        }
+                    </div>
+                </div>
+
+                <div class="pt-3 border-t border-gray-200 flex items-center justify-between gap-3">
+                    <button type="button" onclick="pushAllDataToFirebase(true)" class="glass-button-primary text-white font-bold px-4 py-2.5 rounded-xl uppercase tracking-wider cursor-pointer">
+                        <i class="fas fa-upload mr-1"></i> Force Seed All Data to Cloud Now
+                    </button>
+                    <button type="button" onclick="closeDiagnosticsModal()" class="glass-pill px-4 py-2 rounded-xl font-bold text-gray-600">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- FOOD CARD EDITOR MODAL -->
-    <div id="card-editor-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-2.5 sm:p-4 bg-pub-dark/70 backdrop-blur-md transition-opacity duration-300">
+    <div id="card-editor-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-2.5 sm:p-4 bg-pub-dark/70 backdrop-blur-md">
         <div class="glass-modal-tile rounded-3xl w-full max-w-lg flex flex-col overflow-hidden relative shadow-2xl">
             <div class="px-4 sm:px-6 py-4 border-b border-emerald-900/10 flex items-center justify-between bg-white/40">
                 <div class="flex items-center gap-2">
@@ -266,7 +343,7 @@
     </div>
 
     <!-- DISH EDITOR MODAL -->
-    <div id="dish-editor-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-2.5 sm:p-4 bg-pub-dark/70 backdrop-blur-md transition-opacity duration-300">
+    <div id="dish-editor-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-2.5 sm:p-4 bg-pub-dark/70 backdrop-blur-md">
         <div class="glass-modal-tile rounded-3xl w-full max-w-lg flex flex-col overflow-hidden relative shadow-2xl">
             <div class="px-4 sm:px-6 py-4 border-b border-emerald-900/10 flex items-center justify-between bg-white/40">
                 <div class="flex items-center gap-2">
@@ -497,8 +574,8 @@
             }
         };
 
-        // Firebase Configuration (Configured for project: studio-7295675373-ec35e)
-        const firebaseConfig = window.FIREBASE_CONFIG || {
+        // Firebase Configuration for project: studio-7295675373-ec35e
+        const firebaseConfig = {
             apiKey: "AIzaSyCBPyGHrS4Is0_PpAWToEdnOKsCfHi2Ff8",
             authDomain: "studio-7295675373-ec35e.firebaseapp.com",
             databaseURL: "https://studio-7295675373-ec35e-default-rtdb.firebaseio.com",
@@ -508,7 +585,8 @@
             appId: "1:1015073229231:web:b2122da1d5aa25ebbc475a"
         };
 
-        let db = null;
+        let firestoreDb = null;
+        let realtimeDb = null;
         let menuData = loadMenuData();
         let foodCards = loadFoodCards();
         let activeAdminMenuKey = 'lunch';
@@ -520,80 +598,116 @@
 
             if (status === 'connected') {
                 syncDot.className = 'w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse';
-                syncText.textContent = message || 'Live Sync Active';
+                syncText.textContent = message || 'Live Cloud Sync';
                 syncText.className = 'text-emerald-800 font-bold';
             } else if (status === 'local') {
                 syncDot.className = 'w-2.5 h-2.5 rounded-full bg-amber-500';
-                syncText.textContent = message || 'Local Mode';
+                syncText.textContent = message || 'Local Storage';
                 syncText.className = 'text-amber-800 font-bold';
             } else if (status === 'error') {
                 syncDot.className = 'w-2.5 h-2.5 rounded-full bg-red-500';
-                syncText.textContent = message || 'Sync Error';
+                syncText.textContent = message || 'Sync Alert';
                 syncText.className = 'text-red-800 font-bold';
             }
         }
 
-        // Initialize Firebase
         try {
             if (typeof firebase !== 'undefined' && firebaseConfig.apiKey) {
                 if (!firebase.apps.length) {
                     firebase.initializeApp(firebaseConfig);
                 }
-                db = firebase.database();
-                console.log("Firebase Realtime Database instance created.");
 
-                // Connection State Listener
-                db.ref('.info/connected').on('value', (snap) => {
-                    if (snap.val() === true) {
-                        console.log("Connected to Firebase Realtime Database.");
-                        updateSyncStatus('connected', 'Live Cloud Sync');
-                    } else {
-                        console.warn("Disconnected from Firebase Realtime Database.");
-                        updateSyncStatus('local', 'Offline / Local Sync');
-                    }
-                });
+                // Initialise Firestore
+                try {
+                    firestoreDb = firebase.firestore();
+                    console.log("Cloud Firestore initialised.");
+                    
+                    // Listen to Firestore
+                    firestoreDb.collection('white_horse_portal').doc('data').onSnapshot((doc) => {
+                        if (doc.exists) {
+                            const val = doc.data();
+                            if (val.menuData) {
+                                menuData = val.menuData;
+                                localStorage.setItem('white_horse_menu_data', JSON.stringify(menuData));
+                            }
+                            if (val.foodCards) {
+                                foodCards = val.foodCards;
+                                localStorage.setItem('white_horse_food_cards', JSON.stringify(foodCards));
+                            }
+                            renderAdminEditor();
+                            updateSyncStatus('connected', 'Firestore Live');
+                            setDiagStatus('diag-firestore-status', 'Connected & Synchronized', 'text-emerald-600');
+                        } else {
+                            console.log("Firestore document empty. Ready for initial push.");
+                            setDiagStatus('diag-firestore-status', 'Ready (No Data Yet)', 'text-amber-600');
+                        }
+                    }, (err) => {
+                        console.warn("Firestore listener warning:", err);
+                        setDiagStatus('diag-firestore-status', err.message || 'Permission Error', 'text-red-600');
+                    });
+                } catch (fsErr) {
+                    console.warn("Firestore initialization failed:", fsErr);
+                    setDiagStatus('diag-firestore-status', 'Failed: ' + fsErr.message, 'text-red-600');
+                }
 
-                // Listen for Menu Data
-                db.ref('white_horse_menu_data').on('value', (snapshot) => {
-                    const val = snapshot.val();
-                    if (val) {
-                        menuData = val;
-                        localStorage.setItem('white_horse_menu_data', JSON.stringify(val));
-                        renderAdminEditor();
-                    } else {
-                        // Seed database if empty
-                        db.ref('white_horse_menu_data').set(defaultMenuData).catch(e => {
-                            console.error("Failed to seed initial menu data in Firebase:", e);
-                        });
-                    }
-                }, (error) => {
-                    console.error("Firebase read error (Menu Data):", error);
-                    updateSyncStatus('error', 'Firebase Access Denied');
-                });
+                // Initialise Realtime Database
+                try {
+                    realtimeDb = firebase.database();
+                    realtimeDb.ref('.info/connected').on('value', (snap) => {
+                        if (snap.val() === true) {
+                            setDiagStatus('diag-rtdb-status', 'Connected', 'text-emerald-600');
+                            if (!firestoreDb) updateSyncStatus('connected', 'Realtime DB Live');
+                        } else {
+                            setDiagStatus('diag-rtdb-status', 'Disconnected/Idle', 'text-gray-500');
+                        }
+                    });
 
-                // Listen for Food Cards
-                db.ref('white_horse_food_cards').on('value', (snapshot) => {
-                    const val = snapshot.val();
-                    if (val) {
-                        foodCards = val;
-                        localStorage.setItem('white_horse_food_cards', JSON.stringify(val));
-                        renderAdminEditor();
-                    } else {
-                        // Seed database if empty
-                        db.ref('white_horse_food_cards').set(defaultFoodCards).catch(e => {
-                            console.error("Failed to seed initial food cards in Firebase:", e);
-                        });
-                    }
-                }, (error) => {
-                    console.error("Firebase read error (Food Cards):", error);
-                    updateSyncStatus('error', 'Firebase Access Denied');
-                });
+                    realtimeDb.ref('white_horse_menu_data').on('value', (snap) => {
+                        const val = snap.val();
+                        if (val && !firestoreDb) {
+                            menuData = val;
+                            localStorage.setItem('white_horse_menu_data', JSON.stringify(val));
+                            renderAdminEditor();
+                        }
+                    }, (err) => {
+                        setDiagStatus('diag-rtdb-status', 'Rule Error: ' + err.message, 'text-red-600');
+                    });
+                } catch (rtdbErr) {
+                    console.warn("Realtime DB initialization warning:", rtdbErr);
+                    setDiagStatus('diag-rtdb-status', 'Not provisioned: ' + rtdbErr.message, 'text-gray-500');
+                }
+
+                updateSyncStatus('connected', 'Cloud Ready');
             } else {
                 updateSyncStatus('local', 'Local Storage Mode');
             }
         } catch (e) {
-            console.warn("Firebase initialization encountered an error. Falling back to local storage:", e);
+            console.warn("Firebase general initialisation error:", e);
             updateSyncStatus('local', 'Local Storage Mode');
+        }
+
+        function setDiagStatus(elemId, text, className) {
+            const el = document.getElementById(elemId);
+            if (el) {
+                el.textContent = text;
+                el.className = `font-bold ${className}`;
+            }
+        }
+
+        function openDiagnosticsModal() {
+            const modal = document.getElementById('diagnostics-modal');
+            if (modal) {
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+            }
+        }
+
+        function closeDiagnosticsModal() {
+            const modal = document.getElementById('diagnostics-modal');
+            if (modal) {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }
         }
 
         function loadMenuData() {
@@ -610,64 +724,83 @@
             try {
                 const storedCards = localStorage.getItem('white_horse_food_cards');
                 if (storedCards) return JSON.parse(storedCards);
-                const storedMenu = localStorage.getItem('white_horse_menu_data');
-                if (storedMenu) {
-                    const parsed = JSON.parse(storedMenu);
-                    if (parsed.foodCards && Array.isArray(parsed.foodCards)) return parsed.foodCards;
-                }
             } catch (e) {
                 console.error('Error loading food cards:', e);
             }
             return JSON.parse(JSON.stringify(defaultFoodCards));
         }
 
-        async function saveMenuData() {
+        async function pushAllDataToFirebase(showPrompt) {
             const toastSuccess = document.getElementById('admin-save-toast');
             const toastError = document.getElementById('admin-error-toast');
             const toastErrorMsg = document.getElementById('admin-error-msg');
 
-            // Save to LocalStorage immediately
-            try {
-                menuData.foodCards = foodCards;
-                localStorage.setItem('white_horse_menu_data', JSON.stringify(menuData));
-                localStorage.setItem('white_horse_food_cards', JSON.stringify(foodCards));
-            } catch (e) {
-                console.error('Local storage write error:', e);
+            const payload = {
+                menuData: menuData,
+                foodCards: foodCards,
+                updatedAt: new Date().toISOString()
+            };
+
+            let writtenToAny = false;
+            let lastError = null;
+
+            // 1. Write to Firestore
+            if (firestoreDb) {
+                try {
+                    await firestoreDb.collection('white_horse_portal').doc('data').set(payload, { merge: true });
+                    console.log("Successfully written payload to Cloud Firestore.");
+                    writtenToAny = true;
+                    setDiagStatus('diag-firestore-status', 'Write Succeeded', 'text-emerald-600');
+                } catch (fsErr) {
+                    console.error("Firestore Write Failed:", fsErr);
+                    lastError = fsErr;
+                    setDiagStatus('diag-firestore-status', 'Write Error: ' + fsErr.message, 'text-red-600');
+                }
             }
 
-            // Sync to Firebase Realtime Database
-            if (db) {
+            // 2. Write to Realtime Database
+            if (realtimeDb) {
                 try {
                     await Promise.all([
-                        db.ref('white_horse_menu_data').set(menuData),
-                        db.ref('white_horse_food_cards').set(foodCards)
+                        realtimeDb.ref('white_horse_menu_data').set(menuData),
+                        realtimeDb.ref('white_horse_food_cards').set(foodCards)
                     ]);
-                    console.log("Firebase sync successfully committed.");
-
-                    if (toastError) toastError.classList.add('hidden');
-                    if (toastSuccess) {
-                        toastSuccess.classList.remove('hidden');
-                        setTimeout(() => toastSuccess.classList.add('hidden'), 2500);
-                    }
-                } catch (firebaseErr) {
-                    console.error("Firebase write failed:", firebaseErr);
-                    if (toastSuccess) toastSuccess.classList.add('hidden');
-                    if (toastError) {
-                        if (toastErrorMsg) {
-                            toastErrorMsg.textContent = `Firebase Error: ${firebaseErr.message || 'Check database security rules in Firebase Console'}`;
-                        }
-                        toastError.classList.remove('hidden');
-                        setTimeout(() => toastError.classList.add('hidden'), 5000);
-                    }
-                }
-            } else {
-                // Standalone local fallback toast
-                if (toastSuccess) {
-                    toastSuccess.innerHTML = '<i class="fas fa-check-circle mr-1 text-pub-sage"></i> Saved locally in browser storage.';
-                    toastSuccess.classList.remove('hidden');
-                    setTimeout(() => toastSuccess.classList.add('hidden'), 2500);
+                    console.log("Successfully written payload to Realtime Database.");
+                    writtenToAny = true;
+                    setDiagStatus('diag-rtdb-status', 'Write Succeeded', 'text-emerald-600');
+                } catch (rtdbErr) {
+                    console.error("Realtime DB Write Failed:", rtdbErr);
+                    if (!lastError) lastError = rtdbErr;
+                    setDiagStatus('diag-rtdb-status', 'Write Error: ' + rtdbErr.message, 'text-red-600');
                 }
             }
+
+            // Also guarantee local storage sync
+            localStorage.setItem('white_horse_menu_data', JSON.stringify(menuData));
+            localStorage.setItem('white_horse_food_cards', JSON.stringify(foodCards));
+
+            if (writtenToAny) {
+                updateSyncStatus('connected', 'Live Cloud Sync');
+                if (toastError) toastError.classList.add('hidden');
+                if (toastSuccess) {
+                    toastSuccess.innerHTML = '<i class="fas fa-check-circle mr-1 text-pub-sage"></i> All menu items &amp; food cards pushed to Firebase Cloud successfully!';
+                    toastSuccess.classList.remove('hidden');
+                    setTimeout(() => toastSuccess.classList.add('hidden'), 3500);
+                }
+            } else {
+                updateSyncStatus('error', 'Cloud Write Blocked');
+                if (toastSuccess) toastSuccess.classList.add('hidden');
+                if (toastError) {
+                    if (toastErrorMsg) {
+                        toastErrorMsg.innerHTML = `<strong>Firebase Error:</strong> ${lastError?.message || 'Permission denied. Please check Firestore / Database rules in Firebase Console.'}`;
+                    }
+                    toastError.classList.remove('hidden');
+                }
+            }
+        }
+
+        async function saveMenuData() {
+            await pushAllDataToFirebase(false);
         }
 
         function confirmResetMenuData() {
