@@ -339,6 +339,7 @@
                 <nav class="hidden md:flex items-center space-x-7">
                     <a href="#food" class="text-sm font-semibold text-gray-700 hover:text-pub-deep transition">Dine &amp; Drink</a>
                     <a href="#garden" class="text-sm font-semibold text-gray-700 hover:text-pub-deep transition">Beer Garden</a>
+                    <a href="#events" class="text-sm font-semibold text-gray-700 hover:text-pub-deep transition">Events</a>
                     <a href="#picnics" class="text-sm font-semibold text-gray-700 hover:text-pub-deep transition">Beach Picnics</a>
                     <a href="#rooms" class="text-sm font-semibold text-gray-700 hover:text-pub-deep transition">Rooms</a>
                     <a href="#faq" class="text-sm font-semibold text-gray-700 hover:text-pub-deep transition">FAQ</a>
@@ -364,6 +365,7 @@
             <div class="px-4 pt-3 pb-6 space-y-3">
                 <a href="#food" onclick="toggleMobileMenu()" class="block px-4 py-2.5 rounded-lg text-base font-semibold text-pub-deep hover:bg-white/60">Dine &amp; Drink</a>
                 <a href="#garden" onclick="toggleMobileMenu()" class="block px-4 py-2.5 rounded-lg text-base font-semibold text-pub-deep hover:bg-white/60">Beer Garden</a>
+                <a href="#events" onclick="toggleMobileMenu()" class="block px-4 py-2.5 rounded-lg text-base font-semibold text-pub-deep hover:bg-white/60">Events</a>
                 <a href="#picnics" onclick="toggleMobileMenu()" class="block px-4 py-2.5 rounded-lg text-base font-semibold text-pub-deep hover:bg-white/60">Beach Picnics</a>
                 <a href="#rooms" onclick="toggleMobileMenu()" class="block px-4 py-2.5 rounded-lg text-base font-semibold text-pub-deep hover:bg-white/60">Sleep / Rooms</a>
                 <a href="#faq" onclick="toggleMobileMenu()" class="block px-4 py-2.5 rounded-lg text-base font-semibold text-pub-deep hover:bg-white/60">FAQ</a>
@@ -602,6 +604,25 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </section>
+
+        <!-- Upcoming Events Section -->
+        <section id="events" class="py-10 sm:py-16 px-3 sm:px-4 max-w-7xl mx-auto">
+            <div class="text-center max-w-2xl mx-auto mb-8 sm:mb-14">
+                <span class="inline-block px-3.5 py-1 rounded-full glass-pill text-xs font-bold text-pub-sage uppercase tracking-wider mb-3">
+                    What's On
+                </span>
+                <h2 class="font-serif text-2xl sm:text-5xl font-bold text-pub-deep mb-3">
+                    Upcoming Events
+                </h2>
+                <p class="text-gray-600 text-xs sm:text-base">
+                    Join us at The White Horse Inn for live music, pub quizzes, special dining evenings and seasonal celebrations.
+                </p>
+            </div>
+
+            <div id="events-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Dynamically populated via JS -->
             </div>
         </section>
 
@@ -1095,6 +1116,34 @@
             }
         ];
 
+        // Default Upcoming Events Data
+        const defaultEvents = [
+            {
+                id: "evt-1",
+                title: "Friday Night Live Acoustic Session",
+                date: "2026-09-15",
+                time: "20:00",
+                image: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                description: "Enjoy relaxing acoustic covers from talented local Norfolk musicians alongside our finest cask ales and gin specials."
+            },
+            {
+                id: "evt-2",
+                title: "Pub Quiz & Curry Night",
+                date: "2026-09-20",
+                time: "19:30",
+                image: "https://images.unsplash.com/photo-1517457373958-b7bdd4587205?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                description: "Gather your team for our popular pub quiz! Great prizes to be won, plus chef's homemade curry specials served all evening."
+            },
+            {
+                id: "evt-3",
+                title: "Cromer Seafood & Wine Evening",
+                date: "2026-10-05",
+                time: "18:30",
+                image: "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                description: "A special 5-course coastal tasting menu showcasing fresh Cromer crab, local sea bass and Norfolk samphire with wine pairings."
+            }
+        ];
+
         // Default Factory Menu Data
         const defaultMenuData = {
             lunch: {
@@ -1227,6 +1276,11 @@
                                 localStorage.setItem('white_horse_food_cards', JSON.stringify(val.foodCards));
                                 renderFoodCards();
                             }
+                            if (val.events) {
+                                eventsData = cleanAndSortEvents(val.events);
+                                localStorage.setItem('white_horse_events', JSON.stringify(eventsData));
+                                renderEvents();
+                            }
                             // Re-render menu modal if currently open
                             if (activeMenuKey) {
                                 renderActiveMenuModal();
@@ -1236,6 +1290,7 @@
                             firestoreDb.collection('white_horse_portal').doc('data').set({
                                 menuData: defaultMenuData,
                                 foodCards: defaultFoodCards,
+                                events: defaultEvents,
                                 updatedAt: new Date().toISOString()
                             }, { merge: true });
                         }
@@ -1273,6 +1328,18 @@
                     }, (err) => {
                         console.warn("Realtime DB foodCards listener error:", err);
                     });
+
+                    realtimeDb.ref('white_horse_events').on('value', (snapshot) => {
+                        const val = snapshot.val();
+                        if (val) {
+                            const arr = Array.isArray(val) ? val : Object.values(val);
+                            eventsData = cleanAndSortEvents(arr);
+                            localStorage.setItem('white_horse_events', JSON.stringify(eventsData));
+                            renderEvents();
+                        }
+                    }, (err) => {
+                        console.warn("Realtime DB events listener error:", err);
+                    });
                 } catch (rtdbErr) {
                     console.warn("Realtime DB initialization failed:", rtdbErr);
                 }
@@ -1281,9 +1348,99 @@
             console.warn("Firebase general initialisation error:", e);
         }
 
-        // Active Menu Data Store loaded from LocalStorage
+        // Active Menu & Events Data Stores loaded from LocalStorage
         let menuData = loadMenuData();
+        let eventsData = loadEventsData();
         let activeMenuKey = null;
+
+        function getTodayDateString() {
+            const today = new Date();
+            const yyyy = today.getFullYear();
+            const mm = String(today.getMonth() + 1).padStart(2, '0');
+            const dd = String(today.getDate()).padStart(2, '0');
+            return `${yyyy}-${mm}-${dd}`;
+        }
+
+        function cleanAndSortEvents(rawEvents) {
+            if (!Array.isArray(rawEvents)) return [];
+            const todayStr = getTodayDateString();
+            // Auto delete/filter events where date has passed
+            const valid = rawEvents.filter(evt => evt && evt.date && evt.date >= todayStr);
+            // Sort by date ascending (soonest first)
+            valid.sort((a, b) => {
+                const dateCompare = a.date.localeCompare(b.date);
+                if (dateCompare !== 0) return dateCompare;
+                return (a.time || '').localeCompare(b.time || '');
+            });
+            return valid;
+        }
+
+        function loadEventsData() {
+            try {
+                const stored = localStorage.getItem('white_horse_events');
+                if (stored) {
+                    const parsed = JSON.parse(stored);
+                    return cleanAndSortEvents(parsed);
+                }
+            } catch (e) {
+                console.error('Error loading events from localStorage:', e);
+            }
+            return cleanAndSortEvents(defaultEvents);
+        }
+
+        function formatDateDisplay(dateStr) {
+            if (!dateStr) return '';
+            const parts = dateStr.split('-');
+            if (parts.length !== 3) return dateStr;
+            const dt = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
+            return dt.toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' });
+        }
+
+        function renderEvents() {
+            const container = document.getElementById('events-container');
+            if (!container) return;
+            const events = cleanAndSortEvents(eventsData);
+
+            if (events.length === 0) {
+                container.innerHTML = `
+                    <div class="col-span-full glass-card rounded-3xl p-8 text-center text-gray-500 font-medium">
+                        <i class="fas fa-calendar-times text-pub-sage text-3xl mb-3 block"></i>
+                        No upcoming events scheduled at the moment. Please check back soon!
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = events.map(evt => `
+                <div class="glass-card glass-card-hover rounded-3xl overflow-hidden flex flex-col justify-between border border-white/90 group">
+                    <div>
+                        <div class="relative h-48 sm:h-56 overflow-hidden">
+                            <img src="${evt.image || ''}"
+                                 onerror="this.onerror=null; this.src='https://placehold.co/800x600/1b3a2b/ffffff?text=${encodeURIComponent(evt.title || 'Event')}';"
+                                 alt="${evt.title || 'Event'}"
+                                 class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                            <div class="absolute top-3 right-3 glass-pill px-3 py-1 rounded-full text-[11px] font-bold text-pub-deep uppercase tracking-wider bg-white/90 shadow-sm flex items-center gap-1.5">
+                                <i class="fas fa-calendar-day text-pub-sage"></i>
+                                <span>${formatDateDisplay(evt.date)}</span>
+                            </div>
+                        </div>
+                        <div class="p-5 sm:p-6">
+                            <div class="flex items-center gap-2 text-xs font-bold text-pub-sage mb-2">
+                                <i class="fas fa-clock"></i>
+                                <span>${evt.time || 'TBC'}</span>
+                            </div>
+                            <h3 class="font-serif font-bold text-pub-deep text-lg sm:text-xl mb-2 line-clamp-2">${evt.title}</h3>
+                            <p class="text-xs sm:text-sm text-gray-600 leading-relaxed mb-4 line-clamp-3">${evt.description || ''}</p>
+                        </div>
+                    </div>
+                    <div class="px-5 sm:px-6 pb-5 sm:pb-6 pt-0">
+                        <button type="button" onclick="openBookingModal('table')" class="w-full glass-button-primary text-white text-xs font-bold py-3 px-4 rounded-xl flex items-center justify-center gap-2 cursor-pointer uppercase tracking-wider transition">
+                            <i class="fas fa-utensils"></i> Book a Table
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
 
         function loadMenuData() {
             try {
@@ -1546,8 +1703,9 @@
 
         // Initialize event listeners
         window.addEventListener('DOMContentLoaded', () => {
-            // Render food cards
+            // Render food cards & events
             renderFoodCards();
+            renderEvents();
 
             // Start automatic room ticker
             startRoomTicker();
