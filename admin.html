@@ -664,9 +664,20 @@
 
                     realtimeDb.ref('white_horse_menu_data').on('value', (snap) => {
                         const val = snap.val();
-                        if (val && !firestoreDb) {
+                        if (val) {
                             menuData = val;
                             localStorage.setItem('white_horse_menu_data', JSON.stringify(val));
+                            renderAdminEditor();
+                        }
+                    }, (err) => {
+                        setDiagStatus('diag-rtdb-status', 'Rule Error: ' + err.message, 'text-red-600');
+                    });
+
+                    realtimeDb.ref('white_horse_food_cards').on('value', (snap) => {
+                        const val = snap.val();
+                        if (val) {
+                            foodCards = val;
+                            localStorage.setItem('white_horse_food_cards', JSON.stringify(val));
                             renderAdminEditor();
                         }
                     }, (err) => {
