@@ -183,28 +183,47 @@
     <style>
         /* Print Styles for Menu Printing */
         @media print {
-            body * {
-                visibility: hidden;
+            body {
+                background: white !important;
+                color: black !important;
             }
-            #menu-modal, #menu-modal * {
-                visibility: visible;
+            body > *:not(#menu-modal) {
+                display: none !important;
             }
             #menu-modal {
-                position: absolute;
-                left: 0;
-                top: 0;
-                width: 100%;
-                height: auto;
+                position: static !important;
+                display: block !important;
+                visibility: visible !important;
                 background: white !important;
                 backdrop-filter: none !important;
                 padding: 0 !important;
+                margin: 0 !important;
+                width: 100% !important;
+                height: auto !important;
+                overflow: visible !important;
             }
-            .glass-modal-tile {
+            #menu-modal * {
+                visibility: visible !important;
+            }
+            #menu-modal .glass-modal-tile {
                 box-shadow: none !important;
                 border: none !important;
                 background: white !important;
+                max-width: 100% !important;
+                max-height: none !important;
+                overflow: visible !important;
+                position: static !important;
             }
-            #menu-print-btn, button[onclick="closeMenuModal()"], button[onclick="closeMenuModal(); openBookingModal('table');"] {
+            #menu-modal-content {
+                max-height: none !important;
+                overflow: visible !important;
+                padding: 10px 0 !important;
+            }
+            #menu-print-btn,
+            button[aria-label="Close menu modal"],
+            #menu-modal footer,
+            #menu-modal .border-t,
+            #menu-modal button {
                 display: none !important;
             }
         }
@@ -435,70 +454,8 @@
             <!-- Food Photography Gallery (Fresh From Our Kitchen) -->
             <div class="mb-10 sm:mb-12">
                 <h3 class="font-serif text-xl sm:text-2xl font-bold text-pub-deep text-center mb-5 sm:mb-6">Fresh From Our Kitchen</h3>
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-4">
-                    <!-- Food Image 1 -->
-                    <div class="glass-card rounded-2xl overflow-hidden p-2 group">
-                        <div class="relative h-48 sm:h-56 rounded-xl overflow-hidden">
-                            <img src="https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
-                                 onerror="this.onerror=null; this.src='https://placehold.co/800x600/1b3a2b/ffffff?text=Ale+Battered+Fish+and+Chips';"
-                                 alt="Traditional Ale-Battered Fish & Chips" 
-                                 class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-                            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent flex items-end p-3">
-                                <div>
-                                    <span class="px-2 py-0.5 rounded-md bg-white/90 text-pub-deep text-[10px] font-bold uppercase tracking-wider mb-1 inline-block">Pub Classic</span>
-                                    <p class="text-white text-xs font-bold">Ale-Battered Fish &amp; Chips</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Food Image 2 -->
-                    <div class="glass-card rounded-2xl overflow-hidden p-2 group">
-                        <div class="relative h-48 sm:h-56 rounded-xl overflow-hidden">
-                            <img src="images/sunday-roast.jpg"
-                                 onerror="this.onerror=null; this.src='https://placehold.co/800x600/1b3a2b/ffffff?text=Sunday+Roast+Beef';"
-                                 alt="Traditional Sunday Roast Beef & Yorkshires" 
-                                 class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-                            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent flex items-end p-3">
-                                <div>
-                                    <span class="px-2 py-0.5 rounded-md bg-white/90 text-pub-deep text-[10px] font-bold uppercase tracking-wider mb-1 inline-block">Sunday Special</span>
-                                    <p class="text-white text-xs font-bold">Norfolk Roast Beef &amp; Yorkshires</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Food Image 3 -->
-                    <div class="glass-card rounded-2xl overflow-hidden p-2 group">
-                        <div class="relative h-48 sm:h-56 rounded-xl overflow-hidden">
-                            <img src="https://images.unsplash.com/photo-1540420773420-3366772f4999?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
-                                 onerror="this.onerror=null; this.src='https://placehold.co/800x600/1b3a2b/ffffff?text=Fresh+Coastal+Salad';"
-                                 alt="Fresh Coastal Salad & Vegetarian Dishes" 
-                                 class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-                            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent flex items-end p-3">
-                                <div>
-                                    <span class="px-2 py-0.5 rounded-md bg-white/90 text-pub-deep text-[10px] font-bold uppercase tracking-wider mb-1 inline-block">Vegetarian &amp; Vegan</span>
-                                    <p class="text-white text-xs font-bold">Fresh Local Coastal Salads</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Food Image 4 -->
-                    <div class="glass-card rounded-2xl overflow-hidden p-2 group">
-                        <div class="relative h-48 sm:h-56 rounded-xl overflow-hidden">
-                            <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
-                                 onerror="this.onerror=null; this.src='https://placehold.co/800x600/1b3a2b/ffffff?text=Gourmet+Beef+Burger';"
-                                 alt="White Horse Gourmet Norfolk Beef Burger" 
-                                 class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-                            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent flex items-end p-3">
-                                <div>
-                                    <span class="px-2 py-0.5 rounded-md bg-white/90 text-pub-deep text-[10px] font-bold uppercase tracking-wider mb-1 inline-block">Chef's Choice</span>
-                                    <p class="text-white text-xs font-bold">White Horse Gourmet Burger</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <div id="food-cards-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-4">
+                    <!-- Populated dynamically via JS -->
                 </div>
             </div>
 
@@ -1105,6 +1062,34 @@
 
     <!-- JavaScript Application Handler -->
     <script>
+        // Default Food Cards Data
+        const defaultFoodCards = [
+            {
+                tag: "Pub Classic",
+                title: "Ale-Battered Fish & Chips",
+                image: "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                alt: "Traditional Ale-Battered Fish & Chips"
+            },
+            {
+                tag: "Sunday Special",
+                title: "Norfolk Roast Beef & Yorkshires",
+                image: "images/sunday-roast.jpg",
+                alt: "Traditional Sunday Roast Beef & Yorkshires"
+            },
+            {
+                tag: "Vegetarian & Vegan",
+                title: "Fresh Local Coastal Salads",
+                image: "https://images.unsplash.com/photo-1540420773420-3366772f4999?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                alt: "Fresh Coastal Salad & Vegetarian Dishes"
+            },
+            {
+                tag: "Chef's Choice",
+                title: "White Horse Gourmet Burger",
+                image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                alt: "White Horse Gourmet Norfolk Beef Burger"
+            }
+        ];
+
         // Default Factory Menu Data
         const defaultMenuData = {
             lunch: {
@@ -1214,6 +1199,43 @@
                 console.error('Error loading menu data from localStorage:', e);
             }
             return JSON.parse(JSON.stringify(defaultMenuData));
+        }
+
+        function loadFoodCards() {
+            try {
+                const storedCards = localStorage.getItem('white_horse_food_cards');
+                if (storedCards) return JSON.parse(storedCards);
+                const storedMenu = localStorage.getItem('white_horse_menu_data');
+                if (storedMenu) {
+                    const parsed = JSON.parse(storedMenu);
+                    if (parsed.foodCards && Array.isArray(parsed.foodCards)) return parsed.foodCards;
+                }
+            } catch (e) {
+                console.error('Error loading food cards from localStorage:', e);
+            }
+            return JSON.parse(JSON.stringify(defaultFoodCards));
+        }
+
+        function renderFoodCards() {
+            const container = document.getElementById('food-cards-container');
+            if (!container) return;
+            const cards = loadFoodCards();
+            container.innerHTML = cards.map(card => `
+                <div class="glass-card rounded-2xl overflow-hidden p-2 group">
+                    <div class="relative h-48 sm:h-56 rounded-xl overflow-hidden">
+                        <img src="${card.image || ''}"
+                             onerror="this.onerror=null; this.src='https://placehold.co/800x600/1b3a2b/ffffff?text=${encodeURIComponent(card.title || 'Food Item')}';"
+                             alt="${card.alt || card.title || ''}"
+                             class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent flex items-end p-3">
+                            <div>
+                                <span class="px-2 py-0.5 rounded-md bg-white/90 text-pub-deep text-[10px] font-bold uppercase tracking-wider mb-1 inline-block">${card.tag || ''}</span>
+                                <p class="text-white text-xs font-bold">${card.title || ''}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
         }
 
 
@@ -1420,6 +1442,9 @@
 
         // Initialize event listeners
         window.addEventListener('DOMContentLoaded', () => {
+            // Render food cards
+            renderFoodCards();
+
             // Start automatic room ticker
             startRoomTicker();
 
