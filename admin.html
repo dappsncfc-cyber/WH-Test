@@ -191,6 +191,9 @@
                 <button type="button" id="admin-tab-specials" onclick="switchAdminMenuTab('specials')" class="py-2.5 px-4 rounded-2xl text-xs sm:text-sm font-bold transition cursor-pointer text-pub-deep glass-pill hover:bg-white whitespace-nowrap">
                     <i class="fas fa-star mr-1.5"></i> Today's Specials
                 </button>
+                <button type="button" id="admin-tab-cards" onclick="switchAdminMenuTab('cards')" class="py-2.5 px-4 rounded-2xl text-xs sm:text-sm font-bold transition cursor-pointer text-pub-deep glass-pill hover:bg-white whitespace-nowrap">
+                    <i class="fas fa-images mr-1.5"></i> Food Showcase Cards
+                </button>
             </div>
 
             <!-- Toast Notification -->
@@ -204,6 +207,53 @@
             </div>
         </div>
     </main>
+
+    <!-- FOOD CARD EDITOR MODAL -->
+    <div id="card-editor-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-2.5 sm:p-4 bg-pub-dark/70 backdrop-blur-md transition-opacity duration-300">
+        <div class="glass-modal-tile rounded-3xl w-full max-w-lg flex flex-col overflow-hidden relative shadow-2xl">
+            <!-- Header -->
+            <div class="px-4 sm:px-6 py-4 border-b border-emerald-900/10 flex items-center justify-between bg-white/40">
+                <div class="flex items-center gap-2">
+                    <i class="fas fa-image text-pub-sage text-lg"></i>
+                    <h3 id="card-editor-modal-title" class="font-serif font-bold text-pub-deep text-base sm:text-lg">Edit Food Showcase Card</h3>
+                </div>
+                <button type="button" onclick="closeCardEditorModal()" class="w-8 h-8 rounded-full glass-pill flex items-center justify-center text-gray-500 hover:text-pub-deep transition cursor-pointer">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <!-- Form Body -->
+            <form id="card-editor-form" class="p-4 sm:p-6 overflow-y-auto max-h-[75vh] space-y-4">
+                <input type="hidden" id="card-edit-index">
+
+                <div>
+                    <label class="block text-xs font-bold text-pub-deep mb-1">Badge / Category Tag *</label>
+                    <input type="text" id="card-edit-tag" required placeholder="e.g. Pub Classic, Chef's Choice, Sunday Special" class="w-full px-3 py-2.5 rounded-xl glass-input text-xs text-gray-800 font-semibold">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-pub-deep mb-1">Title / Food Item Name *</label>
+                    <input type="text" id="card-edit-title" required placeholder="e.g. Ale-Battered Fish &amp; Chips" class="w-full px-3 py-2.5 rounded-xl glass-input text-xs text-gray-800 font-semibold">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-pub-deep mb-1">Image URL *</label>
+                    <input type="text" id="card-edit-image" required placeholder="e.g. https://images.unsplash.com/... or images/sunday-roast.jpg" class="w-full px-3 py-2.5 rounded-xl glass-input text-xs text-gray-800 font-mono">
+                    <p class="text-[10px] text-gray-500 mt-1">Enter a valid image web URL or relative path to an uploaded image.</p>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-pub-deep mb-1">Alt Text (for accessibility & SEO)</label>
+                    <input type="text" id="card-edit-alt" placeholder="e.g. Traditional Ale-Battered Fish &amp; Chips" class="w-full px-3 py-2.5 rounded-xl glass-input text-xs text-gray-800">
+                </div>
+
+                <div class="pt-2 flex items-center justify-end gap-2">
+                    <button type="button" onclick="closeCardEditorModal()" class="glass-pill px-4 py-2 rounded-xl text-xs font-bold text-gray-600 cursor-pointer">Cancel</button>
+                    <button type="submit" class="glass-button-primary text-white text-xs font-bold px-5 py-2 rounded-xl uppercase tracking-wider cursor-pointer">Save Food Card</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
     <!-- DISH EDITOR MODAL -->
     <div id="dish-editor-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-2.5 sm:p-4 bg-pub-dark/70 backdrop-blur-md transition-opacity duration-300">
@@ -317,6 +367,33 @@
 
     <!-- JavaScript Data & Logic Handler -->
     <script>
+        const defaultFoodCards = [
+            {
+                tag: "Pub Classic",
+                title: "Ale-Battered Fish & Chips",
+                image: "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                alt: "Traditional Ale-Battered Fish & Chips"
+            },
+            {
+                tag: "Sunday Special",
+                title: "Norfolk Roast Beef & Yorkshires",
+                image: "images/sunday-roast.jpg",
+                alt: "Traditional Sunday Roast Beef & Yorkshires"
+            },
+            {
+                tag: "Vegetarian & Vegan",
+                title: "Fresh Local Coastal Salads",
+                image: "https://images.unsplash.com/photo-1540420773420-3366772f4999?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                alt: "Fresh Coastal Salad & Vegetarian Dishes"
+            },
+            {
+                tag: "Chef's Choice",
+                title: "White Horse Gourmet Burger",
+                image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                alt: "White Horse Gourmet Norfolk Beef Burger"
+            }
+        ];
+
         const defaultMenuData = {
             lunch: {
                 title: "Lunch Menu (Served 12pm - 3pm)",
@@ -413,6 +490,7 @@
         };
 
         let menuData = loadMenuData();
+        let foodCards = loadFoodCards();
         let activeAdminMenuKey = 'lunch';
 
         function loadMenuData() {
@@ -425,9 +503,26 @@
             return JSON.parse(JSON.stringify(defaultMenuData));
         }
 
+        function loadFoodCards() {
+            try {
+                const storedCards = localStorage.getItem('white_horse_food_cards');
+                if (storedCards) return JSON.parse(storedCards);
+                const storedMenu = localStorage.getItem('white_horse_menu_data');
+                if (storedMenu) {
+                    const parsed = JSON.parse(storedMenu);
+                    if (parsed.foodCards && Array.isArray(parsed.foodCards)) return parsed.foodCards;
+                }
+            } catch (e) {
+                console.error('Error loading food cards:', e);
+            }
+            return JSON.parse(JSON.stringify(defaultFoodCards));
+        }
+
         function saveMenuData() {
             try {
+                menuData.foodCards = foodCards;
                 localStorage.setItem('white_horse_menu_data', JSON.stringify(menuData));
+                localStorage.setItem('white_horse_food_cards', JSON.stringify(foodCards));
                 const toast = document.getElementById('admin-save-toast');
                 if (toast) {
                     toast.classList.remove('hidden');
@@ -439,8 +534,9 @@
         }
 
         function confirmResetMenuData() {
-            if (confirm("Are you sure you want to reset all menus to factory default settings?")) {
+            if (confirm("Are you sure you want to reset all menus and food showcase cards to factory default settings?")) {
                 menuData = JSON.parse(JSON.stringify(defaultMenuData));
+                foodCards = JSON.parse(JSON.stringify(defaultFoodCards));
                 saveMenuData();
                 renderAdminEditor();
             }
@@ -448,7 +544,7 @@
 
         function switchAdminMenuTab(menuKey) {
             activeAdminMenuKey = menuKey;
-            ['lunch', 'dinner', 'veg', 'sunday', 'specials'].forEach(k => {
+            ['lunch', 'dinner', 'veg', 'sunday', 'specials', 'cards'].forEach(k => {
                 const btn = document.getElementById(`admin-tab-${k}`);
                 if (!btn) return;
                 if (k === menuKey) {
@@ -463,6 +559,11 @@
         function renderAdminEditor() {
             const container = document.getElementById('admin-menu-editor-container');
             if (!container) return;
+
+            if (activeAdminMenuKey === 'cards') {
+                renderFoodCardsAdminEditor(container);
+                return;
+            }
 
             const mData = menuData[activeAdminMenuKey];
             if (!mData) return;
@@ -506,8 +607,109 @@
             });
         }
 
+        function renderFoodCardsAdminEditor(container) {
+            container.innerHTML = '';
+            const secDiv = document.createElement('div');
+            secDiv.className = 'glass-card rounded-3xl p-5 sm:p-6 border border-white/90 space-y-4';
+
+            let cardsHtml = foodCards.map((card, idx) => `
+                <div class="flex flex-col md:flex-row items-center justify-between p-4 rounded-2xl bg-white/80 border border-emerald-900/10 gap-4 hover:shadow-sm transition">
+                    <div class="flex items-center gap-4 w-full md:w-auto">
+                        <div class="w-20 h-16 rounded-xl overflow-hidden shrink-0 bg-gray-100 border border-gray-200">
+                            <img src="${card.image || ''}" onerror="this.onerror=null; this.src='https://placehold.co/200x160/1b3a2b/ffffff?text=No+Img';" alt="${card.title || ''}" class="w-full h-full object-cover">
+                        </div>
+                        <div>
+                            <span class="px-2 py-0.5 rounded-md bg-pub-sage/10 text-pub-sage text-[10px] font-bold uppercase tracking-wider mb-1 inline-block">${card.tag || ''}</span>
+                            <h4 class="font-serif font-bold text-pub-deep text-base">${card.title || ''}</h4>
+                            <p class="text-xs text-gray-500 truncate max-w-xs font-mono">${card.image || ''}</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2 shrink-0 w-full md:w-auto justify-end">
+                        <button type="button" onclick="openEditCardModal(${idx})" class="glass-pill hover:bg-white text-pub-sage px-3.5 py-2 rounded-xl text-xs font-bold transition cursor-pointer flex items-center gap-1.5 shadow-sm">
+                            <i class="fas fa-edit"></i> Edit Card
+                        </button>
+                        <button type="button" onclick="deleteFoodCard(${idx})" class="glass-pill hover:bg-red-100 text-red-600 px-3 py-2 rounded-xl text-xs font-bold transition cursor-pointer" title="Delete Card">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+
+            secDiv.innerHTML = `
+                <div class="flex items-center justify-between border-b border-emerald-900/10 pb-3">
+                    <div>
+                        <h3 class="font-serif font-bold text-pub-deep text-lg text-pub-sage">Fresh From Our Kitchen Showcase Cards</h3>
+                        <p class="text-xs text-gray-600">Update images, badges and titles displayed on the homepage food gallery.</p>
+                    </div>
+                    <button type="button" onclick="openAddCardModal()" class="glass-button-primary text-white text-xs font-bold px-3.5 py-2 rounded-xl flex items-center gap-1.5 cursor-pointer uppercase tracking-wider">
+                        <i class="fas fa-plus"></i> Add Card
+                    </button>
+                </div>
+                <div class="space-y-3">${cardsHtml || '<p class="text-xs text-gray-500 py-4 text-center">No showcase cards defined. Click "Add Card" to create one.</p>'}</div>
+            `;
+
+            container.appendChild(secDiv);
+        }
+
         function openAddDishModal() {
+            if (activeAdminMenuKey === 'cards') {
+                openAddCardModal();
+                return;
+            }
             openEditDishModal(activeAdminMenuKey, 0, -1);
+        }
+
+        function openAddCardModal() {
+            openEditCardModal(-1);
+        }
+
+        function openEditCardModal(cardIdx) {
+            const modal = document.getElementById('card-editor-modal');
+            const titleEl = document.getElementById('card-editor-modal-title');
+            const tagInput = document.getElementById('card-edit-tag');
+            const titleInput = document.getElementById('card-edit-title');
+            const imageInput = document.getElementById('card-edit-image');
+            const altInput = document.getElementById('card-edit-alt');
+
+            document.getElementById('card-edit-index').value = cardIdx;
+
+            if (!modal) return;
+
+            if (cardIdx >= 0 && foodCards[cardIdx]) {
+                const c = foodCards[cardIdx];
+                titleEl.textContent = 'Edit Food Showcase Card';
+                tagInput.value = c.tag || '';
+                titleInput.value = c.title || '';
+                imageInput.value = c.image || '';
+                altInput.value = c.alt || '';
+            } else {
+                titleEl.textContent = 'Add Food Showcase Card';
+                tagInput.value = '';
+                titleInput.value = '';
+                imageInput.value = '';
+                altInput.value = '';
+            }
+
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeCardEditorModal() {
+            const modal = document.getElementById('card-editor-modal');
+            if (modal) {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }
+        }
+
+        function deleteFoodCard(cardIdx) {
+            const c = foodCards[cardIdx];
+            if (!c) return;
+            if (confirm(`Are you sure you want to delete card "${c.title}"?`)) {
+                foodCards.splice(cardIdx, 1);
+                saveMenuData();
+                renderAdminEditor();
+            }
         }
 
         function openEditDishModal(menuKey, secIdx, itemIdx) {
@@ -596,6 +798,31 @@
                     } else {
                         pinError?.classList.remove('hidden');
                     }
+                });
+            }
+
+            // Card Editor Form Submit
+            const cardForm = document.getElementById('card-editor-form');
+            if (cardForm) {
+                cardForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    const cardIdx = parseInt(document.getElementById('card-edit-index').value, 10);
+                    const tag = document.getElementById('card-edit-tag').value.trim();
+                    const title = document.getElementById('card-edit-title').value.trim();
+                    const image = document.getElementById('card-edit-image').value.trim();
+                    const alt = document.getElementById('card-edit-alt').value.trim() || title;
+
+                    const newCardObj = { tag, title, image, alt };
+
+                    if (cardIdx >= 0 && foodCards[cardIdx]) {
+                        foodCards[cardIdx] = newCardObj;
+                    } else {
+                        foodCards.push(newCardObj);
+                    }
+
+                    saveMenuData();
+                    closeCardEditorModal();
+                    renderAdminEditor();
                 });
             }
 
