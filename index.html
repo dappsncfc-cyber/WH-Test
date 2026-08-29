@@ -1417,71 +1417,6 @@
             return trimmed;
         }
 
-        function addToCalendar(eventId) {
-            const evt = eventsData.find(e => e.id === eventId);
-            if (!evt) return;
-
-            const title = evt.title || 'Event at White Horse Inn';
-            const description = (evt.description || '').replace(/[\r\n]+/g, ' ');
-            const location = 'The White Horse Inn, 24 West Street, Cromer, NR27 9DS';
-
-            const dateStr = evt.date ? evt.date.replace(/-/g, '') : '';
-            if (!dateStr) return;
-
-            let startTimeStr = '190000';
-            let endTimeStr = '220000';
-
-            if (evt.time) {
-                const trimmed = evt.time.trim();
-                const match24 = trimmed.match(/^(\d{1,2}):(\d{2})$/);
-                if (match24) {
-                    const h = parseInt(match24[1], 10);
-                    const m = match24[2];
-                    startTimeStr = `${h.toString().padStart(2, '0')}${m}00`;
-                    const endH = (h + 3) % 24;
-                    endTimeStr = `${endH.toString().padStart(2, '0')}${m}00`;
-                }
-            }
-
-            const dtStart = `${dateStr}T${startTimeStr}`;
-            const dtEnd = `${dateStr}T${endTimeStr}`;
-
-            const escapeIcs = (str) => str.replace(/\\/g, '\\\\').replace(/;/g, '\\;').replace(/,/g, '\\,');
-
-            const icsContent = [
-                'BEGIN:VCALENDAR',
-                'VERSION:2.0',
-                'PRODID:-//The White Horse Inn Cromer//EN',
-                'CALSCALE:GREGORIAN',
-                'METHOD:PUBLISH',
-                'BEGIN:VEVENT',
-                `SUMMARY:${escapeIcs(title)}`,
-                `DESCRIPTION:${escapeIcs(description)}`,
-                `LOCATION:${escapeIcs(location)}`,
-                `DTSTART:${dtStart}`,
-                `DTEND:${dtEnd}`,
-                `STATUS:CONFIRMED`,
-                'END:VEVENT',
-                'END:VCALENDAR'
-            ].join('\r\n');
-
-            const dataUrl = 'data:text/calendar;charset=utf8,' + encodeURIComponent(icsContent);
-
-            try {
-                // Trigger navigation to data URL to open default calendar app directly without downloading file
-                window.location.href = dataUrl;
-            } catch (err) {
-                const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf8' });
-                const blobUrl = window.URL.createObjectURL(blob);
-                window.open(blobUrl, '_self');
-            }
-        }
-
-        // Keep downloadIcsFile for backwards compatibility if referenced anywhere
-        function downloadIcsFile(eventId) {
-            addToCalendar(eventId);
-        }
-
         function renderEvents() {
             const container = document.getElementById('events-container');
             if (!container) return;
@@ -1519,12 +1454,9 @@
                             <p class="text-xs sm:text-sm text-gray-600 leading-relaxed mb-4 line-clamp-3">${evt.description || ''}</p>
                         </div>
                     </div>
-                    <div class="px-5 sm:px-6 pb-5 sm:pb-6 pt-0 flex flex-col sm:flex-row gap-2">
-                        <button type="button" onclick="openBookingModal('table')" class="flex-1 glass-button-primary text-white text-xs font-bold py-3 px-3 rounded-xl flex items-center justify-center gap-1.5 cursor-pointer uppercase tracking-wider transition">
+                    <div class="px-5 sm:px-6 pb-5 sm:pb-6 pt-0">
+                        <button type="button" onclick="openBookingModal('table')" class="w-full glass-button-primary text-white text-xs font-bold py-3 px-3 rounded-xl flex items-center justify-center gap-1.5 cursor-pointer uppercase tracking-wider transition">
                             <i class="fas fa-utensils"></i> Book Table
-                        </button>
-                        <button type="button" onclick="addToCalendar('${evt.id}')" class="flex-1 glass-pill hover:bg-white text-pub-deep text-xs font-bold py-3 px-3 rounded-xl flex items-center justify-center gap-1.5 cursor-pointer transition border border-pub-sage/20">
-                            <i class="fas fa-calendar-plus text-pub-sage"></i> Add to Calendar
                         </button>
                     </div>
                 </div>
