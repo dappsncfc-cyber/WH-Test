@@ -1417,7 +1417,7 @@
             return trimmed;
         }
 
-        function downloadIcsFile(eventId) {
+        function addToCalendar(eventId) {
             const evt = eventsData.find(e => e.id === eventId);
             if (!evt) return;
 
@@ -1465,13 +1465,21 @@
                 'END:VCALENDAR'
             ].join('\r\n');
 
-            const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
-            const link = document.createElement('a');
-            link.href = window.URL.createObjectURL(blob);
-            link.setAttribute('download', `${title.replace(/[^a-z0-9]/gi, '_').toLowerCase()}.ics`);
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
+            const dataUrl = 'data:text/calendar;charset=utf8,' + encodeURIComponent(icsContent);
+
+            try {
+                // Trigger navigation to data URL to open default calendar app directly without downloading file
+                window.location.href = dataUrl;
+            } catch (err) {
+                const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf8' });
+                const blobUrl = window.URL.createObjectURL(blob);
+                window.open(blobUrl, '_self');
+            }
+        }
+
+        // Keep downloadIcsFile for backwards compatibility if referenced anywhere
+        function downloadIcsFile(eventId) {
+            addToCalendar(eventId);
         }
 
         function renderEvents() {
@@ -1515,7 +1523,7 @@
                         <button type="button" onclick="openBookingModal('table')" class="flex-1 glass-button-primary text-white text-xs font-bold py-3 px-3 rounded-xl flex items-center justify-center gap-1.5 cursor-pointer uppercase tracking-wider transition">
                             <i class="fas fa-utensils"></i> Book Table
                         </button>
-                        <button type="button" onclick="downloadIcsFile('${evt.id}')" class="flex-1 glass-pill hover:bg-white text-pub-deep text-xs font-bold py-3 px-3 rounded-xl flex items-center justify-center gap-1.5 cursor-pointer transition border border-pub-sage/20">
+                        <button type="button" onclick="addToCalendar('${evt.id}')" class="flex-1 glass-pill hover:bg-white text-pub-deep text-xs font-bold py-3 px-3 rounded-xl flex items-center justify-center gap-1.5 cursor-pointer transition border border-pub-sage/20">
                             <i class="fas fa-calendar-plus text-pub-sage"></i> Add to Calendar
                         </button>
                     </div>
