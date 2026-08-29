@@ -677,6 +677,35 @@
             return `${yyyy}-${mm}-${dd}`;
         }
 
+        function formatDateDisplay(dateStr) {
+            if (!dateStr) return '';
+            const parts = dateStr.split('-');
+            if (parts.length !== 3) return dateStr;
+            const dt = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
+            return dt.toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' });
+        }
+
+        function formatTimeDisplay(timeStr) {
+            if (!timeStr) return 'TBC';
+            const trimmed = timeStr.trim();
+            const match24 = trimmed.match(/^(\d{1,2}):(\d{2})$/);
+            if (match24) {
+                const h = parseInt(match24[1], 10);
+                const m = match24[2];
+                return `${h.toString().padStart(2, '0')}:${m}`;
+            }
+            const match12 = trimmed.match(/^(\d{1,2})(?::(\d{2}))?\s*(am|pm|AM|PM)$/i);
+            if (match12) {
+                let h = parseInt(match12[1], 10);
+                const m = match12[2] || '00';
+                const ampm = match12[3].toLowerCase();
+                if (ampm === 'pm' && h < 12) h += 12;
+                if (ampm === 'am' && h === 12) h = 0;
+                return `${h.toString().padStart(2, '0')}:${m}`;
+            }
+            return trimmed;
+        }
+
         function cleanAndSortEvents(rawEvents) {
             if (!Array.isArray(rawEvents)) return [];
             const todayStr = getTodayDateString();
@@ -1014,8 +1043,8 @@
                         </div>
                         <div>
                             <div class="flex items-center gap-2 mb-1">
-                                <span class="px-2 py-0.5 rounded-md bg-pub-sage/10 text-pub-sage text-[10px] font-bold uppercase tracking-wider">${evt.date || ''}</span>
-                                <span class="text-xs text-gray-500 font-bold"><i class="fas fa-clock mr-1"></i>${evt.time || ''}</span>
+                                <span class="px-2 py-0.5 rounded-md bg-pub-sage/10 text-pub-sage text-[10px] font-bold uppercase tracking-wider">${formatDateDisplay(evt.date)}</span>
+                                <span class="text-xs text-gray-500 font-bold"><i class="fas fa-clock mr-1"></i>${formatTimeDisplay(evt.time)}</span>
                             </div>
                             <h4 class="font-serif font-bold text-pub-deep text-base">${evt.title || ''}</h4>
                             <p class="text-xs text-gray-600 line-clamp-1 max-w-md">${evt.description || ''}</p>
