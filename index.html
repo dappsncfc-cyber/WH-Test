@@ -1102,6 +1102,7 @@
 
         // Default Factory Menu Data
         const defaultMenuData = {
+            version: "2026-v3",
             main: {
                 title: "Main Menu",
                 sections: [
@@ -1227,20 +1228,44 @@
                     firestoreDb.collection('white_horse_portal').doc('data').onSnapshot((doc) => {
                         if (doc.exists) {
                             const val = doc.data();
+                            let needsUpdate = false;
                             if (val.menuData) {
-                                menuData = sanitizeMenuData(val.menuData);
+                                const sanitized = sanitizeMenuData(val.menuData);
+                                if (val.menuData.version !== "2026-v3") {
+                                    needsUpdate = true;
+                                }
+                                menuData = sanitized;
                                 localStorage.setItem('white_horse_menu_data', JSON.stringify(menuData));
+                            } else {
+                                needsUpdate = true;
                             }
                             if (val.foodCards) {
                                 localStorage.setItem('white_horse_food_cards', JSON.stringify(val.foodCards));
                                 renderFoodCards();
                             }
                             if (val.events) {
-                                eventsData = cleanAndSortEvents(val.events);
+                                const cleaned = cleanAndSortEvents(val.events);
+                                if (cleaned.length < defaultEvents.length || !cleaned.some(e => e.id === 'evt-clairvoyant-2026')) {
+                                    eventsData = cleanAndSortEvents(defaultEvents);
+                                    needsUpdate = true;
+                                } else {
+                                    eventsData = cleaned;
+                                }
                                 localStorage.setItem('white_horse_events', JSON.stringify(eventsData));
                                 renderEvents();
+                            } else {
+                                needsUpdate = true;
                             }
-                            // Re-render menu modal if currently open
+
+                            if (needsUpdate) {
+                                firestoreDb.collection('white_horse_portal').doc('data').set({
+                                    menuData: defaultMenuData,
+                                    foodCards: defaultFoodCards,
+                                    events: defaultEvents,
+                                    updatedAt: new Date().toISOString()
+                                }, { merge: true }).catch(e => console.warn('Cloud update bypassed:', e));
+                            }
+
                             if (activeMenuKey) {
                                 renderActiveMenuModal();
                             }
@@ -1251,7 +1276,7 @@
                                 foodCards: defaultFoodCards,
                                 events: defaultEvents,
                                 updatedAt: new Date().toISOString()
-                            }, { merge: true });
+                            }, { merge: true }).catch(e => console.warn('Cloud seed bypassed:', e));
                         }
                     }, (err) => {
                         console.warn("Firestore snapshot listener error:", err);
@@ -1308,7 +1333,16 @@
         }
 
         function sanitizeMenuData(data) {
-            if (!data || data.lunch || data.dinner || !data.main) {
+            if (!data || data.version !== "2026-v3" || data.lunch || data.dinner || !data.main) {
+                return JSON.parse(JSON.stringify(defaultMenuData));
+            }
+            try {
+                const mainItems = data.main.sections.flatMap(s => s.items || []);
+                const hasChowder = mainItems.some(i => i.name && i.name.toLowerCase().includes('chowder'));
+                if (!hasChowder) {
+                    return JSON.parse(JSON.stringify(defaultMenuData));
+                }
+            } catch (e) {
                 return JSON.parse(JSON.stringify(defaultMenuData));
             }
             return data;
@@ -1346,8 +1380,7 @@
                 const stored = localStorage.getItem('white_horse_events');
                 if (stored) {
                     const parsed = JSON.parse(stored);
-                    // If stored events contain legacy samples, replace with updated default events
-                    if (parsed.some(e => e.id === 'evt-1' || (e.title && e.title.includes('Acoustic Session')))) {
+                    if (!Array.isArray(parsed) || parsed.length < defaultEvents.length || !parsed.some(e => e.id === 'evt-clairvoyant-2026')) {
                         localStorage.setItem('white_horse_events', JSON.stringify(defaultEvents));
                         return cleanAndSortEvents(defaultEvents);
                     }
@@ -1356,6 +1389,7 @@
             } catch (e) {
                 console.error('Error loading events from localStorage:', e);
             }
+            localStorage.setItem('white_horse_events', JSON.stringify(defaultEvents));
             return cleanAndSortEvents(defaultEvents);
         }
 
