@@ -188,17 +188,14 @@
 
             <!-- Menu Selector Tabs -->
             <div class="flex gap-2 overflow-x-auto pb-1">
-                <button type="button" id="admin-tab-lunch" onclick="switchAdminMenuTab('lunch')" class="py-2.5 px-4 rounded-2xl text-xs sm:text-sm font-bold transition cursor-pointer glass-button-primary text-white whitespace-nowrap">
-                    <i class="fas fa-sun mr-1.5"></i> Lunch Menu
-                </button>
-                <button type="button" id="admin-tab-dinner" onclick="switchAdminMenuTab('dinner')" class="py-2.5 px-4 rounded-2xl text-xs sm:text-sm font-bold transition cursor-pointer text-pub-deep glass-pill hover:bg-white whitespace-nowrap">
-                    <i class="fas fa-moon mr-1.5"></i> Dinner Menu
+                <button type="button" id="admin-tab-main" onclick="switchAdminMenuTab('main')" class="py-2.5 px-4 rounded-2xl text-xs sm:text-sm font-bold transition cursor-pointer glass-button-primary text-white whitespace-nowrap">
+                    <i class="fas fa-utensils mr-1.5"></i> Main Menu
                 </button>
                 <button type="button" id="admin-tab-veg" onclick="switchAdminMenuTab('veg')" class="py-2.5 px-4 rounded-2xl text-xs sm:text-sm font-bold transition cursor-pointer text-pub-deep glass-pill hover:bg-white whitespace-nowrap">
-                    <i class="fas fa-leaf mr-1.5"></i> Vegetarian &amp; Vegan
+                    <i class="fas fa-leaf mr-1.5"></i> Vegetarian Menu
                 </button>
                 <button type="button" id="admin-tab-sunday" onclick="switchAdminMenuTab('sunday')" class="py-2.5 px-4 rounded-2xl text-xs sm:text-sm font-bold transition cursor-pointer text-pub-deep glass-pill hover:bg-white whitespace-nowrap">
-                    <i class="fas fa-utensils mr-1.5"></i> Sunday Roast
+                    <i class="fas fa-drumstick-bite mr-1.5"></i> Sunday Roast
                 </button>
                 <button type="button" id="admin-tab-specials" onclick="switchAdminMenuTab('specials')" class="py-2.5 px-4 rounded-2xl text-xs sm:text-sm font-bold transition cursor-pointer text-pub-deep glass-pill hover:bg-white whitespace-nowrap">
                     <i class="fas fa-star mr-1.5"></i> Today's Specials
@@ -559,81 +556,84 @@
         ];
 
         const defaultMenuData = {
-            lunch: {
-                title: "Lunch Menu (Served 12pm - 3pm)",
-                sections: [
-                    {
-                        category: "Light Bites & Starters",
-                        items: [
-                            { name: "Cromer Crab Soup", desc: "Served with warm crusty bread & salted butter", price: "£7.95", tags: ["GF Option", "Crustaceans"] },
-                            { name: "Crispy Squid Rings", desc: "With garlic aioli and fresh lemon wedge", price: "£8.50", tags: [] },
-                            { name: "Garlic & Herb Wild Mushrooms", desc: "Sautéed wild mushrooms on toasted sourdough", price: "£7.25", tags: ["V", "VG Option"] }
-                        ]
-                    },
-                    {
-                        category: "Sandwiches & Light Mains",
-                        items: [
-                            { name: "Fresh Cromer Crab Dressed Sandwich", desc: "Local Cromer crab with lemon mayonnaise on brown bloomer", price: "£11.95", tags: ["Local Catch", "Crustaceans"] },
-                            { name: "Norfolk Ham & Mustard Sandwich", desc: "Honey roasted Norfolk ham with coarse grain mustard", price: "£8.95", tags: ["Mustard"] },
-                            { name: "Beer Battered Fish & Chips (Lunch Portion)", desc: "Fresh North Sea cod in real ale batter, chips, minty peas", price: "£13.50", tags: ["Popular"] },
-                            { name: "Coastal Ploughman's Lunch", desc: "Local Norfolk cheeses, ham, pickles, chutney & crusty bread", price: "£12.50", tags: ["V Option"] }
-                        ]
-                    }
-                ]
-            },
-            dinner: {
-                title: "Dinner Menu (Served 5pm - 9pm)",
+            main: {
+                title: "Main Menu",
                 sections: [
                     {
                         category: "Starters",
                         items: [
-                            { name: "Potted Cromer Shrimps", desc: "Spiced butter, toasted brioche and pickled cucumber", price: "£8.95", tags: ["Crustaceans"] },
-                            { name: "Pan-Seared Scallops", desc: "Norfolk black pudding crumb and pea purée", price: "£10.50", tags: ["Crustaceans"] },
-                            { name: "Soup of the Day", desc: "Artisan bread and sea salt butter", price: "£6.95", tags: ["V", "GF Option"] }
+                            { name: "Seafood Chowder", desc: "Various pieces of fish, cooked in a creamy chowder sauce with a secret, served with warm garlic bread", price: "£8.95", tags: ["GFA", "DFA", "V"] },
+                            { name: "Soup of the Day", desc: "Chef’s soup of the day, served with garnish and croutons, served with mini onion loaf", price: "£7.95", tags: ["GFA", "V", "VEA"] },
+                            { name: "Smoked Haddock and Cod Fishcakes", desc: "Cooked fishcakes, served on a bed of wilted kale, topped with a poached egg and garnished with herb cream sauce", price: "£8.95", tags: [] },
+                            { name: "Stuffed Mushrooms", desc: "Flat mushrooms stuffed with chef’s secret tasty filling, served on a bed of mixed leaf and garnished with truffle dressing", price: "£7.95", tags: ["GFA", "DFA", "V", "VEA"] },
+                            { name: "Grilled Goats Cheese", desc: "Sliced of goat’s cheese, grilled and served on a salad, garnished with red onion chutney and hazelnut dressing", price: "£8.95", tags: ["GF", "V"] }
                         ]
                     },
                     {
-                        category: "Main Courses",
+                        category: "Mains",
                         items: [
-                            { name: "Traditional Beer Battered North Sea Cod", desc: "Triple cooked chips, tartar sauce, mushy peas & lemon", price: "£16.95", tags: ["Popular"] },
-                            { name: "Slow-Cooked Beef & Norfolk Ale Pie", desc: "Butter mash, seasonal greens and rich red wine gravy", price: "£15.95", tags: [] },
-                            { name: "8oz Norfolk Sirloin Steak", desc: "Roasted vine tomatoes, flat mushroom, hand-cut chips", price: "£23.50", tags: ["GF"] },
-                            { name: "Catch of the Day (Local Fisherman's Landing)", desc: "Pan-roasted sea bass with crushed new potatoes and samphire", price: "£18.95", tags: ["Local Catch", "GF"] }
+                            { name: "White Horse Hot Pot", desc: "White hotpot, meat and vegetables served between pomme anna and side order of winter vegetables", price: "£17.95", tags: ["GF"] },
+                            { name: "Mussels and Chips", desc: "Mussels cooked in a white wine garlic sauce, topped with lemon and a side order of garlic bread (to dip in your sauce)", price: "£17.95", tags: ["GF", "DFA", "V"] },
+                            { name: "Burger and Chips", desc: "The white horse burger with sauce, baby gem, lettuce, cheese served in burger bun, accompanied with chips and coleslaw", price: "£15.95", tags: ["GFA"] },
+                            { name: "Haddock and Chips", desc: "Served with garden peas or mushy peas, tartare sauce and lemon", price: "£15.95", tags: ["GFA", "V"] },
+                            { name: "Rosemary Roast Cannon of Lamb", desc: "Lamb cannon roasted in rosemary, served on minted mash potato, garnished with baby winter veg and red wine and rosemary jus", price: "£17.95", tags: ["GF", "DF"] },
+                            { name: "Pork Fillet", desc: "Pork fillet stuffed with brie, spinach and mushrooms and wrapped in bacon, sliced and served on herb potato cake, with veg and gravy", price: "£17.95", tags: ["GF"] },
+                            { name: "Salmon Fillet", desc: "Pan roasted salmon, new potatoes, veg and lemon herb butter sauce", price: "£17.95", tags: ["GF", "DFA", "V"] },
+                            { name: "Chicken Parmigiano", desc: "Breaded chicken thighs, cooked and served in a white horse secret tomato spicy sauce, accompanied with sweet potato fries, coleslaw and corn on the cob", price: "£16.95", tags: [] },
+                            { name: "10oz Rump Steak", desc: "Served with chips, mushrooms, tomatoes, peas, and onion rings", price: "£19.95", tags: ["GF", "DF"] },
+                            { name: "Wild Mushroom Truffle and Med Veg Risotto", desc: "Risotto rice cooked with truffle mushroom cream sauce, served with garlic bread and parmesan tuille", price: "£18.95", tags: ["GF", "DFA", "VEA", "V"] },
+                            { name: "Vegetarian Cottage Pie", desc: "Vegetarian mince with carrots, shallots, peas in vegetarian gravy topped with mash and served with side of winter vegetables", price: "£16.95", tags: ["GF", "DF", "V"] }
                         ]
                     },
                     {
                         category: "Desserts",
                         items: [
-                            { name: "Sticky Toffee Pudding", desc: "Butterscotch sauce and Norfolk vanilla ice cream", price: "£6.95", tags: ["V"] },
-                            { name: "Norfolk Berry Crumble", desc: "Served warm with custard or ice cream", price: "£6.50", tags: ["V"] }
+                            { name: "Winter Fruit Crumble Tart", desc: "Served with custard, cream or ice cream", price: "£7.95", tags: ["GFA", "V", "VEA"] },
+                            { name: "Asian Sticky Rice Cake", desc: "Served with coconut sauce", price: "£7.95", tags: ["GFA", "V", "VEA"] },
+                            { name: "Apple Pie", desc: "Served with custard and toffee sauce", price: "£7.95", tags: ["GF", "V"] },
+                            { name: "Sticky Toffee Pudding", desc: "Served with custard", price: "£7.95", tags: ["GFA", "V"] },
+                            { name: "White Horse Cheeseboard", desc: "Stilton, brie, Norfolk dapple cheese, crackers, chutney, celery, grapes and butter", price: "£12.95", tags: ["GFA", "V"] }
                         ]
                     }
                 ]
             },
             veg: {
-                title: "Vegetarian & Vegan Menu",
+                title: "Vegetarian Menu",
                 sections: [
                     {
-                        category: "Plant-Based Mains & Starters",
+                        category: "Starters",
                         items: [
-                            { name: "Roasted Beetroot & Goat's Cheese Salad", desc: "Candied walnuts, mixed leaves & balsamic glaze", price: "£7.50 / £13.50", tags: ["V", "GF", "Nuts"] },
-                            { name: "Moving Mountains Vegan Gourmet Burger", desc: "Vegan cheese, red onion chutney, brioche bun & skinny fries", price: "£14.95", tags: ["VG"] },
-                            { name: "Butternut Squash & Sage Risotto", desc: "Crispy sage leaves and toasted pine nuts", price: "£13.95", tags: ["VG", "GF", "Nuts"] },
-                            { name: "Mediterranean Vegetable & Lentil Pie", desc: "Served with roasted root veg & rich vegan gravy", price: "£14.50", tags: ["VG"] }
+                            { name: "Brie and Cranberry Bites", desc: "Squares of puff pastry filled with melted brie, topped with cranberry sauce and served on mixed leaf", price: "£7.95", tags: ["V"] },
+                            { name: "Spicy Cauli Bites", desc: "Cauliflower florets, marinated in a curry batter, served with satay sauce dip", price: "£7.95", tags: ["V"] },
+                            { name: "Bruschetta", desc: "Sliced bread, topped with garlic oil, mixed diced peppers and cheese", price: "£7.50", tags: ["V"] }
+                        ]
+                    },
+                    {
+                        category: "Mains",
+                        items: [
+                            { name: "White Horse Cauli Steak", desc: "Cauliflower steak marinated in satay sauce, served with quinoa tabouleh, pak choi and hummus", price: "£16.95", tags: ["V"] },
+                            { name: "Stuffed Peppers", desc: "Quinoa and vegetables in peppers, served on a bed of new potatoes and crispy hispi.", price: "£15.95", tags: ["V"] },
+                            { name: "Vegetarian Burger", desc: "White horse homemade vegetarian burger, served with chips, coleslaw and salad", price: "£15.95", tags: ["V"] },
+                            { name: "Owners House Special", desc: "Tagliatelle in white wine and garlic cream, with mushrooms, Mediterranean vegetables and cheese, garnished with lambs’ lettuce.", price: "£15.95", tags: ["V"] }
+                        ]
+                    },
+                    {
+                        category: "Desserts",
+                        items: [
+                            { name: "Belgian Waffles", desc: "With an assortment of ice cream, garnished with chocolate sauce", price: "£7.95", tags: ["V"] },
+                            { name: "Mini Pavlovas", desc: "Meringues with whipped cream, fruits of the forest and strawberry sauce", price: "£7.95", tags: ["V"] },
+                            { name: "Baileys Cheesecake", desc: "Bailey’s cheesecake garnished with Maltesers and chocolate baileys sauce", price: "£7.95", tags: ["V"] }
                         ]
                     }
                 ]
             },
             sunday: {
-                title: "Sunday Roast Menu (Served All Day Sunday)",
+                title: "Sunday Roast Menu",
                 sections: [
                     {
-                        category: "Traditional Norfolk Sunday Roasts",
+                        category: "Sunday Roast",
                         items: [
-                            { name: "Roast Topside of Norfolk Beef", desc: "Served with giant Yorkshire pudding, roast potatoes, seasonal veg & rich gravy", price: "£16.95", tags: ["Sunday Special"] },
-                            { name: "Roast Leg of Norfolk Lamb", desc: "Mint sauce, giant Yorkshire pudding, roast potatoes & seasonal veg", price: "£17.50", tags: [] },
-                            { name: "Roast Loin of Pork with Crackling", desc: "Apple sauce, stuffing, giant Yorkshire pudding & roast potatoes", price: "£15.95", tags: [] },
-                            { name: "Homemade Nut Roast", desc: "Vegetarian gravy, Yorkshire pudding & roast potatoes", price: "£14.50", tags: ["V", "VG Option", "Nuts"] }
+                            { name: "Sunday Roast", desc: "Choice of meats, served with herb roast potatoes, red cabbage, honey roast carrot and parsnip, cauliflower cheese, buttered greens, yorkshire puddings and gravy", price: "£17.95", tags: ["Sunday Special"] }
                         ]
                     }
                 ]
@@ -663,11 +663,18 @@
             appId: "1:1015073229231:web:b2122da1d5aa25ebbc475a"
         };
 
+        function sanitizeMenuData(data) {
+            if (!data || data.lunch || data.dinner || !data.main) {
+                return JSON.parse(JSON.stringify(defaultMenuData));
+            }
+            return data;
+        }
+
         let firestoreDb = null;
         let menuData = loadMenuData();
         let foodCards = loadFoodCards();
         let eventsData = loadEventsData();
-        let activeAdminMenuKey = 'lunch';
+        let activeAdminMenuKey = 'main';
 
         function getTodayDateString() {
             const today = new Date();
@@ -766,7 +773,7 @@
                         if (doc.exists) {
                             const val = doc.data();
                             if (val.menuData) {
-                                menuData = val.menuData;
+                                menuData = sanitizeMenuData(val.menuData);
                                 localStorage.setItem('white_horse_menu_data', JSON.stringify(menuData));
                             }
                             if (val.foodCards) {
@@ -829,7 +836,9 @@
         function loadMenuData() {
             try {
                 const stored = localStorage.getItem('white_horse_menu_data');
-                if (stored) return JSON.parse(stored);
+                if (stored) {
+                    return sanitizeMenuData(JSON.parse(stored));
+                }
             } catch (e) {
                 console.error('Error loading menu data:', e);
             }
@@ -917,7 +926,7 @@
 
         function switchAdminMenuTab(menuKey) {
             activeAdminMenuKey = menuKey;
-            ['lunch', 'dinner', 'veg', 'sunday', 'specials', 'cards', 'events'].forEach(k => {
+            ['main', 'veg', 'sunday', 'specials', 'cards', 'events'].forEach(k => {
                 const btn = document.getElementById(`admin-tab-${k}`);
                 if (!btn) return;
                 if (k === menuKey) {
@@ -1283,7 +1292,7 @@
                         pinError?.classList.add('hidden');
                         authScreen?.classList.add('hidden');
                         dashScreen?.classList.remove('hidden');
-                        switchAdminMenuTab('lunch');
+                        switchAdminMenuTab('main');
                     } else {
                         pinError?.classList.remove('hidden');
                     }
