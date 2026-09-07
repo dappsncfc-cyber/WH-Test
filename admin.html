@@ -244,7 +244,7 @@
                     <i class="fas fa-database text-pub-sage text-lg"></i>
                     <h3 class="font-serif font-bold text-pub-deep text-lg">Firebase Connection Diagnostics</h3>
                 </div>
-                <button type="button" onclick="closeDiagnosticsModal()" class="w-8 h-8 rounded-full glass-pill flex items-center justify-center text-gray-500 hover:text-pub-deep transition cursor-pointer">
+                <button type="button" onclick="closeDiagnosticsModal()" class="w-8 h-8 rounded-full glass-pill flex items-center justify-center text-gray-500 hover:text-pub-deep transition cursor-pointer" aria-label="Close modal">
                     <i class="fas fa-times"></i>
                 </button>
             </div>
@@ -307,7 +307,7 @@
                     <i class="fas fa-calendar-alt text-pub-sage text-lg"></i>
                     <h3 id="event-editor-modal-title" class="font-serif font-bold text-pub-deep text-base sm:text-lg">Edit Event</h3>
                 </div>
-                <button type="button" onclick="closeEventEditorModal()" class="w-8 h-8 rounded-full glass-pill flex items-center justify-center text-gray-500 hover:text-pub-deep transition cursor-pointer">
+                <button type="button" onclick="closeEventEditorModal()" class="w-8 h-8 rounded-full glass-pill flex items-center justify-center text-gray-500 hover:text-pub-deep transition cursor-pointer" aria-label="Close modal">
                     <i class="fas fa-times"></i>
                 </button>
             </div>
@@ -357,7 +357,7 @@
                     <i class="fas fa-image text-pub-sage text-lg"></i>
                     <h3 id="card-editor-modal-title" class="font-serif font-bold text-pub-deep text-base sm:text-lg">Edit Food Showcase Card</h3>
                 </div>
-                <button type="button" onclick="closeCardEditorModal()" class="w-8 h-8 rounded-full glass-pill flex items-center justify-center text-gray-500 hover:text-pub-deep transition cursor-pointer">
+                <button type="button" onclick="closeCardEditorModal()" class="w-8 h-8 rounded-full glass-pill flex items-center justify-center text-gray-500 hover:text-pub-deep transition cursor-pointer" aria-label="Close modal">
                     <i class="fas fa-times"></i>
                 </button>
             </div>
@@ -402,7 +402,7 @@
                     <i class="fas fa-edit text-pub-sage text-lg"></i>
                     <h3 id="dish-editor-modal-title" class="font-serif font-bold text-pub-deep text-base sm:text-lg">Edit Dish Item</h3>
                 </div>
-                <button type="button" onclick="closeDishEditorModal()" class="w-8 h-8 rounded-full glass-pill flex items-center justify-center text-gray-500 hover:text-pub-deep transition cursor-pointer">
+                <button type="button" onclick="closeDishEditorModal()" class="w-8 h-8 rounded-full glass-pill flex items-center justify-center text-gray-500 hover:text-pub-deep transition cursor-pointer" aria-label="Close modal">
                     <i class="fas fa-times"></i>
                 </button>
             </div>
@@ -1269,6 +1269,16 @@
         }
 
         window.addEventListener('DOMContentLoaded', () => {
+            // Close modals on Escape key
+            window.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    closeDiagnosticsModal();
+                    closeEventEditorModal();
+                    closeCardEditorModal();
+                    closeDishEditorModal();
+                }
+            });
+
             // PIN Form Submit
             const pinForm = document.getElementById('admin-pin-form');
             if (pinForm) {
