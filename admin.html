@@ -866,7 +866,6 @@
             if (firestoreDb) {
                 try {
                     await firestoreDb.collection('white_horse_portal').doc('data').set(payload, { merge: true });
-                    console.log("Successfully written payload to Cloud Firestore.");
                     writtenToAny = true;
                     setDiagStatus('diag-firestore-status', 'Write Succeeded', 'text-emerald-600');
                 } catch (fsErr) {
