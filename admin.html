@@ -530,28 +530,60 @@
 
         const defaultEvents = [
             {
-                id: "evt-1",
-                title: "Friday Night Live Acoustic Session",
-                date: "2026-09-15",
-                time: "20:00",
-                image: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-                description: "Enjoy relaxing acoustic covers from talented local Norfolk musicians alongside our finest cask ales and gin specials."
+                id: "evt-ale-fest-2026",
+                title: "Real Ale, Cider & Pie Festival",
+                date: "2026-09-25",
+                time: "12:00",
+                image: "https://images.unsplash.com/photo-1514933651103-005eec06c04b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                description: "Join us on 25th, 26th & 27th September for our Real Ale, Cider and Pie Festival! Featuring a huge selection of guest real ales, traditional ciders and chef's freshly baked homemade pies."
             },
             {
-                id: "evt-2",
-                title: "Pub Quiz & Curry Night",
-                date: "2026-09-20",
-                time: "19:30",
-                image: "https://images.unsplash.com/photo-1517457373958-b7bdd4587205?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-                description: "Gather your team for our popular pub quiz! Great prizes to be won, plus chef's homemade curry specials served all evening."
+                id: "evt-halloween-kids-2026",
+                title: "Children’s Halloween Party",
+                date: "2026-10-31",
+                time: "15:00 - 17:00",
+                image: "https://images.unsplash.com/photo-1509557965875-b88c97052f0e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                description: "Join us from 3pm to 5pm for our spooky Children’s Halloween party with fun games, spooky food and drinks!"
             },
             {
-                id: "evt-3",
-                title: "Cromer Seafood & Wine Evening",
-                date: "2026-10-05",
+                id: "evt-clairvoyant-2026",
+                title: "A Night with a Clairvoyant & 3-Course Dinner",
+                date: "2026-10-31",
                 time: "18:30",
-                image: "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-                description: "A special 5-course coastal tasting menu showcasing fresh Cromer crab, local sea bass and Norfolk samphire with wine pairings."
+                image: "https://images.unsplash.com/photo-1517457373958-b7bdd4587205?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                description: "An exclusive evening with 2 clairvoyants accompanied by a luxury 3-course meal. £47.95 per person. Limited numbers — booking advisable!\n\n• Starters: Quinoa, Fennel and Pomegranate Salad | Tarte Flambée | Lobster Bisque\n• Mains: Steak Au Poivre | Chicken Tartiflette | Pea and Goats Cheese Risotto\n• Desserts: Classic Crème Brûlée | Lemon Pavlova | Dark Chocolate Cylinders with Smoked Hazelnut Praline & Poached Rhubarb"
+            },
+            {
+                id: "evt-fireworks-2026",
+                title: "Fireworks Party & Courtyard BBQ",
+                date: "2026-11-05",
+                time: "18:00",
+                image: "https://images.unsplash.com/photo-1531306728370-e2ebd9d7bb99?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                description: "Fireworks party with BBQ in the courtyard! Serving delicious hot dogs, burgers and jacket potatoes with a variety of tasty fillings."
+            },
+            {
+                id: "evt-turkey-tinsel-2026",
+                title: "Turkey & Tinsel Festive Stays & Xmas Party Menu",
+                date: "2026-11-15",
+                time: "All Day",
+                image: "https://images.unsplash.com/photo-1543589077-47d81606c1bf?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                description: "Turkey and Tinsel festive stays plus Xmas party menu rollout from mid-November onwards!\n2 nights stay (Dinner, Bed & Breakfast), trip to Thursford show, Santa Express, plus weekend live music/events. Weekend 12th & 13th Dec includes the White Horse Xmas Market.\n£450 for a double room or £300 for a single room. Avoid disappointment — book now!"
+            },
+            {
+                id: "evt-xmas-market-2026",
+                title: "White Horse Xmas Market",
+                date: "2026-12-12",
+                time: "10:00",
+                image: "https://images.unsplash.com/photo-1512389142860-9c449e58a543?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                description: "White Horse Xmas Market on 12th & 13th December!\nStall holders wanted: £30 per stall a day or £50 for both days. Featuring lots of stalls, meet Father Christmas, snow machines, festive lights and more.\nAll money raised from stall sales will be divided between an ovarian cancer charity and a local charity."
+            },
+            {
+                id: "evt-xmas-day-2026",
+                title: "Christmas Day Menu",
+                date: "2026-12-25",
+                time: "12:00",
+                image: "https://images.unsplash.com/photo-1576867757603-05b134ebc379?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                description: "Celebrate Christmas Day at The White Horse Inn! Join us for a magnificent Christmas Day feast with all the trimmings. Bookings required."
             }
         ];
 
@@ -729,7 +761,12 @@
             try {
                 const stored = localStorage.getItem('white_horse_events');
                 if (stored) {
-                    return cleanAndSortEvents(JSON.parse(stored));
+                    const parsed = JSON.parse(stored);
+                    if (parsed.some(e => e.id === 'evt-1' || (e.title && e.title.includes('Acoustic Session')))) {
+                        localStorage.setItem('white_horse_events', JSON.stringify(defaultEvents));
+                        return cleanAndSortEvents(defaultEvents);
+                    }
+                    return cleanAndSortEvents(parsed);
                 }
             } catch (e) {
                 console.error('Error loading events:', e);
@@ -1056,7 +1093,7 @@
                                 <span class="text-xs text-gray-500 font-bold"><i class="fas fa-clock mr-1"></i>${formatTimeDisplay(evt.time)}</span>
                             </div>
                             <h4 class="font-serif font-bold text-pub-deep text-base">${evt.title || ''}</h4>
-                            <p class="text-xs text-gray-600 break-words max-w-md">${evt.description || ''}</p>
+                            <p class="text-xs text-gray-600 break-words max-w-md whitespace-pre-line">${evt.description || ''}</p>
                         </div>
                     </div>
                     <div class="flex items-center gap-2 shrink-0 w-full md:w-auto justify-end">
