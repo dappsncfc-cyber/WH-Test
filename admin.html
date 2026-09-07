@@ -759,7 +759,6 @@
                 // Initialise Firestore
                 try {
                     firestoreDb = window.firebase.firestore();
-                    console.log("Cloud Firestore initialised.");
                     
                     // Listen to Firestore
                     firestoreDb.collection('white_horse_portal').doc('data').onSnapshot((doc) => {
