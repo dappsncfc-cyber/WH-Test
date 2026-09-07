@@ -543,15 +543,15 @@
                 date: "2026-10-31",
                 time: "15:00 - 17:00",
                 image: "https://images.unsplash.com/photo-1509557965875-b88c97052f0e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-                description: "Join us from 3pm to 5pm for our spooky Children’s Halloween party with fun games, spooky food and drinks!"
+                description: "Join us from 3pm to 5pm for a fun-filled Children’s Halloween party with party games, spooky food and drinks!"
             },
             {
                 id: "evt-clairvoyant-2026",
-                title: "A Night with a Clairvoyant & 3-Course Dinner",
+                title: "A Night with a Clairvoyant",
                 date: "2026-10-31",
                 time: "18:30",
                 image: "https://images.unsplash.com/photo-1517457373958-b7bdd4587205?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-                description: "An exclusive evening with 2 clairvoyants accompanied by a luxury 3-course meal. £47.95 per person. Limited numbers — booking advisable!\n\n• Starters: Quinoa, Fennel and Pomegranate Salad | Tarte Flambée | Lobster Bisque\n• Mains: Steak Au Poivre | Chicken Tartiflette | Pea and Goats Cheese Risotto\n• Desserts: Classic Crème Brûlée | Lemon Pavlova | Dark Chocolate Cylinders with Smoked Hazelnut Praline & Poached Rhubarb"
+                description: "3 course meal and an evening with 2 clairvoyants.\n\nStarters:\n• Quinoa, Fennel and Pomegranate Salad\n• Tarte Flambée\n• Lobster Bisque\n\nMain:\n• Steak Au Poivre\n• Chicken Tartiflette\n• Pea and Goats Cheese Risotto\n\nDessert:\n• Classic Crème Brûlée\n• Lemon Pavlova\n• Dark Chocolate Cylinders, Smoked Hazelnut Praline and Poached Rhubarb\n\n£47.95 Per Person. Limited numbers, booking advisable."
             },
             {
                 id: "evt-fireworks-2026",
@@ -559,15 +559,15 @@
                 date: "2026-11-05",
                 time: "18:00",
                 image: "https://images.unsplash.com/photo-1531306728370-e2ebd9d7bb99?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-                description: "Fireworks party with BBQ in the courtyard! Serving delicious hot dogs, burgers and jacket potatoes with a variety of tasty fillings."
+                description: "Fireworks party with BBQ in the courtyard, with hot dogs, burgers and Jacket potatoes with a variety of fillings."
             },
             {
                 id: "evt-turkey-tinsel-2026",
-                title: "Turkey & Tinsel Festive Stays & Xmas Party Menu",
+                title: "Turkey & Tinsel Festive Stays & Xmas Party Menu Rollout",
                 date: "2026-11-15",
                 time: "All Day",
                 image: "https://images.unsplash.com/photo-1543589077-47d81606c1bf?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-                description: "Turkey and Tinsel festive stays plus Xmas party menu rollout from mid-November onwards!\n2 nights stay (Dinner, Bed & Breakfast), trip to Thursford show, Santa Express, plus weekend live music/events. Weekend 12th & 13th Dec includes the White Horse Xmas Market.\n£450 for a double room or £300 for a single room. Avoid disappointment — book now!"
+                description: "Mid November onwards Turkey and Tinsel festive stays plus Xmas party menu roll out.\n\nIncludes 2 nights stay, D,B & B, trip to Thursford show, Santa Express, plus weekends will have live music or an event and weekend 12th and 13th will have the Xmas market.\n\n£450 for a double or £300 for a single. Avoid disappointment - book now!"
             },
             {
                 id: "evt-xmas-market-2026",
@@ -575,7 +575,7 @@
                 date: "2026-12-12",
                 time: "10:00",
                 image: "https://images.unsplash.com/photo-1512389142860-9c449e58a543?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-                description: "White Horse Xmas Market on 12th & 13th December!\nStall holders wanted: £30 per stall a day or £50 for both days. Featuring lots of stalls, meet Father Christmas, snow machines, festive lights and more.\nAll money raised from stall sales will be divided between an ovarian cancer charity and a local charity."
+                description: "White Horse Xmas market on 12th and 13th December.\n\nStall holders wanted! £30 per stall a day or if do both days £50. Will have lots of stalls, meet Father Christmas, snow machines, lights and more.\n\nAll money raised from the sale of the stalls is divided between an ovarian cancer charity and a local charity. This needs to be advertised ASAP!"
             },
             {
                 id: "evt-xmas-day-2026",
@@ -583,7 +583,7 @@
                 date: "2026-12-25",
                 time: "12:00",
                 image: "https://images.unsplash.com/photo-1576867757603-05b134ebc379?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-                description: "Celebrate Christmas Day at The White Horse Inn! Join us for a magnificent Christmas Day feast with all the trimmings. Bookings required."
+                description: "Celebrate Christmas Day at The White Horse Inn! Join us on 25th December for our festive Christmas Day Menu. Bookings required."
             }
         ];
 
@@ -762,7 +762,7 @@
                 const stored = localStorage.getItem('white_horse_events');
                 if (stored) {
                     const parsed = JSON.parse(stored);
-                    if (parsed.some(e => e.id === 'evt-1' || (e.title && e.title.includes('Acoustic Session')))) {
+                    if (parsed.some(e => e.id === 'evt-1' || (e.title && e.title.includes('Acoustic Session'))) || parsed.length < defaultEvents.length) {
                         localStorage.setItem('white_horse_events', JSON.stringify(defaultEvents));
                         return cleanAndSortEvents(defaultEvents);
                     }
