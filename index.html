@@ -1527,7 +1527,13 @@
             if (!data || !titleEl || !contentEl) return;
 
             titleEl.textContent = data.title;
-            contentEl.innerHTML = '';
+            contentEl.innerHTML = `
+                <div class="text-center pb-4 border-b border-emerald-900/10">
+                    <img src="images/logo.jpg" alt="White Horse Inn Logo" class="h-24 sm:h-28 mx-auto mb-2 object-contain rounded-xl shadow-sm">
+                    <h2 class="font-serif text-2xl font-bold text-pub-deep tracking-tight">${data.title}</h2>
+                    <p class="text-xs text-pub-sage font-serif tracking-widest uppercase mt-0.5">The White Horse Inn • Cromer</p>
+                </div>
+            `;
 
             data.sections.forEach(sec => {
                 const secDiv = document.createElement('div');
