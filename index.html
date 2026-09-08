@@ -46,6 +46,7 @@
           "description": "Traditional pub and B&B accommodation in central Cromer, Norfolk. Serving fresh local seafood, pub classics, Sunday roasts, cask ales and featuring a sunny outdoor beer garden.",
           "url": "https://whitehorsecromer.co.uk/",
           "telephone": "+441263512272",
+          "email": "info@whitehorsecromer.co.uk",
           "priceRange": "££",
           "logo": "https://whitehorsecromer.co.uk/assets/logo.png",
           "image": "https://images.unsplash.com/photo-1514933651103-005eec06c04b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
@@ -71,9 +72,15 @@
             },
             {
               "@type": "OpeningHoursSpecification",
-              "dayOfWeek": ["Friday", "Saturday"],
+              "dayOfWeek": "Friday",
               "opens": "12:00",
               "closes": "23:30"
+            },
+            {
+              "@type": "OpeningHoursSpecification",
+              "dayOfWeek": "Saturday",
+              "opens": "12:00",
+              "closes": "23:00"
             },
             {
               "@type": "OpeningHoursSpecification",
@@ -865,14 +872,22 @@
                                 <a href="tel:01263512272" class="hover:underline text-pub-sage font-semibold">01263 512272</a>
                             </div>
                         </div>
+                        <div class="flex items-start gap-3">
+                            <i class="fas fa-envelope text-pub-sage text-base sm:text-lg mt-0.5 shrink-0"></i>
+                            <div>
+                                <strong class="block text-pub-deep">Email</strong>
+                                <a href="mailto:info@whitehorsecromer.co.uk" class="hover:underline text-pub-sage font-semibold">info@whitehorsecromer.co.uk</a>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="pt-4 border-t border-emerald-900/10">
                         <h3 class="font-serif font-bold text-pub-deep mb-2 text-sm sm:text-base">Opening Hours</h3>
                         <div class="grid grid-cols-2 gap-2 text-xs text-gray-600">
                             <div><span>Mon - Thu:</span> <strong class="text-pub-deep block sm:inline">12:00 - 22:00</strong></div>
-                            <div><span>Fri - Sat:</span> <strong class="text-pub-deep block sm:inline">12:00 - 23:30</strong></div>
-                            <div class="col-span-2"><span>Sunday:</span> <strong class="text-pub-deep">12:00 - 22:00</strong></div>
+                            <div><span>Friday:</span> <strong class="text-pub-deep block sm:inline">12:00 - 23:30</strong></div>
+                            <div><span>Saturday:</span> <strong class="text-pub-deep block sm:inline">12:00 - 23:00</strong></div>
+                            <div><span>Sunday:</span> <strong class="text-pub-deep block sm:inline">12:00 - 22:00</strong></div>
                         </div>
                     </div>
                 </div>
