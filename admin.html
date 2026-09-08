@@ -317,12 +317,26 @@
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
-                        <label class="block text-xs font-bold text-pub-deep mb-1">Event Date *</label>
-                        <input type="date" id="event-edit-date" required class="w-full px-3 py-2.5 rounded-xl glass-input text-xs text-gray-800 font-semibold">
+                        <label class="block text-xs font-bold text-pub-deep mb-1">Event Duration *</label>
+                        <select id="event-edit-date-type" onchange="toggleEventDateType()" class="w-full px-3 py-2.5 rounded-xl glass-input text-xs text-gray-800 font-semibold">
+                            <option value="single">Single Day Event</option>
+                            <option value="range">Multi-Day Date Range (From - To)</option>
+                        </select>
                     </div>
                     <div>
                         <label class="block text-xs font-bold text-pub-deep mb-1">Start Time *</label>
-                        <input type="text" id="event-edit-time" required placeholder="e.g. 20:00" class="w-full px-3 py-2.5 rounded-xl glass-input text-xs text-gray-800 font-semibold">
+                        <input type="text" id="event-edit-time" required placeholder="e.g. 20:00 or All Day" class="w-full px-3 py-2.5 rounded-xl glass-input text-xs text-gray-800 font-semibold">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                        <label id="event-edit-date-label" class="block text-xs font-bold text-pub-deep mb-1">Start Date *</label>
+                        <input type="date" id="event-edit-date" required class="w-full px-3 py-2.5 rounded-xl glass-input text-xs text-gray-800 font-semibold">
+                    </div>
+                    <div id="event-edit-end-date-container" class="hidden">
+                        <label class="block text-xs font-bold text-pub-deep mb-1">End Date (To Date) *</label>
+                        <input type="date" id="event-edit-end-date" class="w-full px-3 py-2.5 rounded-xl glass-input text-xs text-gray-800 font-semibold">
                     </div>
                 </div>
 
@@ -551,6 +565,7 @@
                 id: "evt-ale-fest-2026",
                 title: "Real Ale, Cider & Pie Festival",
                 date: "2026-09-25",
+                endDate: "2026-09-27",
                 time: "12:00",
                 image: "https://images.unsplash.com/photo-1514933651103-005eec06c04b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
                 description: "Join us on 25th, 26th & 27th September for our Real Ale, Cider and Pie Festival! Featuring a huge selection of guest real ales, traditional ciders and chef's freshly baked homemade pies.",
@@ -596,6 +611,7 @@
                 id: "evt-turkey-tinsel-2026",
                 title: "Turkey & Tinsel Festive Stays & Xmas Party Menu",
                 date: "2026-11-15",
+                endDate: "2026-12-20",
                 time: "All Day",
                 image: "https://images.unsplash.com/photo-1543589077-47d81606c1bf?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
                 description: "Turkey and Tinsel festive stays plus Xmas party menu rollout from mid-November onwards!\n2 nights stay (Dinner, Bed & Breakfast), trip to Thursford show, Santa Express, plus weekend live music/events. Weekend 12th & 13th Dec includes the White Horse Xmas Market.\n£450 for a double room or £300 for a single room. Avoid disappointment — book now!",
@@ -605,6 +621,7 @@
                 id: "evt-xmas-market-2026",
                 title: "White Horse Xmas Market",
                 date: "2026-12-12",
+                endDate: "2026-12-13",
                 time: "10:00",
                 image: "https://images.unsplash.com/photo-1512389142860-9c449e58a543?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
                 description: "White Horse Xmas Market on 12th & 13th December!\nStall holders wanted: £30 per stall a day or £50 for both days. Featuring lots of stalls, meet Father Christmas, snow machines, festive lights and more.\nAll money raised from stall sales will be divided between an ovarian cancer charity and a local charity.",
@@ -750,12 +767,18 @@
             return `${yyyy}-${mm}-${dd}`;
         }
 
-        function formatDateDisplay(dateStr) {
+        function formatDateDisplay(dateStr, endDateStr) {
             if (!dateStr) return '';
-            const parts = dateStr.split('-');
-            if (parts.length !== 3) return dateStr;
-            const dt = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
-            return dt.toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' });
+            const formatSingle = (s) => {
+                const parts = s.split('-');
+                if (parts.length !== 3) return s;
+                const dt = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
+                return dt.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+            };
+            if (endDateStr && endDateStr > dateStr) {
+                return `${formatSingle(dateStr)} - ${formatSingle(endDateStr)}`;
+            }
+            return formatSingle(dateStr);
         }
 
         function formatTimeDisplay(timeStr) {
@@ -782,7 +805,11 @@
         function cleanAndSortEvents(rawEvents) {
             if (!Array.isArray(rawEvents)) return [];
             const todayStr = getTodayDateString();
-            const valid = rawEvents.filter(evt => evt && evt.date && evt.date >= todayStr);
+            const valid = rawEvents.filter(evt => {
+                if (!evt) return false;
+                const effectiveEnd = evt.endDate || evt.date;
+                return effectiveEnd && effectiveEnd >= todayStr;
+            });
             valid.sort((a, b) => {
                 const dateCompare = a.date.localeCompare(b.date);
                 if (dateCompare !== 0) return dateCompare;
@@ -1111,6 +1138,26 @@
             container.appendChild(secDiv);
         }
 
+        function toggleEventDateType() {
+            const dateType = document.getElementById('event-edit-date-type')?.value;
+            const endDateContainer = document.getElementById('event-edit-end-date-container');
+            const endDateInput = document.getElementById('event-edit-end-date');
+            const startDateLabel = document.getElementById('event-edit-date-label');
+
+            if (dateType === 'range') {
+                if (endDateContainer) endDateContainer.classList.remove('hidden');
+                if (endDateInput) endDateInput.required = true;
+                if (startDateLabel) startDateLabel.textContent = 'Start Date *';
+            } else {
+                if (endDateContainer) endDateContainer.classList.add('hidden');
+                if (endDateInput) {
+                    endDateInput.required = false;
+                    endDateInput.value = '';
+                }
+                if (startDateLabel) startDateLabel.textContent = 'Event Date *';
+            }
+        }
+
         function renderEventsAdminEditor(container) {
             container.innerHTML = '';
             eventsData = cleanAndSortEvents(eventsData);
@@ -1131,7 +1178,7 @@
                         </div>
                         <div>
                             <div class="flex items-center gap-2 mb-1 flex-wrap">
-                                <span class="px-2 py-0.5 rounded-md bg-pub-sage/10 text-pub-sage text-[10px] font-bold uppercase tracking-wider">${formatDateDisplay(evt.date)}</span>
+                                <span class="px-2 py-0.5 rounded-md bg-pub-sage/10 text-pub-sage text-[10px] font-bold uppercase tracking-wider">${formatDateDisplay(evt.date, evt.endDate)}</span>
                                 <span class="text-xs text-gray-500 font-bold"><i class="fas fa-clock mr-1"></i>${formatTimeDisplay(evt.time)}</span>
                                 ${btnBadge}
                             </div>
@@ -1187,7 +1234,9 @@
             const modal = document.getElementById('event-editor-modal');
             const titleEl = document.getElementById('event-editor-modal-title');
             const titleInput = document.getElementById('event-edit-title');
+            const dateTypeSelect = document.getElementById('event-edit-date-type');
             const dateInput = document.getElementById('event-edit-date');
+            const endDateInput = document.getElementById('event-edit-end-date');
             const timeInput = document.getElementById('event-edit-time');
             const imageInput = document.getElementById('event-edit-image');
             const buttonTypeSelect = document.getElementById('event-edit-button-type');
@@ -1204,6 +1253,10 @@
                     titleEl.textContent = 'Edit Event';
                     titleInput.value = evt.title || '';
                     dateInput.value = evt.date || '';
+                    endDateInput.value = evt.endDate || '';
+                    if (dateTypeSelect) {
+                        dateTypeSelect.value = evt.endDate ? 'range' : 'single';
+                    }
                     timeInput.value = evt.time || '';
                     imageInput.value = evt.image || '';
                     if (buttonTypeSelect) buttonTypeSelect.value = evt.buttonType || 'book';
@@ -1212,13 +1265,16 @@
             } else {
                 titleEl.textContent = 'Add Upcoming Event';
                 titleInput.value = '';
+                if (dateTypeSelect) dateTypeSelect.value = 'single';
                 dateInput.value = getTodayDateString();
+                endDateInput.value = '';
                 timeInput.value = '19:00';
                 imageInput.value = 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80';
                 if (buttonTypeSelect) buttonTypeSelect.value = 'book';
                 descInput.value = '';
             }
 
+            toggleEventDateType();
             modal.classList.remove('hidden');
             modal.classList.add('flex');
         }
@@ -1415,28 +1471,33 @@
                     e.preventDefault();
                     const eventId = document.getElementById('event-edit-id').value;
                     const title = document.getElementById('event-edit-title').value.trim();
+                    const dateType = document.getElementById('event-edit-date-type')?.value;
                     const date = document.getElementById('event-edit-date').value;
+                    const endDateVal = document.getElementById('event-edit-end-date')?.value;
+                    const endDate = (dateType === 'range' && endDateVal) ? endDateVal : '';
                     const time = document.getElementById('event-edit-time').value.trim();
                     const image = document.getElementById('event-edit-image').value.trim();
                     const buttonType = document.getElementById('event-edit-button-type')?.value || 'book';
                     const description = document.getElementById('event-edit-desc').value.trim();
 
+                    const eventObj = {
+                        id: eventId || ('evt-' + Date.now()),
+                        title,
+                        date,
+                        ...(endDate ? { endDate } : {}),
+                        time,
+                        image,
+                        buttonType,
+                        description
+                    };
+
                     if (eventId) {
                         const idx = eventsData.findIndex(evt => evt.id === eventId);
                         if (idx !== -1) {
-                            eventsData[idx] = { id: eventId, title, date, time, image, buttonType, description };
+                            eventsData[idx] = eventObj;
                         }
                     } else {
-                        const newEvt = {
-                            id: 'evt-' + Date.now(),
-                            title,
-                            date,
-                            time,
-                            image,
-                            buttonType,
-                            description
-                        };
-                        eventsData.push(newEvt);
+                        eventsData.push(eventObj);
                     }
 
                     eventsData = cleanAndSortEvents(eventsData);
