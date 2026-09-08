@@ -782,7 +782,7 @@
                 const stored = localStorage.getItem('white_horse_events');
                 if (stored) {
                     const parsed = JSON.parse(stored);
-                    if (parsed.some(e => e.id === 'evt-1' || (e.title && e.title.includes('Acoustic Session')))) {
+                    if (parsed.some(e => e.id === 'evt-1' || (e.title && e.title.includes('Acoustic Session'))) || parsed.length < defaultEvents.length) {
                         localStorage.setItem('white_horse_events', JSON.stringify(defaultEvents));
                         return cleanAndSortEvents(defaultEvents);
                     }
