@@ -332,6 +332,14 @@
                 </div>
 
                 <div>
+                    <label class="block text-xs font-bold text-pub-deep mb-1">Card Action Button *</label>
+                    <select id="event-edit-button-type" required class="w-full px-3 py-2.5 rounded-xl glass-input text-xs text-gray-800 font-semibold">
+                        <option value="book">Book a Table (Opens Reservation Popup)</option>
+                        <option value="info">Find Out More (Opens Email Client to info@whitehorsecromer.co.uk)</option>
+                    </select>
+                </div>
+
+                <div>
                     <label class="block text-xs font-bold text-pub-deep mb-1">Event Description *</label>
                     <textarea id="event-edit-desc" rows="3" required placeholder="Describe the event details..." class="w-full px-3 py-2.5 rounded-xl glass-input text-xs text-gray-800"></textarea>
                 </div>
@@ -545,7 +553,8 @@
                 date: "2026-09-25",
                 time: "12:00",
                 image: "https://images.unsplash.com/photo-1514933651103-005eec06c04b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-                description: "Join us on 25th, 26th & 27th September for our Real Ale, Cider and Pie Festival! Featuring a huge selection of guest real ales, traditional ciders and chef's freshly baked homemade pies."
+                description: "Join us on 25th, 26th & 27th September for our Real Ale, Cider and Pie Festival! Featuring a huge selection of guest real ales, traditional ciders and chef's freshly baked homemade pies.",
+                buttonType: "book"
             },
             {
                 id: "evt-pub-quiz-2026",
@@ -553,7 +562,8 @@
                 date: "2026-09-29",
                 time: "19:30",
                 image: "images/bingo.jpg",
-                description: "Gather your team for our popular Pub Quiz & Curry Night! Great prizes to be won, plus chef's homemade curry specials served all evening."
+                description: "Gather your team for our popular Pub Quiz & Curry Night! Great prizes to be won, plus chef's homemade curry specials served all evening.",
+                buttonType: "book"
             },
             {
                 id: "evt-halloween-kids-2026",
@@ -561,7 +571,8 @@
                 date: "2026-10-31",
                 time: "15:00 - 17:00",
                 image: "https://images.unsplash.com/photo-1509557965875-b88c97052f0e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-                description: "Join us from 3pm to 5pm for our spooky Children’s Halloween party with fun games, spooky food and drinks!"
+                description: "Join us from 3pm to 5pm for our spooky Children’s Halloween party with fun games, spooky food and drinks!",
+                buttonType: "info"
             },
             {
                 id: "evt-clairvoyant-2026",
@@ -569,7 +580,8 @@
                 date: "2026-10-31",
                 time: "18:30",
                 image: "https://images.unsplash.com/photo-1517457373958-b7bdd4587205?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-                description: "An exclusive evening with 2 clairvoyants accompanied by a luxury 3-course meal. £47.95 per person. Limited numbers — booking advisable!\n\n• Starters: Quinoa, Fennel and Pomegranate Salad | Tarte Flambée | Lobster Bisque\n• Mains: Steak Au Poivre | Chicken Tartiflette | Pea and Goats Cheese Risotto\n• Desserts: Classic Crème Brûlée | Lemon Pavlova | Dark Chocolate Cylinders with Smoked Hazelnut Praline & Poached Rhubarb"
+                description: "An exclusive evening with 2 clairvoyants accompanied by a luxury 3-course meal. £47.95 per person. Limited numbers — booking advisable!\n\n• Starters: Quinoa, Fennel and Pomegranate Salad | Tarte Flambée | Lobster Bisque\n• Mains: Steak Au Poivre | Chicken Tartiflette | Pea and Goats Cheese Risotto\n• Desserts: Classic Crème Brûlée | Lemon Pavlova | Dark Chocolate Cylinders with Smoked Hazelnut Praline & Poached Rhubarb",
+                buttonType: "book"
             },
             {
                 id: "evt-fireworks-2026",
@@ -577,7 +589,8 @@
                 date: "2026-11-05",
                 time: "18:00",
                 image: "https://images.unsplash.com/photo-1531306728370-e2ebd9d7bb99?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-                description: "Fireworks party with BBQ in the courtyard! Serving delicious hot dogs, burgers and jacket potatoes with a variety of tasty fillings."
+                description: "Fireworks party with BBQ in the courtyard! Serving delicious hot dogs, burgers and jacket potatoes with a variety of tasty fillings.",
+                buttonType: "info"
             },
             {
                 id: "evt-turkey-tinsel-2026",
@@ -585,7 +598,8 @@
                 date: "2026-11-15",
                 time: "All Day",
                 image: "https://images.unsplash.com/photo-1543589077-47d81606c1bf?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-                description: "Turkey and Tinsel festive stays plus Xmas party menu rollout from mid-November onwards!\n2 nights stay (Dinner, Bed & Breakfast), trip to Thursford show, Santa Express, plus weekend live music/events. Weekend 12th & 13th Dec includes the White Horse Xmas Market.\n£450 for a double room or £300 for a single room. Avoid disappointment — book now!"
+                description: "Turkey and Tinsel festive stays plus Xmas party menu rollout from mid-November onwards!\n2 nights stay (Dinner, Bed & Breakfast), trip to Thursford show, Santa Express, plus weekend live music/events. Weekend 12th & 13th Dec includes the White Horse Xmas Market.\n£450 for a double room or £300 for a single room. Avoid disappointment — book now!",
+                buttonType: "info"
             },
             {
                 id: "evt-xmas-market-2026",
@@ -593,7 +607,8 @@
                 date: "2026-12-12",
                 time: "10:00",
                 image: "https://images.unsplash.com/photo-1512389142860-9c449e58a543?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-                description: "White Horse Xmas Market on 12th & 13th December!\nStall holders wanted: £30 per stall a day or £50 for both days. Featuring lots of stalls, meet Father Christmas, snow machines, festive lights and more.\nAll money raised from stall sales will be divided between an ovarian cancer charity and a local charity."
+                description: "White Horse Xmas Market on 12th & 13th December!\nStall holders wanted: £30 per stall a day or £50 for both days. Featuring lots of stalls, meet Father Christmas, snow machines, festive lights and more.\nAll money raised from stall sales will be divided between an ovarian cancer charity and a local charity.",
+                buttonType: "info"
             },
             {
                 id: "evt-xmas-day-2026",
@@ -601,7 +616,8 @@
                 date: "2026-12-25",
                 time: "12:00",
                 image: "https://images.unsplash.com/photo-1576867757603-05b134ebc379?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-                description: "Celebrate Christmas Day at The White Horse Inn! Join us for a magnificent Christmas Day feast with all the trimmings. Bookings required."
+                description: "Celebrate Christmas Day at The White Horse Inn! Join us for a magnificent Christmas Day feast with all the trimmings. Bookings required.",
+                buttonType: "book"
             }
         ];
 
@@ -1101,16 +1117,23 @@
             const secDiv = document.createElement('div');
             secDiv.className = 'glass-card rounded-3xl p-5 sm:p-6 border border-white/90 space-y-4';
 
-            let eventsHtml = eventsData.map((evt) => `
+            let eventsHtml = eventsData.map((evt) => {
+                const isBook = (evt.buttonType || 'book') === 'book';
+                const btnBadge = isBook
+                    ? '<span class="px-2 py-0.5 rounded-md bg-emerald-100 text-emerald-800 text-[10px] font-bold uppercase tracking-wider"><i class="fas fa-utensils mr-1"></i>Book Table</span>'
+                    : '<span class="px-2 py-0.5 rounded-md bg-blue-100 text-blue-800 text-[10px] font-bold uppercase tracking-wider"><i class="fas fa-envelope mr-1"></i>Find Out More</span>';
+
+                return `
                 <div class="flex flex-col md:flex-row items-center justify-between p-4 rounded-2xl bg-white/80 border border-emerald-900/10 gap-4 hover:shadow-sm transition">
                     <div class="flex items-center gap-4 w-full md:w-auto">
                         <div class="w-20 h-16 rounded-xl overflow-hidden shrink-0 bg-gray-100 border border-gray-200">
                             <img src="${evt.image || ''}" onerror="this.onerror=null; this.src='https://placehold.co/200x160/1b3a2b/ffffff?text=Event';" alt="${evt.title || ''}" class="w-full h-full object-cover">
                         </div>
                         <div>
-                            <div class="flex items-center gap-2 mb-1">
+                            <div class="flex items-center gap-2 mb-1 flex-wrap">
                                 <span class="px-2 py-0.5 rounded-md bg-pub-sage/10 text-pub-sage text-[10px] font-bold uppercase tracking-wider">${formatDateDisplay(evt.date)}</span>
                                 <span class="text-xs text-gray-500 font-bold"><i class="fas fa-clock mr-1"></i>${formatTimeDisplay(evt.time)}</span>
+                                ${btnBadge}
                             </div>
                             <h4 class="font-serif font-bold text-pub-deep text-base">${evt.title || ''}</h4>
                             <p class="text-xs text-gray-600 break-words max-w-md whitespace-pre-line">${evt.description || ''}</p>
@@ -1125,7 +1148,8 @@
                         </button>
                     </div>
                 </div>
-            `).join('');
+            `;
+            }).join('');
 
             secDiv.innerHTML = `
                 <div class="flex items-center justify-between border-b border-emerald-900/10 pb-3">
@@ -1166,6 +1190,7 @@
             const dateInput = document.getElementById('event-edit-date');
             const timeInput = document.getElementById('event-edit-time');
             const imageInput = document.getElementById('event-edit-image');
+            const buttonTypeSelect = document.getElementById('event-edit-button-type');
             const descInput = document.getElementById('event-edit-desc');
             const idInput = document.getElementById('event-edit-id');
 
@@ -1181,6 +1206,7 @@
                     dateInput.value = evt.date || '';
                     timeInput.value = evt.time || '';
                     imageInput.value = evt.image || '';
+                    if (buttonTypeSelect) buttonTypeSelect.value = evt.buttonType || 'book';
                     descInput.value = evt.description || '';
                 }
             } else {
@@ -1189,6 +1215,7 @@
                 dateInput.value = getTodayDateString();
                 timeInput.value = '19:00';
                 imageInput.value = 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80';
+                if (buttonTypeSelect) buttonTypeSelect.value = 'book';
                 descInput.value = '';
             }
 
@@ -1391,12 +1418,13 @@
                     const date = document.getElementById('event-edit-date').value;
                     const time = document.getElementById('event-edit-time').value.trim();
                     const image = document.getElementById('event-edit-image').value.trim();
+                    const buttonType = document.getElementById('event-edit-button-type')?.value || 'book';
                     const description = document.getElementById('event-edit-desc').value.trim();
 
                     if (eventId) {
                         const idx = eventsData.findIndex(evt => evt.id === eventId);
                         if (idx !== -1) {
-                            eventsData[idx] = { id: eventId, title, date, time, image, description };
+                            eventsData[idx] = { id: eventId, title, date, time, image, buttonType, description };
                         }
                     } else {
                         const newEvt = {
@@ -1405,6 +1433,7 @@
                             date,
                             time,
                             image,
+                            buttonType,
                             description
                         };
                         eventsData.push(newEvt);
