@@ -1470,12 +1470,7 @@
             try {
                 const storedCards = localStorage.getItem('white_horse_food_cards');
                 if (storedCards) {
-                    const parsed = JSON.parse(storedCards);
-                    if (parsed.length < defaultFoodCards.length) {
-                        localStorage.setItem('white_horse_food_cards', JSON.stringify(defaultFoodCards));
-                        return defaultFoodCards;
-                    }
-                    return parsed;
+                    return JSON.parse(storedCards);
                 }
                 const storedMenu = localStorage.getItem('white_horse_menu_data');
                 if (storedMenu) {
