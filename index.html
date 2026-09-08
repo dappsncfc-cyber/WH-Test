@@ -1769,6 +1769,7 @@
 
         let foodCardAutoScrollInterval = null;
         let foodCardIsHovered = false;
+        let foodCardIsResetting = false;
 
         function openFoodCardModal(image, title, tag, alt) {
             const modal = document.getElementById('food-card-modal');
@@ -1831,17 +1832,28 @@
             const container = document.getElementById('food-cards-container');
             if (!container) return;
 
+            foodCardIsResetting = false;
+
             if (foodCardAutoScrollInterval) {
                 clearInterval(foodCardAutoScrollInterval);
             }
 
             foodCardAutoScrollInterval = setInterval(() => {
-                if (foodCardIsHovered) return;
+                if (foodCardIsHovered || foodCardIsResetting) return;
+
+                const maxScrollLeft = container.scrollWidth - container.clientWidth;
+                if (maxScrollLeft <= 0) return;
 
                 // Check if reached end of scroll
-                const maxScrollLeft = container.scrollWidth - container.clientWidth;
                 if (container.scrollLeft >= maxScrollLeft - 2) {
-                    container.scrollTo({ left: 0, behavior: 'smooth' });
+                    foodCardIsResetting = true;
+                    // Pause briefly at end, then smoothly return to start
+                    setTimeout(() => {
+                        container.scrollTo({ left: 0, behavior: 'smooth' });
+                        setTimeout(() => {
+                            foodCardIsResetting = false;
+                        }, 800);
+                    }, 1000);
                 } else {
                     container.scrollBy({ left: 1.5, behavior: 'auto' });
                 }
