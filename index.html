@@ -458,10 +458,12 @@
             </div>
 
             <!-- Food Photography Gallery (Fresh From Our Kitchen) -->
-            <div class="mb-10 sm:mb-12">
+            <div class="mb-10 sm:mb-12 relative group/carousel">
                 <h3 class="font-serif text-xl sm:text-2xl font-bold text-pub-deep text-center mb-5 sm:mb-6">Fresh From Our Kitchen</h3>
-                <div id="food-cards-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-4">
-                    <!-- Populated dynamically via JS -->
+                <div id="food-cards-wrapper" class="relative overflow-hidden rounded-3xl">
+                    <div id="food-cards-container" class="flex gap-4 overflow-x-auto scroll-smooth py-2 px-1 scrollbar-none" style="scrollbar-width: none; -ms-overflow-style: none;">
+                        <!-- Populated dynamically via JS -->
+                    </div>
                 </div>
             </div>
 
@@ -1085,6 +1087,35 @@
         </div>
     </div>
 
+
+    <!-- FOOD CARD FULL IMAGE GLASSMORPHIC POPUP MODAL -->
+    <div id="food-card-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-2.5 sm:p-4 bg-pub-dark/70 backdrop-blur-md transition-opacity duration-300">
+        <div class="glass-modal-tile rounded-3xl w-full max-w-3xl max-h-[90vh] flex flex-col overflow-hidden relative shadow-2xl border border-white/90">
+            <!-- Modal Header -->
+            <div class="px-4 sm:px-6 py-3.5 border-b border-emerald-900/10 flex items-center justify-between bg-white/40 z-10">
+                <div class="flex items-center gap-2">
+                    <span id="food-modal-tag" class="px-2.5 py-0.5 rounded-md bg-pub-deep text-white text-xs font-bold uppercase tracking-wider">Tag</span>
+                    <h3 id="food-modal-title" class="font-serif font-bold text-pub-deep text-base sm:text-xl">Dish Name</h3>
+                </div>
+                <button type="button" onclick="closeFoodCardModal()" class="w-8 h-8 rounded-full glass-pill flex items-center justify-center text-gray-500 hover:text-pub-deep transition cursor-pointer" aria-label="Close image modal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <!-- Modal Content Body - Full Image Display -->
+            <div class="p-3 sm:p-5 flex-1 flex items-center justify-center overflow-hidden bg-black/5">
+                <img id="food-modal-img" src="" alt="" class="max-h-[70vh] w-auto max-w-full object-contain rounded-2xl shadow-lg">
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="px-4 sm:px-6 py-3 border-t border-emerald-900/10 bg-white/30 flex items-center justify-between">
+                <span class="text-xs text-gray-600 font-medium">The White Horse Inn • Fresh Norfolk Produce</span>
+                <button type="button" onclick="closeFoodCardModal(); openBookingModal('table');" class="glass-button-primary text-white text-xs font-bold px-4 py-2 rounded-xl">
+                    Book Table
+                </button>
+            </div>
+        </div>
+    </div>
 
     <!-- INTERACTIVE MENU VIEWER MODAL -->
     <div id="menu-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-2.5 sm:p-4 bg-pub-dark/60 backdrop-blur-md transition-opacity duration-300">
@@ -1736,26 +1767,85 @@
             return JSON.parse(JSON.stringify(defaultFoodCards));
         }
 
+        let foodCardAutoScrollInterval = null;
+        let foodCardIsHovered = false;
+
+        function openFoodCardModal(image, title, tag, alt) {
+            const modal = document.getElementById('food-card-modal');
+            const imgEl = document.getElementById('food-modal-img');
+            const titleEl = document.getElementById('food-modal-title');
+            const tagEl = document.getElementById('food-modal-tag');
+
+            if (!modal || !imgEl || !titleEl || !tagEl) return;
+
+            imgEl.src = image || '';
+            imgEl.alt = alt || title || '';
+            titleEl.textContent = title || 'Dish';
+            tagEl.textContent = tag || 'Kitchen Special';
+
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeFoodCardModal() {
+            const modal = document.getElementById('food-card-modal');
+            if (!modal) return;
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            document.body.style.overflow = '';
+        }
+
         function renderFoodCards() {
             const container = document.getElementById('food-cards-container');
             if (!container) return;
             const cards = loadFoodCards();
-            container.innerHTML = cards.map(card => `
-                <div class="glass-card rounded-2xl overflow-hidden p-2 group">
+
+            if (!cards || cards.length === 0) return;
+
+            container.innerHTML = cards.map((card, idx) => `
+                <div onclick="openFoodCardModal('${card.image || ''}', '${(card.title || '').replace(/'/g, "\\'")}', '${(card.tag || '').replace(/'/g, "\\'")}', '${(card.alt || '').replace(/'/g, "\\'")}')"
+                     class="glass-card rounded-2xl overflow-hidden p-2 group cursor-pointer shrink-0 w-[260px] sm:w-[300px] hover:scale-[1.02] transition-transform duration-300">
                     <div class="relative h-48 sm:h-56 rounded-xl overflow-hidden">
                         <img src="${card.image || ''}"
                              onerror="this.onerror=null; this.src='https://placehold.co/800x600/1b3a2b/ffffff?text=${encodeURIComponent(card.title || 'Food Item')}';"
                              alt="${card.alt || card.title || ''}"
                              class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent flex items-end p-3">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent flex items-end p-3 justify-between">
                             <div>
                                 <span class="px-2 py-0.5 rounded-md bg-white/90 text-pub-deep text-[10px] font-bold uppercase tracking-wider mb-1 inline-block">${card.tag || ''}</span>
-                                <p class="text-white text-xs font-bold">${card.title || ''}</p>
+                                <p class="text-white text-xs sm:text-sm font-bold drop-shadow-sm">${card.title || ''}</p>
+                            </div>
+                            <div class="w-8 h-8 rounded-full glass-pill flex items-center justify-center text-white bg-white/20 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity">
+                                <i class="fas fa-expand text-xs"></i>
                             </div>
                         </div>
                     </div>
                 </div>
             `).join('');
+
+            startFoodCardAutoScroll();
+        }
+
+        function startFoodCardAutoScroll() {
+            const container = document.getElementById('food-cards-container');
+            if (!container) return;
+
+            if (foodCardAutoScrollInterval) {
+                clearInterval(foodCardAutoScrollInterval);
+            }
+
+            foodCardAutoScrollInterval = setInterval(() => {
+                if (foodCardIsHovered) return;
+
+                // Check if reached end of scroll
+                const maxScrollLeft = container.scrollWidth - container.clientWidth;
+                if (container.scrollLeft >= maxScrollLeft - 2) {
+                    container.scrollTo({ left: 0, behavior: 'smooth' });
+                } else {
+                    container.scrollBy({ left: 1.5, behavior: 'auto' });
+                }
+            }, 30);
         }
 
 
@@ -2021,6 +2111,25 @@
             // Start automatic room ticker
             startRoomTicker();
 
+            // Food cards carousel hover & touch pause logic
+            const foodCardsContainer = document.getElementById('food-cards-container');
+            if (foodCardsContainer) {
+                foodCardsContainer.addEventListener('mouseenter', () => { foodCardIsHovered = true; });
+                foodCardsContainer.addEventListener('mouseleave', () => { foodCardIsHovered = false; });
+                foodCardsContainer.addEventListener('touchstart', () => { foodCardIsHovered = true; }, { passive: true });
+                foodCardsContainer.addEventListener('touchend', () => { foodCardIsHovered = false; });
+            }
+
+            // Food Card Full Image Modal backdrop click handler
+            const foodCardModal = document.getElementById('food-card-modal');
+            if (foodCardModal) {
+                foodCardModal.addEventListener('click', (e) => {
+                    if (e.target === foodCardModal) {
+                        closeFoodCardModal();
+                    }
+                });
+            }
+
             // Mobile Menu Button click handler
             const mobileBtn = document.getElementById('mobile-menu-btn');
             if (mobileBtn) {
@@ -2082,6 +2191,7 @@
                     closeMenuModal();
                     closePrivacyModal();
                     closeCookiesModal();
+                    closeFoodCardModal();
                 }
             });
 
