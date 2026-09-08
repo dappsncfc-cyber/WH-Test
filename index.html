@@ -1224,6 +1224,7 @@
                 id: "evt-ale-fest-2026",
                 title: "Real Ale, Cider & Pie Festival",
                 date: "2026-09-25",
+                endDate: "2026-09-27",
                 time: "12:00",
                 image: "https://images.unsplash.com/photo-1514933651103-005eec06c04b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
                 description: "Join us on 25th, 26th & 27th September for our Real Ale, Cider and Pie Festival! Featuring a huge selection of guest real ales, traditional ciders and chef's freshly baked homemade pies.",
@@ -1269,6 +1270,7 @@
                 id: "evt-turkey-tinsel-2026",
                 title: "Turkey & Tinsel Festive Stays & Xmas Party Menu",
                 date: "2026-11-15",
+                endDate: "2026-12-20",
                 time: "All Day",
                 image: "https://images.unsplash.com/photo-1543589077-47d81606c1bf?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
                 description: "Turkey and Tinsel festive stays plus Xmas party menu rollout from mid-November onwards!\n2 nights stay (Dinner, Bed & Breakfast), trip to Thursford show, Santa Express, plus weekend live music/events. Weekend 12th & 13th Dec includes the White Horse Xmas Market.\n£450 for a double room or £300 for a single room. Avoid disappointment — book now!",
@@ -1278,6 +1280,7 @@
                 id: "evt-xmas-market-2026",
                 title: "White Horse Xmas Market",
                 date: "2026-12-12",
+                endDate: "2026-12-13",
                 time: "10:00",
                 image: "https://images.unsplash.com/photo-1512389142860-9c449e58a543?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
                 description: "White Horse Xmas Market on 12th & 13th December!\nStall holders wanted: £30 per stall a day or £50 for both days. Featuring lots of stalls, meet Father Christmas, snow machines, festive lights and more.\nAll money raised from stall sales will be divided between an ovarian cancer charity and a local charity.",
@@ -1524,9 +1527,13 @@
         function cleanAndSortEvents(rawEvents) {
             if (!Array.isArray(rawEvents)) return [];
             const todayStr = getTodayDateString();
-            // Auto delete/filter events where date has passed
-            const valid = rawEvents.filter(evt => evt && evt.date && evt.date >= todayStr);
-            // Sort by date ascending (soonest first)
+            // Auto delete/filter events where effective end date has passed
+            const valid = rawEvents.filter(evt => {
+                if (!evt) return false;
+                const effectiveEnd = evt.endDate || evt.date;
+                return effectiveEnd && effectiveEnd >= todayStr;
+            });
+            // Sort by start date ascending (soonest first)
             valid.sort((a, b) => {
                 const dateCompare = a.date.localeCompare(b.date);
                 if (dateCompare !== 0) return dateCompare;
@@ -1553,12 +1560,18 @@
             return cleanAndSortEvents(defaultEvents);
         }
 
-        function formatDateDisplay(dateStr) {
+        function formatDateDisplay(dateStr, endDateStr) {
             if (!dateStr) return '';
-            const parts = dateStr.split('-');
-            if (parts.length !== 3) return dateStr;
-            const dt = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
-            return dt.toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' });
+            const formatSingle = (s) => {
+                const parts = s.split('-');
+                if (parts.length !== 3) return s;
+                const dt = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
+                return dt.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+            };
+            if (endDateStr && endDateStr > dateStr) {
+                return `${formatSingle(dateStr)} - ${formatSingle(endDateStr)}`;
+            }
+            return formatSingle(dateStr);
         }
 
         function formatTimeDisplay(timeStr) {
@@ -1612,7 +1625,7 @@
                                  class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
                             <div class="absolute top-3 right-3 glass-pill px-3 py-1 rounded-full text-[11px] font-bold text-pub-deep uppercase tracking-wider bg-white/90 shadow-sm flex items-center gap-1.5">
                                 <i class="fas fa-calendar-day text-pub-sage"></i>
-                                <span>${formatDateDisplay(evt.date)}</span>
+                                <span>${formatDateDisplay(evt.date, evt.endDate)}</span>
                             </div>
                         </div>
                         <div class="p-5 sm:p-6">
