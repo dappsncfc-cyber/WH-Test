@@ -686,51 +686,75 @@
                     <div class="relative rounded-2xl overflow-hidden h-60 sm:h-72 md:h-80 shadow-lg group">
                         <!-- Carousel Slides Container -->
                         <div id="room-slider" class="w-full h-full relative">
-                            <!-- Slide 1 -->
+                            <!-- Slide 1: Bedroom -->
                             <div class="room-slide absolute inset-0 transition-opacity duration-700 opacity-100 z-10">
-                                <img src="https://images.unsplash.com/photo-1590490360182-c33d57733427?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" 
-                                     onerror="this.onerror=null; this.src='https://placehold.co/1000x800/1b3a2b/ffffff?text=Deluxe+En-suite+Double';"
-                                     alt="Deluxe En-suite Double Bedroom at White Horse Inn" 
-                                     class="w-full h-full object-cover">
+                                <picture>
+                                    <source srcset="images/room-bedroom.webp" type="image/webp">
+                                    <img src="images/room-bedroom.jpg"
+                                         onerror="this.onerror=null; this.src='https://placehold.co/1000x800/1b3a2b/ffffff?text=Deluxe+En-suite+Double';"
+                                         alt="Deluxe En-suite Double Bedroom at White Horse Inn"
+                                         class="w-full h-full object-cover"
+                                         loading="eager"
+                                         width="1400"
+                                         height="975">
+                                </picture>
                                 <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent flex items-end justify-between p-3.5 sm:p-4">
                                     <span class="glass-pill px-3 py-1 rounded-full text-xs font-bold text-pub-deep bg-white/90">Deluxe En-suite Double</span>
                                     <span class="px-2.5 py-1 rounded-md bg-pub-deep text-white text-[11px] font-bold">From £100/night</span>
                                 </div>
                             </div>
 
-                            <!-- Slide 2 -->
+                            <!-- Slide 2: Living Room -->
                             <div class="room-slide absolute inset-0 transition-opacity duration-700 opacity-0 z-0">
-                                <img src="https://images.unsplash.com/photo-1618773928121-c32242e63f39?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" 
-                                     onerror="this.onerror=null; this.src='https://placehold.co/1000x800/1b3a2b/ffffff?text=Spacious+King+Room';"
-                                     alt="Spacious King B&B Room" 
-                                     class="w-full h-full object-cover">
+                                <picture>
+                                    <source srcset="images/room-living.webp" type="image/webp">
+                                    <img src="images/room-living.jpg"
+                                         onerror="this.onerror=null; this.src='https://placehold.co/1000x800/1b3a2b/ffffff?text=Living+Area';"
+                                         alt="Spacious Living & Dining Area at White Horse Inn"
+                                         class="w-full h-full object-cover"
+                                         loading="lazy"
+                                         width="1139"
+                                         height="1400">
+                                </picture>
                                 <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent flex items-end justify-between p-3.5 sm:p-4">
-                                    <span class="glass-pill px-3 py-1 rounded-full text-xs font-bold text-pub-deep bg-white/90">Spacious King Room</span>
-                                    <span class="px-2.5 py-1 rounded-md bg-pub-deep text-white text-[11px] font-bold">From £125/night</span>
+                                    <span class="glass-pill px-3 py-1 rounded-full text-xs font-bold text-pub-deep bg-white/90">Spacious Living Area</span>
+                                    <span class="px-2.5 py-1 rounded-md bg-pub-deep text-white text-[11px] font-bold">Relax in Comfort</span>
                                 </div>
                             </div>
 
-                            <!-- Slide 3 -->
+                            <!-- Slide 3: Bathroom -->
                             <div class="room-slide absolute inset-0 transition-opacity duration-700 opacity-0 z-0">
-                                <img src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" 
-                                     onerror="this.onerror=null; this.src='https://placehold.co/1000x800/1b3a2b/ffffff?text=Comfortable+Twin+Room';"
-                                     alt="Comfortable Twin Guest Room" 
-                                     class="w-full h-full object-cover">
-                                <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent flex items-end justify-between p-3.5 sm:p-4">
-                                    <span class="glass-pill px-3 py-1 rounded-full text-xs font-bold text-pub-deep bg-white/90">Standard Single Room</span>
-                                    <span class="px-2.5 py-1 rounded-md bg-pub-deep text-white text-[11px] font-bold">From £70/night</span>
-                                </div>
-                            </div>
-
-                            <!-- Slide 4 -->
-                            <div class="room-slide absolute inset-0 transition-opacity duration-700 opacity-0 z-0">
-                                <img src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" 
-                                     onerror="this.onerror=null; this.src='https://placehold.co/1000x800/1b3a2b/ffffff?text=Modern+En-suite+Bathroom';"
-                                     alt="Modern En-suite Bathroom" 
-                                     class="w-full h-full object-cover">
+                                <picture>
+                                    <source srcset="images/room-bathroom.webp" type="image/webp">
+                                    <img src="images/room-bathroom.jpg"
+                                         onerror="this.onerror=null; this.src='https://placehold.co/1000x800/1b3a2b/ffffff?text=Modern+En-suite+Bathroom';"
+                                         alt="Modern En-suite Bathroom at White Horse Inn"
+                                         class="w-full h-full object-cover"
+                                         loading="lazy"
+                                         width="1139"
+                                         height="1400">
+                                </picture>
                                 <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent flex items-end justify-between p-3.5 sm:p-4">
                                     <span class="glass-pill px-3 py-1 rounded-full text-xs font-bold text-pub-deep bg-white/90">Modern En-suite Bathroom</span>
-                                    <span class="px-2.5 py-1 rounded-md bg-pub-deep text-white text-[11px] font-bold">Walk-in Shower</span>
+                                    <span class="px-2.5 py-1 rounded-md bg-pub-deep text-white text-[11px] font-bold">Luxury Amenities</span>
+                                </div>
+                            </div>
+
+                            <!-- Slide 4: Balcony / Outdoor Terrace -->
+                            <div class="room-slide absolute inset-0 transition-opacity duration-700 opacity-0 z-0">
+                                <picture>
+                                    <source srcset="images/room-balcony.webp" type="image/webp">
+                                    <img src="images/room-balcony.jpg"
+                                         onerror="this.onerror=null; this.src='https://placehold.co/1000x800/1b3a2b/ffffff?text=Private+Balcony';"
+                                         alt="Private Outdoor Balcony with Views at White Horse Inn"
+                                         class="w-full h-full object-cover"
+                                         loading="lazy"
+                                         width="1139"
+                                         height="1400">
+                                </picture>
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent flex items-end justify-between p-3.5 sm:p-4">
+                                    <span class="glass-pill px-3 py-1 rounded-full text-xs font-bold text-pub-deep bg-white/90">Private Balcony &amp; Terrace</span>
+                                    <span class="px-2.5 py-1 rounded-md bg-pub-deep text-white text-[11px] font-bold">Scenic Views</span>
                                 </div>
                             </div>
                         </div>
