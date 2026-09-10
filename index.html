@@ -1590,10 +1590,20 @@
         }
 
         function sanitizeMenuData(data) {
-            if (!data || data.lunch || data.dinner || !data.main) {
+            if (!data || typeof data !== 'object') {
                 return JSON.parse(JSON.stringify(defaultMenuData));
             }
-            return data;
+            const cleanData = JSON.parse(JSON.stringify(data));
+            delete cleanData.lunch;
+            delete cleanData.dinner;
+
+            ['main', 'veg', 'sunday', 'specials'].forEach(key => {
+                if (!cleanData[key] || !cleanData[key].sections || !Array.isArray(cleanData[key].sections)) {
+                    cleanData[key] = JSON.parse(JSON.stringify(defaultMenuData[key]));
+                }
+            });
+
+            return cleanData;
         }
 
         // Active Menu & Events Data Stores loaded from LocalStorage
