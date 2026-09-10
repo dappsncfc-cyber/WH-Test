@@ -936,21 +936,52 @@
     </div>
 
     <!-- Footer -->
-    <footer class="bg-pub-dark text-white py-10 sm:py-12 px-4 border-t border-emerald-900/30">
-        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
-            <div>
-                <span class="font-serif text-2xl font-bold text-white tracking-tight">White Horse Inn</span>
-                <span class="text-xs text-pub-sage block font-serif tracking-widest uppercase mt-0.5">dine • drink • sleep</span>
-                <p class="text-xs text-gray-400 mt-2">24 West Street, Cromer, Norfolk, NR27 9DS</p>
-            </div>
-            <div class="text-xs text-gray-400 space-y-2">
-                <p>&copy; 2026 The White Horse Inn, Cromer. All rights reserved.</p>
-                <div class="flex flex-wrap items-center justify-center md:justify-end gap-3 text-xs text-pub-sage font-medium">
-                    <button type="button" onclick="openPrivacyModal()" class="hover:underline hover:text-white transition cursor-pointer">Privacy Policy</button>
-                    <span>•</span>
-                    <button type="button" onclick="openCookiesModal()" class="hover:underline hover:text-white transition cursor-pointer">Cookies Policy</button>
+    <footer class="bg-pub-dark text-white py-12 px-4 sm:px-6 lg:px-8 border-t border-emerald-900/30">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-center text-center md:text-left pb-8 border-b border-emerald-900/40">
+                <!-- Brand & Address -->
+                <div class="space-y-2">
+                    <div class="flex items-center justify-center md:justify-start gap-3">
+                        <img src="images/logo.jpg" alt="White Horse Inn Logo" class="h-10 w-auto object-contain rounded-lg shadow-sm">
+                        <div>
+                            <span class="font-serif text-2xl font-bold text-white tracking-tight leading-tight block">White Horse Inn</span>
+                            <span class="text-[10px] font-medium tracking-widest text-pub-sage uppercase block font-serif">dine • drink • sleep</span>
+                        </div>
+                    </div>
+                    <p class="text-xs text-gray-400 pt-1">
+                        <i class="fas fa-location-dot text-pub-sage mr-1"></i>24 West Street, Cromer, Norfolk, NR27 9DS
+                    </p>
                 </div>
-                <p class="text-[11px] text-gray-400 pt-0.5">Heading out on the coast? Order bespoke beach hampers at <a href="https://www.cromerpicnics.co.uk" target="_blank" rel="noopener noreferrer" class="text-pub-sage hover:underline font-semibold">www.cromerpicnics.co.uk</a></p>
+
+                <!-- Social Links -->
+                <div class="flex flex-col items-center justify-center space-y-3">
+                    <span class="text-xs font-serif font-semibold text-pub-sage uppercase tracking-widest">Connect With Us</span>
+                    <div class="flex items-center gap-3">
+                        <a href="https://www.facebook.com/profile.php?id=61593554456470&amp;locale=en_GB" target="_blank" rel="noopener noreferrer" aria-label="Visit our Facebook page" class="w-10 h-10 rounded-full glass-pill bg-white/10 hover:bg-white/20 border border-white/20 text-white hover:text-emerald-300 flex items-center justify-center text-lg transition duration-300 transform hover:scale-110 shadow-sm" title="Facebook">
+                            <i class="fa-brands fa-facebook-f"></i>
+                        </a>
+                        <a href="https://www.instagram.com/theoriginalwhitehorsecromer/" target="_blank" rel="noopener noreferrer" aria-label="Visit our Instagram profile" class="w-10 h-10 rounded-full glass-pill bg-white/10 hover:bg-white/20 border border-white/20 text-white hover:text-emerald-300 flex items-center justify-center text-lg transition duration-300 transform hover:scale-110 shadow-sm" title="Instagram">
+                            <i class="fa-brands fa-instagram"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Policies & Partner -->
+                <div class="space-y-2 text-xs text-gray-400 md:text-right">
+                    <div class="flex flex-wrap items-center justify-center md:justify-end gap-3 text-xs text-pub-sage font-medium">
+                        <button type="button" onclick="openPrivacyModal()" class="hover:underline hover:text-white transition cursor-pointer">Privacy Policy</button>
+                        <span>•</span>
+                        <button type="button" onclick="openCookiesModal()" class="hover:underline hover:text-white transition cursor-pointer">Cookies Policy</button>
+                    </div>
+                    <p class="text-[11px] text-gray-400 pt-0.5">
+                        Heading out on the coast? Order beach hampers at <a href="https://www.cromerpicnics.co.uk" target="_blank" rel="noopener noreferrer" class="text-pub-sage hover:underline font-semibold">www.cromerpicnics.co.uk</a>
+                    </p>
+                </div>
+            </div>
+
+            <!-- Bottom Copyright -->
+            <div class="pt-6 text-center text-xs text-gray-500">
+                <p>&copy; 2026 The White Horse Inn, Cromer. All rights reserved.</p>
             </div>
         </div>
     </footer>
