@@ -42,14 +42,23 @@
           "@type": ["Pub", "BedAndBreakfast", "FoodEstablishment"],
           "@id": "https://whitehorsecromer.co.uk/#pub",
           "name": "The White Horse Inn",
-          "alternateName": "White Horse Inn Cromer",
-          "description": "Traditional pub and B&B accommodation in central Cromer, Norfolk. Serving fresh local seafood, pub classics, Sunday roasts, cask ales and featuring a sunny outdoor beer garden.",
+          "alternateName": ["White Horse Inn Cromer", "The White Horse Cromer"],
+          "description": "Traditional pub, restaurant and B&B guest room accommodation in central Cromer, Norfolk. Serving fresh local seafood, pub classics, traditional Sunday roasts, cask ales, with a sunny dog-friendly outdoor beer garden and coastal beach hampers.",
           "url": "https://whitehorsecromer.co.uk/",
           "telephone": "+441263512272",
           "email": "info@whitehorsecromer.co.uk",
           "priceRange": "££",
-          "logo": "https://whitehorsecromer.co.uk/assets/logo.png",
-          "image": "https://images.unsplash.com/photo-1514933651103-005eec06c04b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
+          "logo": "https://whitehorsecromer.co.uk/images/logo.jpg",
+          "image": [
+            "https://whitehorsecromer.co.uk/images/hero-bg.jpg",
+            "https://whitehorsecromer.co.uk/images/beer-garden.jpg",
+            "https://whitehorsecromer.co.uk/images/room-1.jpg"
+          ],
+          "sameAs": [
+            "https://www.facebook.com/profile.php?id=61593554456470",
+            "https://www.instagram.com/theoriginalwhitehorsecromer/",
+            "https://www.cromerpicnics.co.uk"
+          ],
           "address": {
             "@type": "PostalAddress",
             "streetAddress": "24 West Street",
@@ -63,6 +72,21 @@
             "latitude": 52.9312,
             "longitude": 1.2965
           },
+          "hasMap": "https://maps.google.com/?cid=24+West+St+Cromer+NR27+9DS",
+          "areaServed": [
+            { "@type": "AdministrativeArea", "name": "Cromer" },
+            { "@type": "AdministrativeArea", "name": "North Norfolk" },
+            { "@type": "AdministrativeArea", "name": "Norfolk" }
+          ],
+          "knowsAbout": [
+            "Fresh Local Norfolk Seafood",
+            "Traditional Sunday Roast",
+            "Cask Real Ales",
+            "Dog Friendly Beer Garden",
+            "Cromer Crab",
+            "B&B Guest Accommodation Cromer",
+            "Cromer Beach Picnics"
+          ],
           "openingHoursSpecification": [
             {
               "@type": "OpeningHoursSpecification",
@@ -85,7 +109,7 @@
           ],
           "servesCuisine": ["British", "Pub Food", "Seafood", "Sunday Roast", "Vegetarian", "Vegan"],
           "acceptsReservations": "True",
-          "hasMenu": "https://whitehorsecromer.co.uk/#food",
+          "hasMenu": "https://whitehorsecromer.co.uk/#menu",
           "amenityFeature": [
             {
               "@type": "LocationFeatureSpecification",
@@ -94,30 +118,175 @@
             },
             {
               "@type": "LocationFeatureSpecification",
-              "name": "Dog Friendly Beer Garden",
+              "name": "Dog Friendly",
               "value": true
             },
             {
               "@type": "LocationFeatureSpecification",
-              "name": "En-suite B&B Rooms",
+              "name": "En-suite B&B Guest Rooms",
               "value": true
             },
             {
               "@type": "LocationFeatureSpecification",
               "name": "Free Wi-Fi",
               "value": true
+            },
+            {
+              "@type": "LocationFeatureSpecification",
+              "name": "Full Cooked Norfolk Breakfast",
+              "value": true
             }
           ]
         },
         {
+          "@type": "WebSite",
+          "@id": "https://whitehorsecromer.co.uk/#website",
+          "url": "https://whitehorsecromer.co.uk/",
+          "name": "The White Horse Inn Cromer",
+          "description": "Official website for The White Horse Inn pub, dining and B&B accommodation in Cromer, Norfolk.",
+          "publisher": { "@id": "https://whitehorsecromer.co.uk/#pub" },
+          "inLanguage": "en-GB"
+        },
+        {
+          "@type": "WebPage",
+          "@id": "https://whitehorsecromer.co.uk/#webpage",
+          "url": "https://whitehorsecromer.co.uk/",
+          "name": "The White Horse Inn | Dining, Beer Garden, Table Bookings, Rooms & Beach Picnics in Cromer",
+          "isPartOf": { "@id": "https://whitehorsecromer.co.uk/#website" },
+          "about": { "@id": "https://whitehorsecromer.co.uk/#pub" },
+          "inLanguage": "en-GB"
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": "https://whitehorsecromer.co.uk/#breadcrumb",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://whitehorsecromer.co.uk/" },
+            { "@type": "ListItem", "position": 2, "name": "Dine & Drink", "item": "https://whitehorsecromer.co.uk/#food" },
+            { "@type": "ListItem", "position": 3, "name": "Beer Garden", "item": "https://whitehorsecromer.co.uk/#garden" },
+            { "@type": "ListItem", "position": 4, "name": "Events", "item": "https://whitehorsecromer.co.uk/#events" },
+            { "@type": "ListItem", "position": 5, "name": "Beach Picnics", "item": "https://whitehorsecromer.co.uk/#picnics" },
+            { "@type": "ListItem", "position": 6, "name": "B&B Rooms", "item": "https://whitehorsecromer.co.uk/#rooms" },
+            { "@type": "ListItem", "position": 7, "name": "FAQ", "item": "https://whitehorsecromer.co.uk/#faq" },
+            { "@type": "ListItem", "position": 8, "name": "Find Us", "item": "https://whitehorsecromer.co.uk/#contact" }
+          ]
+        },
+        {
+          "@type": "Menu",
+          "@id": "https://whitehorsecromer.co.uk/#menu",
+          "name": "The White Horse Inn Food & Drink Menus",
+          "hasMenuSection": [
+            {
+              "@type": "MenuSection",
+              "name": "Main Menu",
+              "hasMenuItem": [
+                {
+                  "@type": "MenuItem",
+                  "name": "Ale-Battered Fish & Chips",
+                  "description": "Served with garden peas or mushy peas, tartare sauce and lemon",
+                  "offers": { "@type": "Offer", "price": "15.95", "priceCurrency": "GBP" }
+                },
+                {
+                  "@type": "MenuItem",
+                  "name": "White Horse Hot Pot",
+                  "description": "White hotpot, meat and vegetables served between pomme anna and side order of winter vegetables",
+                  "offers": { "@type": "Offer", "price": "17.95", "priceCurrency": "GBP" }
+                },
+                {
+                  "@type": "MenuItem",
+                  "name": "10oz Rump Steak",
+                  "description": "Served with chips, mushrooms, tomatoes, peas, and onion rings",
+                  "offers": { "@type": "Offer", "price": "19.95", "priceCurrency": "GBP" }
+                }
+              ]
+            },
+            {
+              "@type": "MenuSection",
+              "name": "Sunday Roast Menu",
+              "hasMenuItem": [
+                {
+                  "@type": "MenuItem",
+                  "name": "Traditional Norfolk Sunday Roast",
+                  "description": "Choice of meats, served with herb roast potatoes, red cabbage, honey roast carrot and parsnip, cauliflower cheese, buttered greens, yorkshire puddings and gravy",
+                  "offers": { "@type": "Offer", "price": "17.95", "priceCurrency": "GBP" }
+                }
+              ]
+            },
+            {
+              "@type": "MenuSection",
+              "name": "Vegetarian Menu",
+              "hasMenuItem": [
+                {
+                  "@type": "MenuItem",
+                  "name": "White Horse Cauli Steak",
+                  "description": "Cauliflower steak marinated in satay sauce, served with quinoa tabouleh, pak choi and hummus",
+                  "offers": { "@type": "Offer", "price": "16.95", "priceCurrency": "GBP" }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "@type": "HotelRoom",
+          "@id": "https://whitehorsecromer.co.uk/#single-room",
+          "name": "Single B&B Guest Room",
+          "description": "Comfortable single bed, en-suite bathroom, full cooked Norfolk breakfast included.",
+          "occupancy": { "@type": "QuantitativeValue", "value": 1 },
+          "offers": {
+            "@type": "Offer",
+            "price": "70.00",
+            "priceCurrency": "GBP",
+            "availability": "https://schema.org/InStock"
+          }
+        },
+        {
+          "@type": "HotelRoom",
+          "@id": "https://whitehorsecromer.co.uk/#double-room",
+          "name": "Double B&B Guest Room",
+          "description": "Plush double bed, modern en-suite shower room, full cooked Norfolk breakfast included.",
+          "occupancy": { "@type": "QuantitativeValue", "value": 2 },
+          "offers": {
+            "@type": "Offer",
+            "price": "100.00",
+            "priceCurrency": "GBP",
+            "availability": "https://schema.org/InStock"
+          }
+        },
+        {
+          "@type": "Event",
+          "@id": "https://whitehorsecromer.co.uk/#evt-ale-fest-2026",
+          "name": "Real Ale, Cider & Pie Festival",
+          "description": "Featuring a huge selection of guest real ales, traditional ciders and chef's freshly baked homemade pies.",
+          "startDate": "2026-09-25T12:00:00+01:00",
+          "endDate": "2026-09-27T22:00:00+01:00",
+          "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+          "eventStatus": "https://schema.org/EventScheduled",
+          "location": { "@id": "https://whitehorsecromer.co.uk/#pub" },
+          "image": ["https://whitehorsecromer.co.uk/images/hero-bg.jpg"],
+          "organizer": { "@id": "https://whitehorsecromer.co.uk/#pub" }
+        },
+        {
+          "@type": "Event",
+          "@id": "https://whitehorsecromer.co.uk/#evt-xmas-market-2026",
+          "name": "White Horse Xmas Market",
+          "description": "Xmas Market featuring stalls, Father Christmas, snow machines, festive lights and charity fundraising.",
+          "startDate": "2026-12-12T10:00:00+00:00",
+          "endDate": "2026-12-13T18:00:00+00:00",
+          "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+          "eventStatus": "https://schema.org/EventScheduled",
+          "location": { "@id": "https://whitehorsecromer.co.uk/#pub" },
+          "image": ["https://images.unsplash.com/photo-1512389142860-9c449e58a543?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"],
+          "organizer": { "@id": "https://whitehorsecromer.co.uk/#pub" }
+        },
+        {
           "@type": "FAQPage",
+          "@id": "https://whitehorsecromer.co.uk/#faqpage",
           "mainEntity": [
             {
               "@type": "Question",
               "name": "Where is The White Horse Inn located in Cromer?",
               "acceptedAnswer": {
                 "@type": "Answer",
-                "text": "The White Horse Inn is located in central Cromer at 24 West Street, Cromer, Norfolk, NR27 9DS, just moments from Cromer Pier and the beach."
+                "text": "The White Horse Inn is located in central Cromer at 24 West Street, Cromer, Norfolk, NR27 9DS, just moments from Cromer Pier and the sandy beach."
               }
             },
             {
@@ -125,7 +294,15 @@
               "name": "Does The White Horse Inn Cromer have a beer garden?",
               "acceptedAnswer": {
                 "@type": "Answer",
-                "text": "Yes, The White Horse Inn features a sunny, dog-friendly outdoor beer garden operating on a walk-in basis with wooden bench seating and full bar service."
+                "text": "Yes, The White Horse Inn features a spacious, sunny, dog-friendly outdoor beer garden operating on a walk-in basis with wooden bench seating and full bar service."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Are dogs allowed at The White Horse Inn Cromer?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes, dogs are warmly welcomed at The White Horse Inn in both our outdoor beer garden and designated pub areas."
               }
             },
             {
@@ -133,7 +310,15 @@
               "name": "Does The White Horse Inn serve Sunday roasts?",
               "acceptedAnswer": {
                 "@type": "Answer",
-                "text": "Yes, traditional Norfolk Sunday roasts with giant Yorkshire puddings, roast potatoes and rich gravy are served all day every Sunday."
+                "text": "Yes, traditional Norfolk Sunday roasts with giant Yorkshire puddings, roast potatoes, vegetables and rich gravy are served all day every Sunday."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Does The White Horse Inn offer B&B guest room accommodation in Cromer?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes, The White Horse Inn offers comfortable en-suite single and double B&B guest rooms on West Street in central Cromer, starting from £70 per night including a full cooked Norfolk breakfast."
               }
             },
             {
@@ -141,7 +326,15 @@
               "name": "How can I book a table or room at The White Horse Inn Cromer?",
               "acceptedAnswer": {
                 "@type": "Answer",
-                "text": "Table reservations can be made online via the reservation popup on our website. For B&B guest rooms, enquiries can be submitted online or by calling 01263 512272."
+                "text": "Table reservations can be booked online via our website. B&B room enquiries can be submitted directly online or by calling our team on 01263 512272."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Are beach picnic hampers available near Cromer beach?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes, The White Horse Inn partners with Cromer Picnics (www.cromerpicnics.co.uk) to offer fresh coastal picnic hampers and artisan grazing boxes for days at Cromer Pier and beach walks."
               }
             }
           ]
