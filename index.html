@@ -234,44 +234,81 @@
             }
         }
 
-        /* Light Glassmorphism Styling Tokens & Hardware Acceleration Fixes for Mobile Flickering */
+        /* Light Glassmorphism Styling Tokens */
         .glass-nav {
-            background: rgba(243, 247, 244, 0.88);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
+            background: rgba(243, 247, 244, 0.92);
             border-bottom: 1px solid rgba(255, 255, 255, 0.8);
-            -webkit-backface-visibility: hidden;
-            backface-visibility: hidden;
-            transform: translateZ(0);
         }
 
         .glass-card {
-            background: rgba(255, 255, 255, 0.82);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            background: rgba(255, 255, 255, 0.88);
             border: 1px solid rgba(255, 255, 255, 0.9);
             box-shadow: 0 16px 40px -10px rgba(27, 58, 43, 0.08), 0 4px 12px rgba(0, 0, 0, 0.03);
-            -webkit-backface-visibility: hidden;
-            backface-visibility: hidden;
-            transform: translateZ(0);
         }
 
         .glass-modal-tile {
-            background: rgba(255, 255, 255, 0.96);
+            background: rgba(255, 255, 255, 0.98);
             border: 1px solid rgba(255, 255, 255, 0.95);
             box-shadow: 0 25px 50px -12px rgba(15, 35, 25, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.8) inset;
-            -webkit-backface-visibility: hidden;
-            backface-visibility: hidden;
-            transform: translateZ(0);
         }
 
         .modal-backdrop {
-            background: rgba(15, 35, 25, 0.7);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            -webkit-backface-visibility: hidden;
-            backface-visibility: hidden;
-            transform: translateZ(0);
+            background: rgba(15, 35, 25, 0.85);
+            -webkit-overflow-scrolling: touch;
+        }
+
+        /* Desktop Glassmorphic Blur Enhancements */
+        @media (min-width: 769px) {
+            .glass-nav {
+                background: rgba(243, 247, 244, 0.88);
+                backdrop-filter: blur(16px);
+                -webkit-backdrop-filter: blur(16px);
+            }
+            .glass-card {
+                background: rgba(255, 255, 255, 0.82);
+                backdrop-filter: blur(20px);
+                -webkit-backdrop-filter: blur(20px);
+            }
+            .glass-modal-tile {
+                background: rgba(255, 255, 255, 0.96);
+                backdrop-filter: blur(16px);
+                -webkit-backdrop-filter: blur(16px);
+            }
+            .modal-backdrop {
+                background: rgba(15, 35, 25, 0.7);
+                backdrop-filter: blur(12px);
+                -webkit-backdrop-filter: blur(12px);
+            }
+            .glass-pill {
+                backdrop-filter: blur(12px);
+                -webkit-backdrop-filter: blur(12px);
+            }
+            .glass-input {
+                backdrop-filter: blur(8px);
+                -webkit-backdrop-filter: blur(8px);
+            }
+        }
+
+        /* Mobile Anti-Flicker Overrides */
+        @media (max-width: 768px) {
+            .glass-nav,
+            .glass-card,
+            .glass-modal-tile,
+            .modal-backdrop,
+            .glass-pill,
+            .glass-input {
+                backdrop-filter: none !important;
+                -webkit-backdrop-filter: none !important;
+                transform: none !important;
+                -webkit-backface-visibility: visible !important;
+                backface-visibility: visible !important;
+            }
+            .modal-backdrop {
+                background: rgba(15, 35, 25, 0.92) !important;
+            }
+            .glass-modal-tile {
+                background: rgba(255, 255, 255, 0.98) !important;
+            }
         }
 
         .glass-card-hover {
@@ -288,23 +325,15 @@
         }
 
         .glass-pill {
-            background: rgba(255, 255, 255, 0.75);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
+            background: rgba(255, 255, 255, 0.85);
             border: 1px solid rgba(255, 255, 255, 0.85);
             box-shadow: 0 2px 8px rgba(27, 58, 43, 0.04);
-            -webkit-backface-visibility: hidden;
-            backface-visibility: hidden;
-            transform: translateZ(0);
         }
 
         .glass-button-primary {
             background: linear-gradient(135deg, #1b3a2b 0%, #2a543f 100%);
             box-shadow: 0 8px 20px -6px rgba(27, 58, 43, 0.35);
             transition: all 0.25s ease;
-            -webkit-backface-visibility: hidden;
-            backface-visibility: hidden;
-            transform: translateZ(0);
         }
 
         @media (hover: hover) {
@@ -317,13 +346,8 @@
 
         .glass-input {
             background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
             border: 1px solid rgba(27, 58, 43, 0.2);
             transition: all 0.2s ease;
-            -webkit-backface-visibility: hidden;
-            backface-visibility: hidden;
-            transform: translateZ(0);
         }
 
         .glass-input:focus {
@@ -419,7 +443,7 @@
             </div>
 
             <!-- Glass Hero Card -->
-            <div class="relative z-10 max-w-4xl w-full glass-card rounded-3xl p-5 sm:p-10 md:p-14 text-center border border-white/90 shadow-2xl backdrop-blur-2xl">
+            <div class="relative z-10 max-w-4xl w-full glass-card rounded-3xl p-5 sm:p-10 md:p-14 text-center border border-white/90 shadow-2xl">
                 <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full glass-pill mb-5 sm:mb-6 text-xs sm:text-sm text-pub-deep uppercase tracking-widest font-bold max-w-full">
                     <i class="fas fa-location-dot text-pub-sage shrink-0"></i> <span class="truncate">24 West Street, Cromer</span>
                 </div>
@@ -1921,7 +1945,7 @@
                                 <span class="px-2 py-0.5 rounded-md bg-white/90 text-pub-deep text-[10px] font-bold uppercase tracking-wider mb-1 inline-block">${card.tag || ''}</span>
                                 <p class="text-white text-xs sm:text-sm font-bold drop-shadow-sm">${card.title || ''}</p>
                             </div>
-                            <div class="w-8 h-8 rounded-full glass-pill flex items-center justify-center text-white bg-white/20 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity">
+                            <div class="w-8 h-8 rounded-full glass-pill flex items-center justify-center text-white bg-white/30 opacity-0 group-hover:opacity-100 transition-opacity">
                                 <i class="fas fa-expand text-xs"></i>
                             </div>
                         </div>
