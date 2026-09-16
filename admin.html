@@ -204,9 +204,6 @@
                     <button type="button" onclick="pushAllDataToFirebase(true)" class="bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold px-3.5 py-2.5 rounded-xl flex items-center gap-1.5 cursor-pointer shadow-md transition">
                         <i class="fas fa-cloud-arrow-up"></i> Push All to Cloud DB
                     </button>
-                    <button type="button" onclick="confirmResetMenuData()" class="glass-pill px-3.5 py-2 rounded-xl text-xs font-bold text-red-600 hover:bg-red-50 transition flex items-center gap-1.5 cursor-pointer">
-                        <i class="fas fa-rotate-left"></i> Reset Defaults
-                    </button>
                     <button type="button" onclick="openAddDishModal()" class="glass-button-primary text-white text-xs font-bold px-4 py-2.5 rounded-xl flex items-center gap-2 cursor-pointer uppercase tracking-wider">
                         <i class="fas fa-plus"></i> Add New Dish
                     </button>
@@ -889,7 +886,7 @@
                 const stored = localStorage.getItem('white_horse_events');
                 if (stored) {
                     const parsed = JSON.parse(stored);
-                    if (Array.isArray(parsed) && parsed.length >= defaultEvents.length && parsed.some(e => e.id === 'evt-krissi-jordon-2026')) {
+                    if (Array.isArray(parsed)) {
                         return cleanAndSortEvents(parsed);
                     }
                 }
@@ -1018,7 +1015,7 @@
                 const storedCards = localStorage.getItem('white_horse_food_cards');
                 if (storedCards) {
                     const parsed = JSON.parse(storedCards);
-                    if (Array.isArray(parsed) && parsed.length >= defaultFoodCards.length) {
+                    if (Array.isArray(parsed)) {
                         return parsed;
                     }
                 }
@@ -1086,16 +1083,6 @@
 
         async function saveMenuData() {
             await pushAllDataToFirebase(false);
-        }
-
-        function confirmResetMenuData() {
-            if (confirm("Are you sure you want to reset all menus, food showcase cards, and events to factory default settings?")) {
-                menuData = JSON.parse(JSON.stringify(defaultMenuData));
-                foodCards = JSON.parse(JSON.stringify(defaultFoodCards));
-                eventsData = cleanAndSortEvents(defaultEvents);
-                saveMenuData();
-                renderAdminEditor();
-            }
         }
 
         function switchAdminMenuTab(menuKey) {

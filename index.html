@@ -1911,7 +1911,7 @@
                 const stored = localStorage.getItem('white_horse_events');
                 if (stored) {
                     const parsed = JSON.parse(stored);
-                    if (Array.isArray(parsed) && parsed.length >= defaultEvents.length && parsed.some(e => e.id === 'evt-krissi-jordon-2026')) {
+                    if (Array.isArray(parsed)) {
                         return cleanAndSortEvents(parsed);
                     }
                 }
@@ -2086,7 +2086,7 @@
                 const storedCards = localStorage.getItem('white_horse_food_cards');
                 if (storedCards) {
                     const parsed = JSON.parse(storedCards);
-                    if (Array.isArray(parsed) && parsed.length >= defaultFoodCards.length) {
+                    if (Array.isArray(parsed)) {
                         return parsed;
                     }
                 }
