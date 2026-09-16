@@ -1764,44 +1764,18 @@
                                 menuData = sanitizeMenuData(val.menuData);
                                 localStorage.setItem('white_horse_menu_data', JSON.stringify(menuData));
                             }
-                            if (val.foodCards) {
+                            if (val.foodCards && Array.isArray(val.foodCards)) {
                                 localStorage.setItem('white_horse_food_cards', JSON.stringify(val.foodCards));
                                 renderFoodCards();
-                            } else {
-                                firestoreDb.collection('white_horse_portal').doc('data').set({ foodCards: defaultFoodCards }, { merge: true });
-                                if (realtimeDb) realtimeDb.ref('white_horse_food_cards').set(defaultFoodCards);
-                                localStorage.setItem('white_horse_food_cards', JSON.stringify(defaultFoodCards));
-                                renderFoodCards();
                             }
-                            if (val.events) {
+                            if (val.events && Array.isArray(val.events)) {
                                 eventsData = cleanAndSortEvents(val.events);
-                                localStorage.setItem('white_horse_events', JSON.stringify(eventsData));
-                                renderEvents();
-                            } else {
-                                const sorted = cleanAndSortEvents(defaultEvents);
-                                firestoreDb.collection('white_horse_portal').doc('data').set({ events: sorted }, { merge: true });
-                                if (realtimeDb) realtimeDb.ref('white_horse_events').set(sorted);
-                                eventsData = sorted;
                                 localStorage.setItem('white_horse_events', JSON.stringify(eventsData));
                                 renderEvents();
                             }
                             // Re-render menu modal if currently open
                             if (activeMenuKey) {
                                 renderActiveMenuModal();
-                            }
-                        } else {
-                            console.log("Firestore empty on index.html, auto-seeding defaults...");
-                            const sortedEvts = cleanAndSortEvents(defaultEvents);
-                            firestoreDb.collection('white_horse_portal').doc('data').set({
-                                menuData: defaultMenuData,
-                                foodCards: defaultFoodCards,
-                                events: sortedEvts,
-                                updatedAt: new Date().toISOString()
-                            }, { merge: true });
-                            if (realtimeDb) {
-                                realtimeDb.ref('white_horse_menu_data').set(defaultMenuData);
-                                realtimeDb.ref('white_horse_food_cards').set(defaultFoodCards);
-                                realtimeDb.ref('white_horse_events').set(sortedEvts);
                             }
                         }
                     }, (err) => {

@@ -20,6 +20,7 @@
     <!-- Firebase SDK Compat Scripts (Supporting both Firestore and Realtime Database) -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
 
     <script>
         tailwind.config = {
@@ -793,6 +794,7 @@
         const firebaseConfig = {
             apiKey: "AIzaSyCBPyGHrS4Is0_PpAWToEdnOKsCfHi2Ff8",
             authDomain: "studio-7295675373-ec35e.firebaseapp.com",
+            databaseURL: "https://studio-7295675373-ec35e-default-rtdb.firebaseio.com",
             projectId: "studio-7295675373-ec35e",
             storageBucket: "studio-7295675373-ec35e.firebasestorage.app",
             messagingSenderId: "1015073229231",
@@ -817,6 +819,7 @@
         }
 
         let firestoreDb = null;
+        let realtimeDb = null;
         let menuData = loadMenuData();
         let foodCards = loadFoodCards();
         let eventsData = loadEventsData();
@@ -936,25 +939,17 @@
                                 menuData = sanitizeMenuData(val.menuData);
                                 localStorage.setItem('white_horse_menu_data', JSON.stringify(menuData));
                             }
-                            if (val.foodCards) {
+                            if (val.foodCards && Array.isArray(val.foodCards)) {
                                 foodCards = val.foodCards;
                                 localStorage.setItem('white_horse_food_cards', JSON.stringify(foodCards));
                             }
-                            if (val.events) {
+                            if (val.events && Array.isArray(val.events)) {
                                 eventsData = cleanAndSortEvents(val.events);
                                 localStorage.setItem('white_horse_events', JSON.stringify(eventsData));
                             }
                             renderAdminEditor();
                             updateSyncStatus('connected', 'Firestore Live');
                             setDiagStatus('diag-firestore-status', 'Connected & Synchronized', 'text-emerald-600');
-                        } else {
-                            console.log("Firestore document empty. Auto-seeding defaults...");
-                            menuData = JSON.parse(JSON.stringify(defaultMenuData));
-                            foodCards = JSON.parse(JSON.stringify(defaultFoodCards));
-                            eventsData = cleanAndSortEvents(defaultEvents);
-                            pushAllDataToFirebase(false);
-                            renderAdminEditor();
-                            setDiagStatus('diag-firestore-status', 'Auto-Seeded & Ready', 'text-emerald-600');
                         }
                     }, (err) => {
                         console.warn("Firestore listener warning:", err);
@@ -963,6 +958,16 @@
                 } catch (fsErr) {
                     console.warn("Firestore initialization failed:", fsErr);
                     setDiagStatus('diag-firestore-status', 'Failed: ' + fsErr.message, 'text-red-600');
+                }
+
+                // Initialise Realtime DB
+                try {
+                    realtimeDb = window.firebase.database();
+                    console.log("Realtime Database initialised.");
+                    setDiagStatus('diag-rtdb-status', 'Connected & Ready', 'text-emerald-600');
+                } catch (rtdbErr) {
+                    console.warn("Realtime DB initialization failed:", rtdbErr);
+                    setDiagStatus('diag-rtdb-status', 'Failed: ' + rtdbErr.message, 'text-red-600');
                 }
 
                 updateSyncStatus('connected', 'Cloud Ready');
@@ -1053,6 +1058,22 @@
                     console.error("Firestore Write Failed:", fsErr);
                     lastError = fsErr;
                     setDiagStatus('diag-firestore-status', 'Write Error: ' + fsErr.message, 'text-red-600');
+                }
+            }
+
+            // 2. Write to Realtime DB
+            if (realtimeDb) {
+                try {
+                    await realtimeDb.ref('white_horse_menu_data').set(menuData);
+                    await realtimeDb.ref('white_horse_food_cards').set(foodCards);
+                    await realtimeDb.ref('white_horse_events').set(eventsData);
+                    console.log("Successfully written payload to Realtime DB.");
+                    writtenToAny = true;
+                    setDiagStatus('diag-rtdb-status', 'Write Succeeded', 'text-emerald-600');
+                } catch (rtdbErr) {
+                    console.error("Realtime DB Write Failed:", rtdbErr);
+                    if (!lastError) lastError = rtdbErr;
+                    setDiagStatus('diag-rtdb-status', 'Write Error: ' + rtdbErr.message, 'text-red-600');
                 }
             }
 
