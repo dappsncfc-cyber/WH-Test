@@ -1,0 +1,3 @@
+## 2026-03-23 - Interactive Auto-scrolling Carousels & Focus Management
+**Learning:** Infinite auto-scrolling carousels rendering items as `div` elements with `onclick` prevent keyboard navigation and screen readers from discovering interactive cards. In addition, auto-scrolling without `focusin`/`focusout` listeners causes focused elements to move underneath the user's focus cursor.
+**Action:** Always render interactive carousel cards as semantic `<button type="button">` elements with explicit `aria-label` attributes and focus-visible rings, and attach `focusin`/`focusout` handlers to pause auto-scrolling whenever a keyboard user focuses inside the carousel.

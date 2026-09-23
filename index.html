@@ -600,7 +600,7 @@
 
                 <!-- Mobile Navigation Toggle -->
                 <div class="md:hidden flex items-center">
-                    <button type="button" id="mobile-menu-btn" aria-label="Toggle Navigation Menu" class="glass-pill p-2.5 rounded-xl text-pub-deep hover:text-pub-sage focus:outline-none cursor-pointer">
+                    <button type="button" id="mobile-menu-btn" aria-label="Toggle Navigation Menu" aria-expanded="false" class="glass-pill p-2.5 rounded-xl text-pub-deep hover:text-pub-sage focus:outline-none focus-visible:ring-2 focus-visible:ring-pub-sage cursor-pointer">
                         <i class="fas fa-bars text-xl"></i>
                     </button>
                 </div>
@@ -2143,8 +2143,10 @@
             const renderCards = [...cards, ...cards, ...cards];
 
             container.innerHTML = renderCards.map((card, idx) => `
-                <div onclick="openFoodCardModal('${card.image || ''}', '${(card.title || '').replace(/'/g, "\\'")}', '${(card.tag || '').replace(/'/g, "\\'")}', '${(card.alt || '').replace(/'/g, "\\'")}')"
-                     class="glass-card rounded-2xl overflow-hidden p-2 group cursor-pointer shrink-0 w-[260px] sm:w-[300px] hover:scale-[1.02] transition-transform duration-300">
+                <button type="button"
+                        onclick="openFoodCardModal('${card.image || ''}', '${(card.title || '').replace(/'/g, "\\'")}', '${(card.tag || '').replace(/'/g, "\\'")}', '${(card.alt || '').replace(/'/g, "\\'")}')"
+                        aria-label="View photo of ${(card.title || 'dish').replace(/"/g, '&quot;')}"
+                        class="glass-card rounded-2xl overflow-hidden p-2 group cursor-pointer shrink-0 w-[260px] sm:w-[300px] hover:scale-[1.02] transition-transform duration-300 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-pub-sage">
                     <div class="relative h-48 sm:h-56 rounded-xl overflow-hidden">
                         <img src="${card.image || ''}"
                              onerror="this.onerror=null; this.src='https://placehold.co/800x600/1b3a2b/ffffff?text=${encodeURIComponent(card.title || 'Food Item')}';"
@@ -2155,12 +2157,12 @@
                                 <span class="px-2 py-0.5 rounded-md bg-white/90 text-pub-deep text-[10px] font-bold uppercase tracking-wider mb-1 inline-block">${card.tag || ''}</span>
                                 <p class="text-white text-xs sm:text-sm font-bold drop-shadow-sm">${card.title || ''}</p>
                             </div>
-                            <div class="w-8 h-8 rounded-full glass-pill flex items-center justify-center text-white bg-white/30 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <div class="w-8 h-8 rounded-full glass-pill flex items-center justify-center text-white bg-white/30 opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity">
                                 <i class="fas fa-expand text-xs"></i>
                             </div>
                         </div>
                     </div>
-                </div>
+                </button>
             `).join('');
 
             startFoodCardAutoScroll();
@@ -2299,8 +2301,12 @@
         // Toggle mobile menu drawer
         function toggleMobileMenu() {
             const mobileMenu = document.getElementById('mobile-menu');
+            const mobileBtn = document.getElementById('mobile-menu-btn');
             if (mobileMenu) {
-                mobileMenu.classList.toggle('hidden');
+                const isHidden = mobileMenu.classList.toggle('hidden');
+                if (mobileBtn) {
+                    mobileBtn.setAttribute('aria-expanded', !isHidden);
+                }
             }
         }
 
@@ -2462,13 +2468,15 @@
             // Start automatic room ticker
             startRoomTicker();
 
-            // Food cards carousel hover & touch pause logic
+            // Food cards carousel hover, touch & focus pause logic
             const foodCardsContainer = document.getElementById('food-cards-container');
             if (foodCardsContainer) {
                 foodCardsContainer.addEventListener('mouseenter', () => { foodCardIsHovered = true; });
                 foodCardsContainer.addEventListener('mouseleave', () => { foodCardIsHovered = false; });
                 foodCardsContainer.addEventListener('touchstart', () => { foodCardIsHovered = true; }, { passive: true });
                 foodCardsContainer.addEventListener('touchend', () => { foodCardIsHovered = false; });
+                foodCardsContainer.addEventListener('focusin', () => { foodCardIsHovered = true; });
+                foodCardsContainer.addEventListener('focusout', () => { foodCardIsHovered = false; });
             }
 
             // Food Card Full Image Modal backdrop click handler
