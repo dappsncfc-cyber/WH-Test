@@ -1658,6 +1658,39 @@
                     }
                 });
             }
+
+            // Close admin modals on backdrop click
+            ['diagnostics-modal', 'event-editor-modal', 'card-editor-modal', 'dish-editor-modal'].forEach(id => {
+                const modalEl = document.getElementById(id);
+                if (modalEl) {
+                    modalEl.addEventListener('click', (e) => {
+                        if (e.target === modalEl) {
+                            if (id === 'diagnostics-modal') closeDiagnosticsModal();
+                            else if (id === 'event-editor-modal') closeEventEditorModal();
+                            else if (id === 'card-editor-modal') closeCardEditorModal();
+                            else if (id === 'dish-editor-modal') closeDishEditorModal();
+                        }
+                    });
+                }
+            });
+
+            // Close admin modals on Escape key
+            window.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    const activeModals = [
+                        { id: 'diagnostics-modal', closeFn: closeDiagnosticsModal },
+                        { id: 'event-editor-modal', closeFn: closeEventEditorModal },
+                        { id: 'card-editor-modal', closeFn: closeCardEditorModal },
+                        { id: 'dish-editor-modal', closeFn: closeDishEditorModal }
+                    ];
+                    activeModals.forEach(({ id, closeFn }) => {
+                        const modal = document.getElementById(id);
+                        if (modal && !modal.classList.contains('hidden')) {
+                            closeFn();
+                        }
+                    });
+                }
+            });
         });
     </script>
 </body>
