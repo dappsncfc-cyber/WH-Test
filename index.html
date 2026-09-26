@@ -1442,11 +1442,11 @@
 
             <!-- Modal Tab Switcher Bar -->
             <div class="px-4 sm:px-6 pt-3 sm:pt-4 bg-white/20">
-                <div class="flex gap-2 p-1 rounded-2xl glass-pill">
-                    <button type="button" id="tab-btn-table" onclick="switchModalTab('table')" class="flex-1 py-2 px-2 sm:px-3 rounded-xl text-[11px] sm:text-xs font-bold transition cursor-pointer glass-button-primary text-white">
+                <div class="flex gap-2 p-1 rounded-2xl glass-pill" role="tablist" aria-label="Reservation options">
+                    <button type="button" id="tab-btn-table" role="tab" aria-selected="true" aria-controls="modal-tab-table-content" onclick="switchModalTab('table')" class="flex-1 py-2 px-2 sm:px-3 rounded-xl text-[11px] sm:text-xs font-bold transition cursor-pointer glass-button-primary text-white">
                         <i class="fas fa-utensils mr-1"></i> Table Booking
                     </button>
-                    <button type="button" id="tab-btn-room" onclick="switchModalTab('room')" class="flex-1 py-2 px-2 sm:px-3 rounded-xl text-[11px] sm:text-xs font-bold transition cursor-pointer text-pub-deep hover:bg-white/60">
+                    <button type="button" id="tab-btn-room" role="tab" aria-selected="false" aria-controls="modal-tab-room-content" onclick="switchModalTab('room')" class="flex-1 py-2 px-2 sm:px-3 rounded-xl text-[11px] sm:text-xs font-bold transition cursor-pointer text-pub-deep hover:bg-white/60">
                         <i class="fas fa-bed mr-1"></i> Room Booking
                     </button>
                 </div>
@@ -1456,7 +1456,7 @@
             <div class="p-3.5 sm:p-6 overflow-y-auto flex-1">
                 
                 <!-- Tab 1: Embedded Table Reservation Iframe Widget -->
-                <div id="modal-tab-table-content" class="w-full flex justify-center">
+                <div id="modal-tab-table-content" role="tabpanel" aria-labelledby="tab-btn-table" class="w-full flex justify-center">
                     <div class="w-full min-h-[480px] sm:min-h-[540px] rounded-2xl overflow-hidden bg-white/80 border border-emerald-900/10 shadow-inner p-1">
                         <iframe
                             src="https://tableagent.com/iframe/white-horse-cromer/"
@@ -1470,7 +1470,7 @@
                 </div>
 
                 <!-- Tab 2: Freetobook Room Booking Widget -->
-                <div id="modal-tab-room-content" class="hidden w-full flex justify-center min-h-[480px] sm:min-h-[520px]">
+                <div id="modal-tab-room-content" role="tabpanel" aria-labelledby="tab-btn-room" class="hidden w-full flex justify-center min-h-[480px] sm:min-h-[520px]">
                     <div class="w-full min-h-[480px] sm:min-h-[520px] rounded-2xl bg-white/80 border border-emerald-900/10 shadow-inner p-4 sm:p-8 flex justify-center items-start overflow-visible">
                         <div class="ftb-widget" data-id="51384" data-token="KIegf22OQHt1MGQ7V6svlQwo4SheL4pjp4WpcVadOJgbOXPrQalPOQ2KIOSAu"></div>
                         <script src="https://widget.freetobook.com/widget.js?v=20190925"></script>
@@ -2288,12 +2288,18 @@
 
                 btnTable.className = 'flex-1 py-2 px-2 sm:px-3 rounded-xl text-[11px] sm:text-xs font-bold transition cursor-pointer glass-button-primary text-white';
                 btnRoom.className = 'flex-1 py-2 px-2 sm:px-3 rounded-xl text-[11px] sm:text-xs font-bold transition cursor-pointer text-pub-deep hover:bg-white/60';
+
+                btnTable.setAttribute('aria-selected', 'true');
+                btnRoom.setAttribute('aria-selected', 'false');
             } else {
                 tableContent.classList.add('hidden');
                 roomContent.classList.remove('hidden');
 
                 btnRoom.className = 'flex-1 py-2 px-2 sm:px-3 rounded-xl text-[11px] sm:text-xs font-bold transition cursor-pointer glass-button-primary text-white';
                 btnTable.className = 'flex-1 py-2 px-2 sm:px-3 rounded-xl text-[11px] sm:text-xs font-bold transition cursor-pointer text-pub-deep hover:bg-white/60';
+
+                btnTable.setAttribute('aria-selected', 'false');
+                btnRoom.setAttribute('aria-selected', 'true');
 
                 setTimeout(() => {
                     window.dispatchEvent(new Event('resize'));
