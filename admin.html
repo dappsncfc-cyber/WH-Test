@@ -237,20 +237,20 @@
             </div>
 
             <!-- Menu Selector Tabs -->
-            <div class="flex gap-2 overflow-x-auto pb-1">
-                <button type="button" id="admin-tab-main" onclick="switchAdminMenuTab('main')" class="py-2.5 px-4 rounded-2xl text-xs sm:text-sm font-bold transition cursor-pointer glass-button-primary text-white whitespace-nowrap">
+            <div class="flex gap-2 overflow-x-auto pb-1" role="tablist" aria-label="Admin Navigation Tabs">
+                <button type="button" id="admin-tab-main" role="tab" aria-selected="true" aria-controls="admin-menu-editor-container" onclick="switchAdminMenuTab('main')" class="py-2.5 px-4 rounded-2xl text-xs sm:text-sm font-bold transition cursor-pointer glass-button-primary text-white whitespace-nowrap">
                     <i class="fas fa-utensils mr-1.5"></i> Main Menu
                 </button>
-                <button type="button" id="admin-tab-sunday" onclick="switchAdminMenuTab('sunday')" class="py-2.5 px-4 rounded-2xl text-xs sm:text-sm font-bold transition cursor-pointer text-pub-deep glass-pill hover:bg-white whitespace-nowrap">
+                <button type="button" id="admin-tab-sunday" role="tab" aria-selected="false" aria-controls="admin-menu-editor-container" onclick="switchAdminMenuTab('sunday')" class="py-2.5 px-4 rounded-2xl text-xs sm:text-sm font-bold transition cursor-pointer text-pub-deep glass-pill hover:bg-white whitespace-nowrap">
                     <i class="fas fa-drumstick-bite mr-1.5"></i> Sunday Roast
                 </button>
-                <button type="button" id="admin-tab-specials" onclick="switchAdminMenuTab('specials')" class="py-2.5 px-4 rounded-2xl text-xs sm:text-sm font-bold transition cursor-pointer text-pub-deep glass-pill hover:bg-white whitespace-nowrap">
+                <button type="button" id="admin-tab-specials" role="tab" aria-selected="false" aria-controls="admin-menu-editor-container" onclick="switchAdminMenuTab('specials')" class="py-2.5 px-4 rounded-2xl text-xs sm:text-sm font-bold transition cursor-pointer text-pub-deep glass-pill hover:bg-white whitespace-nowrap">
                     <i class="fas fa-star mr-1.5"></i> Today's Specials
                 </button>
-                <button type="button" id="admin-tab-cards" onclick="switchAdminMenuTab('cards')" class="py-2.5 px-4 rounded-2xl text-xs sm:text-sm font-bold transition cursor-pointer text-pub-deep glass-pill hover:bg-white whitespace-nowrap">
+                <button type="button" id="admin-tab-cards" role="tab" aria-selected="false" aria-controls="admin-menu-editor-container" onclick="switchAdminMenuTab('cards')" class="py-2.5 px-4 rounded-2xl text-xs sm:text-sm font-bold transition cursor-pointer text-pub-deep glass-pill hover:bg-white whitespace-nowrap">
                     <i class="fas fa-images mr-1.5"></i> Food Showcase Cards
                 </button>
-                <button type="button" id="admin-tab-events" onclick="switchAdminMenuTab('events')" class="py-2.5 px-4 rounded-2xl text-xs sm:text-sm font-bold transition cursor-pointer text-pub-deep glass-pill hover:bg-white whitespace-nowrap">
+                <button type="button" id="admin-tab-events" role="tab" aria-selected="false" aria-controls="admin-menu-editor-container" onclick="switchAdminMenuTab('events')" class="py-2.5 px-4 rounded-2xl text-xs sm:text-sm font-bold transition cursor-pointer text-pub-deep glass-pill hover:bg-white whitespace-nowrap">
                     <i class="fas fa-calendar-alt mr-1.5"></i> Upcoming Events
                 </button>
             </div>
@@ -274,7 +274,7 @@
             </div>
 
             <!-- Container for Category Cards & Dish List -->
-            <div id="admin-menu-editor-container" class="space-y-6">
+            <div id="admin-menu-editor-container" role="tabpanel" aria-labelledby="admin-tab-main" class="space-y-6">
                 <!-- Dynamically populated via JS -->
             </div>
         </div>
@@ -1104,12 +1104,18 @@
             ['main', 'sunday', 'specials', 'cards', 'events'].forEach(k => {
                 const btn = document.getElementById(`admin-tab-${k}`);
                 if (!btn) return;
-                if (k === menuKey) {
+                const isSelected = (k === menuKey);
+                btn.setAttribute('aria-selected', isSelected ? 'true' : 'false');
+                if (isSelected) {
                     btn.className = 'py-2.5 px-4 rounded-2xl text-xs sm:text-sm font-bold transition cursor-pointer glass-button-primary text-white whitespace-nowrap';
                 } else {
                     btn.className = 'py-2.5 px-4 rounded-2xl text-xs sm:text-sm font-bold transition cursor-pointer text-pub-deep glass-pill hover:bg-white whitespace-nowrap';
                 }
             });
+            const container = document.getElementById('admin-menu-editor-container');
+            if (container) {
+                container.setAttribute('aria-labelledby', `admin-tab-${menuKey}`);
+            }
             renderAdminEditor();
         }
 
