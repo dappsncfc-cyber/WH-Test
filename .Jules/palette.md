@@ -1,0 +1,3 @@
+## 2025-02-14 - Admin Menu Editor WAI-ARIA Tab Navigation Pattern
+**Learning:** Admin menu tabs need explicit WAI-ARIA roles (`tablist`, `tab`, `tabpanel`), `aria-controls` matching target container IDs, and dynamic `aria-selected` / `aria-labelledby` state updates to ensure screen reader users can navigate section switches seamlessly.
+**Action:** When adding or updating tabbed navigation in admin or portal views, apply `role="tablist"`, `role="tab"`, `aria-controls` matching the tabpanel container ID, and dynamically update `aria-selected` and `aria-labelledby` attributes upon switching tabs.
