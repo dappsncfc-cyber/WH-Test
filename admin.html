@@ -293,12 +293,12 @@
     </main>
 
     <!-- FIREBASE DIAGNOSTICS & SETUP MODAL -->
-    <div id="diagnostics-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-3 sm:p-4 modal-backdrop">
+    <div id="diagnostics-modal" role="dialog" aria-modal="true" aria-labelledby="diagnostics-modal-title" class="fixed inset-0 z-50 hidden items-center justify-center p-3 sm:p-4 modal-backdrop">
         <div class="glass-modal-tile rounded-3xl w-full max-w-xl flex flex-col overflow-hidden relative shadow-2xl">
             <div class="px-5 py-4 border-b border-emerald-900/10 flex items-center justify-between bg-white/40">
                 <div class="flex items-center gap-2">
                     <i class="fas fa-database text-pub-sage text-lg"></i>
-                    <h3 class="font-serif font-bold text-pub-deep text-lg">Firebase Connection Diagnostics</h3>
+                    <h3 id="diagnostics-modal-title" class="font-serif font-bold text-pub-deep text-lg">Firebase Connection Diagnostics</h3>
                 </div>
                 <button type="button" onclick="closeDiagnosticsModal()" class="w-8 h-8 rounded-full glass-pill flex items-center justify-center text-gray-500 hover:text-pub-deep transition cursor-pointer">
                     <i class="fas fa-times"></i>
@@ -356,7 +356,7 @@
     </div>
 
     <!-- EVENT EDITOR MODAL -->
-    <div id="event-editor-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-2.5 sm:p-4 modal-backdrop">
+    <div id="event-editor-modal" role="dialog" aria-modal="true" aria-labelledby="event-editor-modal-title" class="fixed inset-0 z-50 hidden items-center justify-center p-2.5 sm:p-4 modal-backdrop">
         <div class="glass-modal-tile rounded-3xl w-full max-w-lg flex flex-col overflow-hidden relative shadow-2xl">
             <div class="px-4 sm:px-6 py-4 border-b border-emerald-900/10 flex items-center justify-between bg-white/40">
                 <div class="flex items-center gap-2">
@@ -428,7 +428,7 @@
     </div>
 
     <!-- FOOD CARD EDITOR MODAL -->
-    <div id="card-editor-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-2.5 sm:p-4 modal-backdrop">
+    <div id="card-editor-modal" role="dialog" aria-modal="true" aria-labelledby="card-editor-modal-title" class="fixed inset-0 z-50 hidden items-center justify-center p-2.5 sm:p-4 modal-backdrop">
         <div class="glass-modal-tile rounded-3xl w-full max-w-lg flex flex-col overflow-hidden relative shadow-2xl">
             <div class="px-4 sm:px-6 py-4 border-b border-emerald-900/10 flex items-center justify-between bg-white/40">
                 <div class="flex items-center gap-2">
@@ -473,7 +473,7 @@
     </div>
 
     <!-- DISH EDITOR MODAL -->
-    <div id="dish-editor-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-2.5 sm:p-4 modal-backdrop">
+    <div id="dish-editor-modal" role="dialog" aria-modal="true" aria-labelledby="dish-editor-modal-title" class="fixed inset-0 z-50 hidden items-center justify-center p-2.5 sm:p-4 modal-backdrop">
         <div class="glass-modal-tile rounded-3xl w-full max-w-lg flex flex-col overflow-hidden relative shadow-2xl">
             <div class="px-4 sm:px-6 py-4 border-b border-emerald-900/10 flex items-center justify-between bg-white/40">
                 <div class="flex items-center gap-2">
