@@ -550,6 +550,11 @@
 </head>
 <body class="bg-mesh text-gray-800 font-sans antialiased min-h-screen relative selection:bg-pub-sage selection:text-white overflow-x-hidden max-w-full">
 
+    <!-- Skip to Main Content Link for Keyboard Accessibility -->
+    <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:p-4 focus:bg-pub-deep focus:text-white focus:font-bold focus:rounded-xl focus:shadow-2xl focus:top-2 focus:left-2">
+        Skip to main content
+    </a>
+
     <!-- Announcement Header Bar -->
     <div class="bg-pub-deep text-white text-xs py-2 px-4 text-center font-medium tracking-wide flex flex-wrap items-center justify-center gap-1.5 sm:gap-2">
         <span class="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
@@ -612,7 +617,7 @@
         </div>
     </header>
 
-    <main>
+    <main id="main-content">
         <!-- Hero Section -->
         <section class="relative min-h-[70vh] sm:min-h-[75vh] flex items-center justify-center px-3 sm:px-4 py-12 sm:py-16 overflow-hidden">
             <!-- Background Image -->
@@ -2086,8 +2091,10 @@
             const renderCards = [...cards, ...cards, ...cards];
 
             container.innerHTML = renderCards.map((card, idx) => `
-                <div onclick="openFoodCardModal('${card.image || ''}', '${(card.title || '').replace(/'/g, "\\'")}', '${(card.tag || '').replace(/'/g, "\\'")}', '${(card.alt || '').replace(/'/g, "\\'")}')"
-                     class="glass-card rounded-2xl overflow-hidden p-2 group cursor-pointer shrink-0 w-[260px] sm:w-[300px] hover:scale-[1.02] transition-transform duration-300">
+                <button type="button"
+                        onclick="openFoodCardModal('${card.image || ''}', '${(card.title || '').replace(/'/g, "\\'")}', '${(card.tag || '').replace(/'/g, "\\'")}', '${(card.alt || '').replace(/'/g, "\\'")}')"
+                        aria-label="View ${card.title || 'food dish'} image"
+                        class="glass-card rounded-2xl overflow-hidden p-2 group cursor-pointer shrink-0 w-[260px] sm:w-[300px] hover:scale-[1.02] transition-transform duration-300 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-pub-sage">
                     <div class="relative h-48 sm:h-56 rounded-xl overflow-hidden">
                         <img src="${card.image || ''}"
                              onerror="this.onerror=null; this.src='https://placehold.co/800x600/1b3a2b/ffffff?text=${encodeURIComponent(card.title || 'Food Item')}';"
@@ -2098,12 +2105,12 @@
                                 <span class="px-2 py-0.5 rounded-md bg-white/90 text-pub-deep text-[10px] font-bold uppercase tracking-wider mb-1 inline-block">${card.tag || ''}</span>
                                 <p class="text-white text-xs sm:text-sm font-bold drop-shadow-sm">${card.title || ''}</p>
                             </div>
-                            <div class="w-8 h-8 rounded-full glass-pill flex items-center justify-center text-white bg-white/30 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <div class="w-8 h-8 rounded-full glass-pill flex items-center justify-center text-white bg-white/30 opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity">
                                 <i class="fas fa-expand text-xs"></i>
                             </div>
                         </div>
                     </div>
-                </div>
+                </button>
             `).join('');
 
             startFoodCardAutoScroll();
