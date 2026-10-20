@@ -539,6 +539,17 @@
             box-shadow: 0 0 0 3px rgba(27, 58, 43, 0.12);
         }
 
+        a:focus-visible,
+        button:focus-visible,
+        input:focus-visible,
+        select:focus-visible,
+        textarea:focus-visible,
+        [role="button"]:focus-visible,
+        [role="tab"]:focus-visible {
+            outline: 2px solid #1b3a2b;
+            outline-offset: 2px;
+        }
+
         .bg-mesh {
             background-color: #f3f7f4;
             background-image: 
@@ -588,7 +599,7 @@
 
                 <!-- Mobile Navigation Toggle -->
                 <div class="md:hidden flex items-center">
-                    <button type="button" id="mobile-menu-btn" aria-label="Toggle Navigation Menu" class="glass-pill p-2.5 rounded-xl text-pub-deep hover:text-pub-sage focus:outline-none cursor-pointer">
+                    <button type="button" id="mobile-menu-btn" aria-label="Toggle Navigation Menu" class="glass-pill p-2.5 rounded-xl text-pub-deep hover:text-pub-sage cursor-pointer">
                         <i class="fas fa-bars text-xl"></i>
                     </button>
                 </div>
