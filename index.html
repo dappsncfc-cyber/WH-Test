@@ -588,7 +588,7 @@
 
                 <!-- Mobile Navigation Toggle -->
                 <div class="md:hidden flex items-center">
-                    <button type="button" id="mobile-menu-btn" aria-label="Toggle Navigation Menu" class="glass-pill p-2.5 rounded-xl text-pub-deep hover:text-pub-sage focus:outline-none cursor-pointer">
+                    <button type="button" id="mobile-menu-btn" aria-label="Toggle Navigation Menu" aria-expanded="false" aria-controls="mobile-menu" class="glass-pill p-2.5 rounded-xl text-pub-deep hover:text-pub-sage focus:outline-none cursor-pointer">
                         <i class="fas fa-bars text-xl"></i>
                     </button>
                 </div>
@@ -2242,8 +2242,12 @@
         // Toggle mobile menu drawer
         function toggleMobileMenu() {
             const mobileMenu = document.getElementById('mobile-menu');
+            const mobileBtn = document.getElementById('mobile-menu-btn');
             if (mobileMenu) {
-                mobileMenu.classList.toggle('hidden');
+                const isHidden = mobileMenu.classList.toggle('hidden');
+                if (mobileBtn) {
+                    mobileBtn.setAttribute('aria-expanded', (!isHidden).toString());
+                }
             }
         }
 
