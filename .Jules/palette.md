@@ -1,0 +1,3 @@
+## 2026-03-31 - Dynamically Generated Modals Miss Escape Key & Backdrop Click Handlers
+**Learning:** Dynamically injected modal overlays (like confirmation toasts created via JS DOM manipulation) risk bypassing global Escape key listeners and backdrop click handlers if they lack unified close helper functions and standard WAI-ARIA dialog markup.
+**Action:** When dynamically appending modal elements in vanilla JS, ensure they assign WAI-ARIA attributes (`role="dialog"`, `aria-modal="true"`, `aria-labelledby`), attach direct backdrop click handlers, and expose a close function hooked into window Escape key listeners.
