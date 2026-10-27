@@ -1,0 +1,3 @@
+## 2025-05-10 - Modal Accessibility & Dismissal Patterns in Admin Portals
+**Learning:** Admin management interfaces and sub-dashboards (like `admin.html`) often get overlooked for standard modal keyboard navigation (e.g. Escape key to close, backdrop click dismiss) and aria-labels on icon-only control buttons (`<i class="fas fa-times"></i>` or `<i class="fas fa-trash"></i>`).
+**Action:** When auditing or adding modals in standalone HTML pages, verify that all modal dialog close & action buttons have explicit `aria-label` attributes and that global `Escape` key and backdrop click listeners are registered.
