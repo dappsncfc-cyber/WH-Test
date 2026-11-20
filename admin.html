@@ -229,7 +229,7 @@
                         <span class="w-3 h-3 rounded-full bg-emerald-500 animate-pulse"></span>
                         <h2 class="font-serif font-bold text-pub-deep text-xl sm:text-2xl">Site Editor</h2>
                     </div>
-                    <p class="text-xs text-gray-600 mt-1">Manage dishes, prices, descriptions, and allergen tags in real-time across all visitor devices.</p>
+                    <p class="text-xs text-gray-600 mt-1">Manage dishes, prices, descriptions, Wi-Fi settings &amp; guest marketing list across all visitor devices.</p>
                 </div>
 
                 <div class="flex items-center gap-2 flex-wrap">
@@ -265,11 +265,14 @@
                 <button type="button" id="admin-tab-events" onclick="switchAdminMenuTab('events')" class="py-2.5 px-4 rounded-2xl text-xs sm:text-sm font-bold transition cursor-pointer text-pub-deep glass-pill hover:bg-white whitespace-nowrap">
                     <i class="fas fa-calendar-alt mr-1.5"></i> Upcoming Events
                 </button>
+                <button type="button" id="admin-tab-wifi" onclick="switchAdminMenuTab('wifi')" class="py-2.5 px-4 rounded-2xl text-xs sm:text-sm font-bold transition cursor-pointer text-pub-deep glass-pill hover:bg-white whitespace-nowrap">
+                    <i class="fas fa-wifi mr-1.5"></i> Wi-Fi &amp; Marketing Leads
+                </button>
             </div>
 
             <!-- Toast Notifications -->
             <div id="admin-save-toast" class="hidden p-3.5 rounded-2xl bg-emerald-100 border border-emerald-300 text-emerald-900 text-xs font-bold text-center shadow-sm">
-                <i class="fas fa-check-circle mr-1 text-pub-sage"></i> Menu changes saved and synced to Firebase Cloud successfully!
+                <i class="fas fa-check-circle mr-1 text-pub-sage"></i> Changes saved and synced to Firebase Cloud successfully!
             </div>
 
             <div id="admin-error-toast" class="hidden p-4 rounded-2xl bg-red-50 border border-red-200 text-red-900 text-xs font-medium shadow-sm">
@@ -582,6 +585,8 @@
 
     <!-- JavaScript Data & Logic Handler -->
     <script>
+        const DEFAULT_WIFI_PASSWORD = "CromerCrab2026!";
+
         const defaultFoodCards = [
             {
                 tag: "Pub Classic",
@@ -828,7 +833,27 @@
         let menuData = loadMenuData();
         let foodCards = loadFoodCards();
         let eventsData = loadEventsData();
+        let wifiPassword = loadWifiPassword();
+        let wifiLeads = loadWifiLeads();
         let activeAdminMenuKey = 'main';
+
+        function loadWifiPassword() {
+            const stored = localStorage.getItem('white_horse_wifi_password');
+            return (stored && stored.trim()) ? stored.trim() : DEFAULT_WIFI_PASSWORD;
+        }
+
+        function loadWifiLeads() {
+            try {
+                const stored = localStorage.getItem('white_horse_wifi_leads');
+                if (stored) {
+                    const parsed = JSON.parse(stored);
+                    if (Array.isArray(parsed)) return parsed;
+                }
+            } catch (e) {
+                console.error('Error loading Wi-Fi leads:', e);
+            }
+            return [];
+        }
 
         function getTodayDateString() {
             const today = new Date();
@@ -952,6 +977,14 @@
                                 eventsData = cleanAndSortEvents(val.events);
                                 localStorage.setItem('white_horse_events', JSON.stringify(eventsData));
                             }
+                            if (val.wifiPassword) {
+                                wifiPassword = val.wifiPassword;
+                                localStorage.setItem('white_horse_wifi_password', wifiPassword);
+                            }
+                            if (val.wifiLeads && Array.isArray(val.wifiLeads)) {
+                                wifiLeads = val.wifiLeads;
+                                localStorage.setItem('white_horse_wifi_leads', JSON.stringify(wifiLeads));
+                            }
                             renderAdminEditor();
                             updateSyncStatus('connected', 'Firestore Live');
                             setDiagStatus('diag-firestore-status', 'Connected & Synchronized', 'text-emerald-600');
@@ -970,6 +1003,20 @@
                     realtimeDb = window.firebase.database();
                     console.log("Realtime Database initialised.");
                     setDiagStatus('diag-rtdb-status', 'Connected & Ready', 'text-emerald-600');
+
+                    realtimeDb.ref('white_horse_wifi_leads').on('value', (snapshot) => {
+                        const val = snapshot.val();
+                        if (val) {
+                            const arr = Array.isArray(val) ? val : Object.values(val);
+                            wifiLeads = arr;
+                            localStorage.setItem('white_horse_wifi_leads', JSON.stringify(wifiLeads));
+                            if (activeAdminMenuKey === 'wifi') {
+                                renderAdminEditor();
+                            }
+                        }
+                    }, (err) => {
+                        console.warn("Realtime DB wifiLeads listener error:", err);
+                    });
                 } catch (rtdbErr) {
                     console.warn("Realtime DB initialization failed:", rtdbErr);
                     setDiagStatus('diag-rtdb-status', 'Failed: ' + rtdbErr.message, 'text-red-600');
@@ -1046,6 +1093,8 @@
                 menuData: menuData,
                 foodCards: foodCards,
                 events: eventsData,
+                wifiPassword: wifiPassword,
+                wifiLeads: wifiLeads,
                 updatedAt: new Date().toISOString()
             };
 
@@ -1072,6 +1121,8 @@
                     await realtimeDb.ref('white_horse_menu_data').set(menuData);
                     await realtimeDb.ref('white_horse_food_cards').set(foodCards);
                     await realtimeDb.ref('white_horse_events').set(eventsData);
+                    await realtimeDb.ref('white_horse_wifi_password').set(wifiPassword);
+                    await realtimeDb.ref('white_horse_wifi_leads').set(wifiLeads);
                     console.log("Successfully written payload to Realtime DB.");
                     writtenToAny = true;
                     setDiagStatus('diag-rtdb-status', 'Write Succeeded', 'text-emerald-600');
@@ -1086,12 +1137,14 @@
             localStorage.setItem('white_horse_menu_data', JSON.stringify(menuData));
             localStorage.setItem('white_horse_food_cards', JSON.stringify(foodCards));
             localStorage.setItem('white_horse_events', JSON.stringify(eventsData));
+            localStorage.setItem('white_horse_wifi_password', wifiPassword);
+            localStorage.setItem('white_horse_wifi_leads', JSON.stringify(wifiLeads));
 
             if (writtenToAny) {
                 updateSyncStatus('connected', 'Live Cloud Sync');
                 if (toastError) toastError.classList.add('hidden');
                 if (toastSuccess) {
-                    toastSuccess.innerHTML = '<i class="fas fa-check-circle mr-1 text-pub-sage"></i> All menu items &amp; food cards pushed to Firebase Cloud successfully!';
+                    toastSuccess.innerHTML = '<i class="fas fa-check-circle mr-1 text-pub-sage"></i> All changes pushed to Firebase Cloud successfully!';
                     toastSuccess.classList.remove('hidden');
                     setTimeout(() => toastSuccess.classList.add('hidden'), 3500);
                 }
@@ -1113,7 +1166,7 @@
 
         function switchAdminMenuTab(menuKey) {
             activeAdminMenuKey = menuKey;
-            ['main', 'sunday', 'specials', 'cards', 'events'].forEach(k => {
+            ['main', 'sunday', 'specials', 'cards', 'events', 'wifi'].forEach(k => {
                 const btn = document.getElementById(`admin-tab-${k}`);
                 if (!btn) return;
                 if (k === menuKey) {
@@ -1136,6 +1189,11 @@
 
             if (activeAdminMenuKey === 'events') {
                 renderEventsAdminEditor(container);
+                return;
+            }
+
+            if (activeAdminMenuKey === 'wifi') {
+                renderWifiAdminEditor(container);
                 return;
             }
 
@@ -1179,6 +1237,135 @@
 
                 container.appendChild(secDiv);
             });
+        }
+
+        function updateWifiPasswordFromAdmin(e) {
+            e.preventDefault();
+            const input = document.getElementById('admin-wifi-password-input');
+            if (!input) return;
+            const newPw = input.value.trim();
+            if (!newPw) return;
+            wifiPassword = newPw;
+            saveMenuData();
+            renderAdminEditor();
+        }
+
+        function deleteWifiLead(leadId) {
+            if (!confirm('Are you sure you want to remove this guest entry from the list?')) return;
+            wifiLeads = wifiLeads.filter(l => l.id !== leadId);
+            saveMenuData();
+            renderAdminEditor();
+        }
+
+        function downloadWifiLeadsCSV() {
+            const leads = loadWifiLeads();
+            const headers = ['Name', 'Email', 'Marketing Accepted', 'Date & Time'];
+            const rows = leads.map(lead => {
+                const name = `"${(lead.name || '').replace(/"/g, '""')}"`;
+                const email = `"${(lead.email || '').replace(/"/g, '""')}"`;
+                const marketing = lead.marketingAccepted ? 'Yes' : 'No';
+                const dateFormatted = lead.createdAt ? new Date(lead.createdAt).toLocaleString('en-GB') : '';
+                return [name, email, `"${marketing}"`, `"${dateFormatted}"`].join(',');
+            });
+
+            const csvContent = [headers.join(','), ...rows].join('\n');
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            const todayStr = getTodayDateString();
+            link.setAttribute('href', url);
+            link.setAttribute('download', `white-horse-wifi-marketing-leads-${todayStr}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+        }
+
+        function renderWifiAdminEditor(container) {
+            container.innerHTML = '';
+            wifiPassword = loadWifiPassword();
+            wifiLeads = loadWifiLeads();
+
+            // Section 1: Wi-Fi Password Management Card
+            const pwCard = document.createElement('div');
+            pwCard.className = 'glass-card rounded-3xl p-5 sm:p-6 border border-white/90 space-y-4';
+            pwCard.innerHTML = `
+                <div class="flex items-center justify-between border-b border-emerald-900/10 pb-3">
+                    <div>
+                        <h3 class="font-serif font-bold text-pub-deep text-lg text-pub-sage"><i class="fas fa-key mr-1.5"></i> Guest Wi-Fi Password Settings</h3>
+                        <p class="text-xs text-gray-600">Update the Wi-Fi password displayed to guests on the main website after they submit their details.</p>
+                    </div>
+                </div>
+                <form onsubmit="updateWifiPasswordFromAdmin(event)" class="flex flex-col sm:flex-row items-stretch sm:items-end gap-3">
+                    <div class="flex-1">
+                        <label for="admin-wifi-password-input" class="block text-xs font-bold text-pub-deep mb-1">Current Active Wi-Fi Password *</label>
+                        <input type="text" id="admin-wifi-password-input" value="${wifiPassword.replace(/"/g, '&quot;')}" required class="w-full px-3.5 py-2.5 rounded-xl glass-input text-sm font-mono font-bold text-pub-deep">
+                    </div>
+                    <button type="submit" class="glass-button-primary text-white text-xs font-bold px-5 py-3 rounded-xl uppercase tracking-wider cursor-pointer shadow-md flex items-center justify-center gap-1.5">
+                        <i class="fas fa-save"></i> Save Wi-Fi Password
+                    </button>
+                </form>
+            `;
+            container.appendChild(pwCard);
+
+            // Section 2: Wi-Fi Guest & Marketing Opt-In Spreadsheet List
+            const leadsCard = document.createElement('div');
+            leadsCard.className = 'glass-card rounded-3xl p-5 sm:p-6 border border-white/90 space-y-4';
+
+            const optedInCount = wifiLeads.filter(l => l.marketingAccepted).length;
+
+            let rowsHtml = wifiLeads.map(lead => {
+                const dateDisplay = lead.createdAt
+                    ? new Date(lead.createdAt).toLocaleString('en-GB', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })
+                    : '—';
+                const marketingBadge = lead.marketingAccepted
+                    ? '<span class="px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[11px] font-bold inline-flex items-center gap-1"><i class="fas fa-check-circle"></i> Yes</span>'
+                    : '<span class="px-2.5 py-0.5 rounded-full bg-gray-100 text-gray-600 text-[11px] font-bold inline-flex items-center gap-1"><i class="fas fa-times-circle"></i> No</span>';
+
+                return `
+                    <tr class="border-b border-emerald-900/10 hover:bg-white/70 transition">
+                        <td class="py-3 px-4 font-bold text-pub-deep text-xs sm:text-sm">${lead.name || '—'}</td>
+                        <td class="py-3 px-4 text-xs sm:text-sm text-gray-700">${lead.email || '—'}</td>
+                        <td class="py-3 px-4">${marketingBadge}</td>
+                        <td class="py-3 px-4 text-xs text-gray-500 whitespace-nowrap">${dateDisplay}</td>
+                        <td class="py-3 px-4 text-right">
+                            <button type="button" onclick="deleteWifiLead('${lead.id}')" class="glass-pill hover:bg-red-100 text-red-600 px-2.5 py-1.5 rounded-lg text-xs font-bold transition cursor-pointer" title="Remove Entry">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+
+            leadsCard.innerHTML = `
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-emerald-900/10 pb-3 gap-3">
+                    <div>
+                        <h3 class="font-serif font-bold text-pub-deep text-lg text-pub-sage"><i class="fas fa-users mr-1.5"></i> Guest Wi-Fi Sign-Ups &amp; Marketing List</h3>
+                        <p class="text-xs text-gray-600">Total entries: <strong>${wifiLeads.length}</strong> • Marketing Opt-ins: <strong class="text-emerald-700">${optedInCount}</strong></p>
+                    </div>
+                    <button type="button" onclick="downloadWifiLeadsCSV()" class="glass-button-primary text-white text-xs font-bold px-4 py-2.5 rounded-xl flex items-center justify-center gap-2 cursor-pointer uppercase tracking-wider shadow-md">
+                        <i class="fas fa-file-csv text-sm"></i> Download Spreadsheet (.CSV)
+                    </button>
+                </div>
+
+                <div class="overflow-x-auto rounded-2xl border border-emerald-900/10 bg-white/80">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-pub-light/90 border-b border-emerald-900/10 text-[11px] font-bold uppercase tracking-wider text-pub-deep">
+                                <th class="py-3 px-4">Guest Name</th>
+                                <th class="py-3 px-4">Email Address</th>
+                                <th class="py-3 px-4">Accepted Marketing</th>
+                                <th class="py-3 px-4">Date &amp; Time</th>
+                                <th class="py-3 px-4 text-right">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${rowsHtml || '<tr><td colspan="5" class="py-8 text-center text-xs text-gray-500">No guest Wi-Fi submissions recorded yet.</td></tr>'}
+                        </tbody>
+                    </table>
+                </div>
+            `;
+            container.appendChild(leadsCard);
         }
 
         function renderFoodCardsAdminEditor(container) {
@@ -1309,6 +1496,9 @@
             if (activeAdminMenuKey === 'events') {
                 openAddEventModal();
                 return;
+            }
+            if (activeAdminMenuKey === 'wifi') {
+                switchAdminMenuTab('main');
             }
             openEditDishModal(activeAdminMenuKey, 0, -1);
         }
