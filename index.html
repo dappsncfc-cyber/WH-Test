@@ -719,7 +719,7 @@
                 </div>
             </div>
 
-    <!-- View & Download Menus Grid -->
+            <!-- View & Download Menus Grid -->
             <div class="mb-10 sm:mb-12">
                 <h3 class="font-serif text-xl sm:text-2xl font-bold text-pub-deep text-center mb-5 sm:mb-6">Explore &amp; Download Our Menus</h3>
                 <div class="grid grid-cols-1 md:grid-cols-3 max-w-5xl mx-auto gap-3.5 sm:gap-4">
@@ -1599,7 +1599,7 @@
         }
 
         async function fetchLatestWifiPassword() {
-            // Try fetching latest password from Firestore & Realtime DB so mobile browsers always get the newest value
+            // Explicitly fetch the latest Wi-Fi password from Firestore and Realtime DB so mobile browsers always stay up to date
             if (firestoreDb) {
                 try {
                     const wifiDoc = await firestoreDb.collection('white_horse_portal').doc('wifi_settings').get();
@@ -1630,7 +1630,18 @@
         }
 
         function getWifiLeads() {
-// ... existing code ... -->
+            try {
+                const stored = localStorage.getItem('white_horse_wifi_leads');
+                if (stored) {
+                    const parsed = JSON.parse(stored);
+                    if (Array.isArray(parsed)) return parsed;
+                }
+            } catch (e) {
+                console.error('Error loading Wi-Fi leads:', e);
+            }
+            return [];
+        }
+
         function openWifiModal() {
             const modal = document.getElementById('wifi-modal');
             const formEl = document.getElementById('wifi-guest-form');
@@ -1643,7 +1654,7 @@
                 codeDisplay.textContent = getWifiPassword();
             }
 
-            // Refresh Wi-Fi password from cloud immediately in case mobile browser had cached/stale state
+            // Refresh latest Wi-Fi password from cloud immediately for mobile devices
             fetchLatestWifiPassword();
 
             if (formEl) {
@@ -1658,7 +1669,278 @@
             modal.classList.add('flex');
             document.body.style.overflow = 'hidden';
         }
-// ... existing code ... -->
+
+        function closeWifiModal() {
+            const modal = document.getElementById('wifi-modal');
+            if (!modal) return;
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            document.body.style.overflow = '';
+        }
+
+        function copyWifiPassword() {
+            const pw = getWifiPassword();
+            const copyBtn = document.getElementById('wifi-copy-btn');
+            const tempInput = document.createElement('input');
+            tempInput.value = pw;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            tempInput.setSelectionRange(0, 99999);
+            try {
+                document.execCommand('copy');
+                if (copyBtn) {
+                    const origHtml = copyBtn.innerHTML;
+                    copyBtn.innerHTML = '<i class="fas fa-check text-emerald-600"></i> Copied!';
+                    setTimeout(() => {
+                        copyBtn.innerHTML = origHtml;
+                    }, 2000);
+                }
+            } catch (err) {
+                console.warn('Copy command failed:', err);
+            }
+            document.body.removeChild(tempInput);
+        }
+
+        // Default Food Cards Data
+        const defaultFoodCards = [
+            {
+                tag: "Pub Classic",
+                title: "Ale-Battered Fish & Chips",
+                image: "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                alt: "Traditional Ale-Battered Fish & Chips"
+            },
+            {
+                tag: "Sunday Special",
+                title: "Norfolk Roast Beef & Yorkshires",
+                image: "images/sunday-roast.jpg",
+                alt: "Traditional Sunday Roast Beef & Yorkshires"
+            },
+            {
+                tag: "Chef's Choice",
+                title: "White Horse Gourmet Burger",
+                image: "images/whitehorseburger.jpeg",
+                alt: "White Horse Gourmet Norfolk Beef Burger"
+            },
+            {
+                tag: "House Special",
+                title: "10oz Rump Steak & Chips",
+                image: "images/steakandchips.jpeg",
+                alt: "10oz Rump Steak with Chips"
+            },
+            {
+                tag: "Chef's Special",
+                title: "Pan-Roasted Duck Breast",
+                image: "images/duck.jpg",
+                alt: "Pan-Roasted Duck Breast"
+            },
+            {
+                tag: "Local Favorite",
+                title: "Giant Breakfast Yorkshire Pudding",
+                image: "images/breakfastyorkie.jpg",
+                alt: "Giant Breakfast Yorkshire Pudding"
+            },
+            {
+                tag: "Seafood Catch",
+                title: "Fresh Local Norfolk Mussels",
+                image: "images/mussels.jpg",
+                alt: "Steaming bowl of fresh Norfolk mussels in white wine and garlic sauce"
+            },
+            {
+                tag: "Chef's Special",
+                title: "Grilled Lamb Kofta & Mint Dip",
+                image: "images/lambkofta.jpg",
+                alt: "Grilled Lamb Kofta served with fresh salad and mint dip"
+            },
+            {
+                tag: "Morning Favorite",
+                title: "Full Cooked Norfolk Breakfast",
+                image: "images/cbreakfast.jpg",
+                alt: "Full Cooked Norfolk Breakfast with sausages, bacon, eggs and beans"
+            }
+        ];
+
+        // Default Upcoming Events Data
+        const defaultEvents = [
+            {
+                id: "evt-ale-fest-2026",
+                title: "Real Ale, Cider & Pie Festival",
+                date: "2026-09-25",
+                endDate: "2026-09-27",
+                time: "12:00",
+                image: "https://images.unsplash.com/photo-1514933651103-005eec06c04b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                description: "Join us on 25th, 26th & 27th September for our Real Ale, Cider and Pie Festival! Featuring a huge selection of guest real ales, traditional ciders and chef's freshly baked homemade pies.",
+                buttonType: "book"
+            },
+            {
+                id: "evt-pub-quiz-2026",
+                title: "Pub Quiz & Curry Night",
+                date: "2026-09-29",
+                time: "19:30",
+                image: "images/bingo.jpg",
+                description: "Gather your team for our popular Pub Quiz & Curry Night! Great prizes to be won, plus chef's homemade curry specials served all evening.",
+                buttonType: "book"
+            },
+            {
+                id: "evt-krissi-jordon-2026",
+                title: "Live Music: Krissi & Jordon Acoustic Duo",
+                date: "2026-10-17",
+                time: "20:00",
+                image: "images/krissiandjordon.jpg",
+                description: "An evening of fantastic live acoustic music featuring the wonderful local duo Krissi & Jordon. Enjoy great drinks, wonderful atmosphere and acoustic favorites.",
+                buttonType: "book"
+            },
+            {
+                id: "evt-halloween-kids-2026",
+                title: "Children’s Halloween Party",
+                date: "2026-10-31",
+                time: "15:00 - 17:00",
+                image: "https://images.unsplash.com/photo-1509557965875-b88c97052f0e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                description: "Join us from 3pm to 5pm for our spooky Children’s Halloween party with fun games, spooky food and drinks!",
+                buttonType: "info"
+            },
+            {
+                id: "evt-clairvoyant-2026",
+                title: "A Night with a Clairvoyant & 3-Course Dinner",
+                date: "2026-10-31",
+                time: "18:30",
+                image: "https://images.unsplash.com/photo-1517457373958-b7bdd4587205?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                description: "An exclusive evening with 2 clairvoyants accompanied by a luxury 3-course meal. £47.95 per person. Limited numbers — booking advisable!\n\n• Starters: Quinoa, Fennel and Pomegranate Salad | Tarte Flambée | Lobster Bisque\n• Mains: Steak Au Poivre | Chicken Tartiflette | Pea and Goats Cheese Risotto\n• Desserts: Classic Crème Brûlée | Lemon Pavlova | Dark Chocolate Cylinders with Smoked Hazelnut Praline & Poached Rhubarb",
+                buttonType: "book"
+            },
+            {
+                id: "evt-fireworks-2026",
+                title: "Fireworks Party & Courtyard BBQ",
+                date: "2026-11-05",
+                time: "18:00",
+                image: "https://images.unsplash.com/photo-1531306728370-e2ebd9d7bb99?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                description: "Fireworks party with BBQ in the courtyard! Serving delicious hot dogs, burgers and jacket potatoes with a variety of tasty fillings.",
+                buttonType: "info"
+            },
+            {
+                id: "evt-turkey-tinsel-2026",
+                title: "Turkey & Tinsel Festive Stays & Xmas Party Menu",
+                date: "2026-11-15",
+                endDate: "2026-12-20",
+                time: "All Day",
+                image: "https://images.unsplash.com/photo-1543589077-47d81606c1bf?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                description: "Turkey and Tinsel festive stays plus Xmas party menu rollout from mid-November onwards!\n2 nights stay (Dinner, Bed & Breakfast), trip to Thursford show, Santa Express, plus weekend live music/events. Weekend 12th & 13th Dec includes the White Horse Xmas Market.\n£450 for a double room or £300 for a single room. Avoid disappointment — book now!",
+                buttonType: "info"
+            },
+            {
+                id: "evt-xmas-market-2026",
+                title: "White Horse Xmas Market",
+                date: "2026-12-12",
+                endDate: "2026-12-13",
+                time: "10:00",
+                image: "images/xmasmarket.jpeg",
+                description: "White Horse Xmas Market on 12th & 13th December!\nStall holders wanted: £30 per stall a day or £50 for both days. Featuring lots of stalls, meet Father Christmas, snow machines, festive lights and more.\nAll money raised from stall sales will be divided between an ovarian cancer charity and a local charity.",
+                buttonType: "info"
+            },
+            {
+                id: "evt-xmas-day-2026",
+                title: "Christmas Day Menu",
+                date: "2026-12-25",
+                time: "12:00",
+                image: "https://images.unsplash.com/photo-1576867757603-05b134ebc379?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                description: "Celebrate Christmas Day at The White Horse Inn! Join us for a magnificent Christmas Day feast with all the trimmings. Bookings required.",
+                buttonType: "book"
+            }
+        ];
+
+        // Default Factory Menu Data
+        const defaultMenuData = {
+            main: {
+                title: "Main Menu",
+                sections: [
+                    {
+                        category: "Starters",
+                        items: [
+                            { name: "Soup of the day", desc: "Chef's soup of the day served with a warm roll.", price: "£7.95", tags: ["GFA", "V", "VEA"] },
+                            { name: "Calamari", desc: "Deep-fried calamari with garlic mayo.", price: "£7.95", tags: [] },
+                            { name: "Grilled goat's cheese", desc: "Sliced goat's cheese, grilled and served on a bed of mixed leaves and red onion chutney.", price: "£8.95", tags: ["GF", "V"] },
+                            { name: "Ravioli", desc: "Spinach and ricotta ravioli on a bed of wilted spinach and a green pesto drizzle.", price: "£8.95", tags: ["V"] },
+                            { name: "Home Made Scotch Egg", desc: "Scotch Egg on a bed of watercress with a pineapple and chilli relish.", price: "£8.95", tags: [] }
+                        ]
+                    },
+                    {
+                        category: "Mains",
+                        items: [
+                            { name: "Home-made Beef Stew", desc: "Slow-cooked tender beef in a rich, hearty gravy with potatoes.", price: "£16.95", tags: [] },
+                            { name: "Chicken parmigiano", desc: "Breaded chicken breast topped with tomato sauce and melted cheese, served with sweet potato fries and corn on the cob.", price: "£16.95", tags: [] },
+                            { name: "Mussels and Frites", desc: "Fresh mussels steamed in a fragrant sauce, served with crisp frites.", price: "£17.95", tags: ["GF", "DFA", "V"] },
+                            { name: "Stuffed Peppers", desc: "Roasted peppers filled with a savoury couscous filling with feta cheese, served on a bed of new potatoes and crispy Chinese leaf.", price: "£16.95", tags: ["V"] },
+                            { name: "Burger and Chips", desc: "A juicy grilled beef burger served in a toasted bun with chips and homemade coleslaw.", price: "£15.95", tags: ["GFA"] },
+                            { name: "Veggie Burger and Chips", desc: "A seasoned vegetarian burger in a toasted bun, served with chips and coleslaw.", price: "£15.95", tags: ["V"] },
+                            { name: "Fish and Chips", desc: "Crispy battered fish served with golden chips and traditional accompaniments.", price: "£16.95", tags: ["GFA", "V"] },
+                            { name: "Sausage and Mash", desc: "Traditional sausages served with creamy mashed potato, peas, and rich onion gravy.", price: "£16.95", tags: [] },
+                            { name: "Rump steak and all the trimmings", desc: "Grilled rump steak served with chips and all the trimmings.", price: "£19.95", tags: ["GF", "DF"] },
+                            { name: "Chicken Katsu Curry", desc: "Crispy chicken served with a fragrant katsu curry sauce, rice, and garnished with fresh spring onion.", price: "£17.95", tags: [] }
+                        ]
+                    },
+                    {
+                        category: "Desserts",
+                        items: [
+                            { name: "Belgian Waffle and Ice Cream", desc: "Warm Belgian waffle served with a scoop of creamy toffee ice cream.", price: "£7.95", tags: [] },
+                            { name: "White Horse Cheese Board", desc: "A selection of cheeses with crackers and accompaniments.", price: "£12.95", tags: ["GFA", "V"] },
+                            { name: "White Horse Winter Crumble", desc: "Seasonal fruit crumble served warm with a choice of custard or ice cream.", price: "£7.95", tags: ["GFA", "V", "VEA"] },
+                            { name: "Trio of Ice Cream", desc: "Three scoops of deliciously smooth ice cream, a choice of vanilla, strawberry or chocolate.", price: "£6.95", tags: [] },
+                            { name: "Sticky Toffee Pudding with Custard", desc: "Classic sticky toffee pudding with rich custard.", price: "£7.95", tags: [] },
+                            { name: "Red Berry and Gin Cheesecake", desc: "Velvety cheesecake with bright red berry and gin flavours served with fresh single cream.", price: "£8.95", tags: [] }
+                        ]
+                    }
+                ]
+            },
+            sunday: {
+                title: "Sunday Roast Menu",
+                sections: [
+                    {
+                        category: "Sunday Roast",
+                        items: [
+                            { name: "Sunday Roast", desc: "Choice of meats, served with herb roast potatoes, red cabbage, honey roast carrot and parsnip, cauliflower cheese, buttered greens, yorkshire puddings and gravy", price: "£17.95", tags: ["Sunday Special"] }
+                        ]
+                    }
+                ]
+            },
+            specials: {
+                title: "Today's Specials Board",
+                sections: [
+                    {
+                        category: "Chef's Daily Specials",
+                        items: [
+                            { name: "Fresh Cromer Crab Thermidor", desc: "Local dressed crab baked with rich mustard cream, Gruyère sauce, served with skinny fries & house salad", price: "£19.95", tags: ["Chef's Special", "Local Catch", "Crustaceans"] },
+                            { name: "Norfolk Venison Haunch Steak", desc: "Pan-roasted venison, fondant potato, red cabbage & blackberry jus", price: "£21.50", tags: ["Chef's Special", "GF"] },
+                            { name: "Wild Mushroom & Truffle Tagliatelle", desc: "Fresh handmade pasta, roasted pine nuts & shaved Parmesan", price: "£15.95", tags: ["V", "Nuts"] }
+                        ]
+                    }
+                ]
+            }
+        };
+
+        // Firebase Configuration
+        const firebaseConfig = window.FIREBASE_CONFIG || {
+            apiKey: "AIzaSyCBPyGHrS4Is0_PpAWToEdnOKsCfHi2Ff8",
+            authDomain: "studio-7295675373-ec35e.firebaseapp.com",
+            databaseURL: "https://studio-7295675373-ec35e-default-rtdb.firebaseio.com",
+            projectId: "studio-7295675373-ec35e",
+            storageBucket: "studio-7295675373-ec35e.firebasestorage.app",
+            messagingSenderId: "1015073229231",
+            appId: "1:1015073229231:web:b2122da1d5aa25ebbc475a"
+        };
+
+        let firestoreDb = null;
+        let realtimeDb = null;
+
+        try {
+            if (typeof firebase !== 'undefined' && firebaseConfig.apiKey) {
+                if (!firebase.apps.length) {
+                    firebase.initializeApp(firebaseConfig);
+                }
+
+                // Initialise Firestore
+                try {
+                    firestoreDb = firebase.firestore();
+                    console.log("Cloud Firestore initialised for Main Site.");
+
                     firestoreDb.collection('white_horse_portal').doc('data').onSnapshot((doc) => {
                         if (doc.exists) {
                             const val = doc.data();
@@ -1701,7 +1983,47 @@
                 } catch (fsErr) {
                     console.warn("Firestore initialization failed:", fsErr);
                 }
-// ... existing code ... -->
+
+                // Initialise Realtime Database
+                try {
+                    realtimeDb = firebase.database();
+                    console.log("Firebase Realtime Database initialised for Main Site.");
+
+                    realtimeDb.ref('white_horse_menu_data').on('value', (snapshot) => {
+                        const val = snapshot.val();
+                        if (val) {
+                            menuData = sanitizeMenuData(val);
+                            localStorage.setItem('white_horse_menu_data', JSON.stringify(menuData));
+                            if (activeMenuKey) {
+                                renderActiveMenuModal();
+                            }
+                        }
+                    }, (err) => {
+                        console.warn("Realtime DB menuData listener error:", err);
+                    });
+
+                    realtimeDb.ref('white_horse_food_cards').on('value', (snapshot) => {
+                        const val = snapshot.val();
+                        if (val) {
+                            localStorage.setItem('white_horse_food_cards', JSON.stringify(val));
+                            renderFoodCards();
+                        }
+                    }, (err) => {
+                        console.warn("Realtime DB foodCards listener error:", err);
+                    });
+
+                    realtimeDb.ref('white_horse_events').on('value', (snapshot) => {
+                        const val = snapshot.val();
+                        if (val) {
+                            const arr = Array.isArray(val) ? val : Object.values(val);
+                            eventsData = cleanAndSortEvents(arr);
+                            localStorage.setItem('white_horse_events', JSON.stringify(eventsData));
+                            renderEvents();
+                        }
+                    }, (err) => {
+                        console.warn("Realtime DB events listener error:", err);
+                    });
+
                     realtimeDb.ref('white_horse_wifi_password').on('value', (snapshot) => {
                         const val = snapshot.val();
                         if (val && typeof val === 'string') {
@@ -1717,7 +2039,588 @@
         } catch (e) {
             console.warn("Firebase general initialisation error:", e);
         }
-// ... existing code ... -->
+
+        function sanitizeMenuData(data) {
+            if (!data || typeof data !== 'object') {
+                return JSON.parse(JSON.stringify(defaultMenuData));
+            }
+            const cleanData = JSON.parse(JSON.stringify(data));
+            delete cleanData.lunch;
+            delete cleanData.dinner;
+            delete cleanData.veg;
+
+            ['main', 'sunday', 'specials'].forEach(key => {
+                if (!cleanData[key] || !cleanData[key].sections || !Array.isArray(cleanData[key].sections)) {
+                    cleanData[key] = JSON.parse(JSON.stringify(defaultMenuData[key]));
+                }
+            });
+
+            return cleanData;
+        }
+
+        // Active Menu & Events Data Stores loaded from LocalStorage
+        let menuData = loadMenuData();
+        let eventsData = loadEventsData();
+        let activeMenuKey = null;
+
+        function getTodayDateString() {
+            const today = new Date();
+            const yyyy = today.getFullYear();
+            const mm = String(today.getMonth() + 1).padStart(2, '0');
+            const dd = String(today.getDate()).padStart(2, '0');
+            return `${yyyy}-${mm}-${dd}`;
+        }
+
+        function cleanAndSortEvents(rawEvents) {
+            if (!Array.isArray(rawEvents)) return [];
+            const todayStr = getTodayDateString();
+            const valid = rawEvents.filter(evt => {
+                if (!evt) return false;
+                const effectiveEnd = evt.endDate || evt.date;
+                return effectiveEnd && effectiveEnd >= todayStr;
+            });
+            valid.sort((a, b) => {
+                const dateCompare = a.date.localeCompare(b.date);
+                if (dateCompare !== 0) return dateCompare;
+                return (a.time || '').localeCompare(b.time || '');
+            });
+            return valid;
+        }
+
+        function loadEventsData() {
+            try {
+                const stored = localStorage.getItem('white_horse_events');
+                if (stored) {
+                    const parsed = JSON.parse(stored);
+                    if (Array.isArray(parsed)) {
+                        return cleanAndSortEvents(parsed);
+                    }
+                }
+            } catch (e) {
+                console.error('Error loading events from localStorage:', e);
+            }
+            localStorage.setItem('white_horse_events', JSON.stringify(defaultEvents));
+            return cleanAndSortEvents(defaultEvents);
+        }
+
+        function formatDateDisplay(dateStr, endDateStr) {
+            if (!dateStr) return '';
+            const formatSingle = (s) => {
+                const parts = s.split('-');
+                if (parts.length !== 3) return s;
+                const dt = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
+                return dt.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+            };
+            if (endDateStr && endDateStr > dateStr) {
+                return `${formatSingle(dateStr)} - ${formatSingle(endDateStr)}`;
+            }
+            return formatSingle(dateStr);
+        }
+
+        function formatTimeDisplay(timeStr) {
+            if (!timeStr) return 'TBC';
+            const trimmed = timeStr.trim();
+            const match24 = trimmed.match(/^(\d{1,2}):(\d{2})$/);
+            if (match24) {
+                const h = parseInt(match24[1], 10);
+                const m = match24[2];
+                return `${h.toString().padStart(2, '0')}:${m}`;
+            }
+            const match12 = trimmed.match(/^(\d{1,2})(?::(\d{2}))?\s*(am|pm|AM|PM)$/i);
+            if (match12) {
+                let h = parseInt(match12[1], 10);
+                const m = match12[2] || '00';
+                const ampm = match12[3].toLowerCase();
+                if (ampm === 'pm' && h < 12) h += 12;
+                if (ampm === 'am' && h === 12) h = 0;
+                return `${h.toString().padStart(2, '0')}:${m}`;
+            }
+            return trimmed;
+        }
+
+        function buildEventCardHtml(evt) {
+            const isBook = (evt.buttonType || 'book') === 'book';
+            let buttonHtml = '';
+
+            if (isBook) {
+                buttonHtml = `
+                    <button type="button" onclick="openBookingModal('table')" class="w-full glass-button-primary text-white text-xs font-bold py-3 px-3 rounded-xl flex items-center justify-center gap-1.5 cursor-pointer uppercase tracking-wider transition">
+                        <i class="fas fa-utensils"></i> Book Table
+                    </button>
+                `;
+            } else {
+                const subject = encodeURIComponent(`Enquiry: ${evt.title || 'Event'}`);
+                const mailtoUrl = `mailto:info@whitehorsecromer.co.uk?subject=${subject}`;
+                buttonHtml = `
+                    <a href="${mailtoUrl}" class="w-full glass-pill hover:bg-white text-pub-deep text-xs font-bold py-3 px-3 rounded-xl flex items-center justify-center gap-1.5 cursor-pointer uppercase tracking-wider transition shadow-sm border border-emerald-900/10">
+                        <i class="fas fa-envelope text-pub-sage"></i> Find Out More
+                    </a>
+                `;
+            }
+
+            return `
+                <div class="glass-card glass-card-hover rounded-3xl overflow-hidden flex flex-col justify-between border border-white/90 group h-full">
+                    <div>
+                        <div class="relative h-48 sm:h-56 overflow-hidden">
+                            <img src="${evt.image || ''}"
+                                 onerror="this.onerror=null; this.src='https://placehold.co/800x600/1b3a2b/ffffff?text=${encodeURIComponent(evt.title || 'Event')}';"
+                                 alt="${evt.title || 'Event'}"
+                                 class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                            <div class="absolute top-3 right-3 glass-pill px-3 py-1 rounded-full text-[11px] font-bold text-pub-deep uppercase tracking-wider bg-white/90 shadow-sm flex items-center gap-1.5">
+                                <i class="fas fa-calendar-day text-pub-sage"></i>
+                                <span>${formatDateDisplay(evt.date, evt.endDate)}</span>
+                            </div>
+                        </div>
+                        <div class="p-5 sm:p-6">
+                            <div class="flex items-center gap-2 text-xs font-bold text-pub-sage mb-2">
+                                <i class="fas fa-clock"></i>
+                                <span>${formatTimeDisplay(evt.time)}</span>
+                            </div>
+                            <h3 class="font-serif font-bold text-pub-deep text-lg sm:text-xl mb-2">${evt.title}</h3>
+                            <p class="text-xs sm:text-sm text-gray-600 leading-relaxed mb-4 break-words whitespace-pre-line">${evt.description || ''}</p>
+                        </div>
+                    </div>
+                    <div class="px-5 sm:px-6 pb-5 sm:pb-6 pt-0">
+                        ${buttonHtml}
+                    </div>
+                </div>
+            `;
+        }
+
+        function scrollEventsCarousel(direction) {
+            const track = document.getElementById('events-carousel-track');
+            if (!track) return;
+            const scrollAmount = track.clientWidth * 0.8;
+            track.scrollBy({ left: direction * scrollAmount, behavior: 'smooth' });
+        }
+
+        function renderEvents() {
+            const container = document.getElementById('events-container');
+            if (!container) return;
+            const events = cleanAndSortEvents(eventsData);
+
+            if (events.length === 0) {
+                container.innerHTML = `
+                    <div class="glass-card rounded-3xl p-8 text-center text-gray-500 font-medium">
+                        <i class="fas fa-calendar-times text-pub-sage text-3xl mb-3 block"></i>
+                        No upcoming events scheduled at the moment. Please check back soon!
+                    </div>
+                `;
+                return;
+            }
+
+            const firstThree = events.slice(0, 3);
+            const remaining = events.slice(3);
+
+            let html = `
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    ${firstThree.map(evt => buildEventCardHtml(evt)).join('')}
+                </div>
+            `;
+
+            if (remaining.length > 0) {
+                html += `
+                    <div class="mt-12 pt-8 border-t border-emerald-900/10">
+                        <div class="flex items-center justify-between mb-6">
+                            <div>
+                                <h3 class="font-serif text-xl sm:text-2xl font-bold text-pub-deep">More Upcoming Events</h3>
+                                <p class="text-xs text-gray-600">Scroll to explore more upcoming dates at The White Horse Inn.</p>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <button type="button" onclick="scrollEventsCarousel(-1)" aria-label="Previous events" class="w-10 h-10 rounded-full glass-pill text-pub-deep hover:bg-white flex items-center justify-center transition cursor-pointer shadow-md">
+                                    <i class="fas fa-chevron-left"></i>
+                                </button>
+                                <button type="button" onclick="scrollEventsCarousel(1)" aria-label="Next events" class="w-10 h-10 rounded-full glass-pill text-pub-deep hover:bg-white flex items-center justify-center transition cursor-pointer shadow-md">
+                                    <i class="fas fa-chevron-right"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div id="events-carousel-track" class="flex gap-6 overflow-x-auto scroll-smooth pb-4 snap-x snap-mandatory scrollbar-none" style="scrollbar-width: none; -ms-overflow-style: none;">
+                            ${remaining.map(evt => `
+                                <div class="snap-start shrink-0 w-[290px] sm:w-[350px]">
+                                    ${buildEventCardHtml(evt)}
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+
+            container.innerHTML = html;
+        }
+
+        function loadMenuData() {
+            try {
+                const stored = localStorage.getItem('white_horse_menu_data');
+                if (stored) {
+                    return sanitizeMenuData(JSON.parse(stored));
+                }
+            } catch (e) {
+                console.error('Error loading menu data from localStorage:', e);
+            }
+            return JSON.parse(JSON.stringify(defaultMenuData));
+        }
+
+        function loadFoodCards() {
+            try {
+                const storedCards = localStorage.getItem('white_horse_food_cards');
+                if (storedCards) {
+                    const parsed = JSON.parse(storedCards);
+                    if (Array.isArray(parsed)) {
+                        return parsed;
+                    }
+                }
+            } catch (e) {
+                console.error('Error loading food cards from localStorage:', e);
+            }
+            localStorage.setItem('white_horse_food_cards', JSON.stringify(defaultFoodCards));
+            return JSON.parse(JSON.stringify(defaultFoodCards));
+        }
+
+        let foodCardAutoScrollInterval = null;
+        let foodCardIsHovered = false;
+
+        function isModalOpen() {
+            const modalIds = ['wifi-modal', 'food-card-modal', 'menu-modal', 'privacy-modal', 'cookies-modal', 'booking-modal', 'enquiry-popup-toast'];
+            return modalIds.some(id => {
+                const el = document.getElementById(id);
+                return el && !el.classList.contains('hidden');
+            });
+        }
+
+        function openFoodCardModal(image, title, tag, alt) {
+            const modal = document.getElementById('food-card-modal');
+            const imgEl = document.getElementById('food-modal-img');
+            const titleEl = document.getElementById('food-modal-title');
+            const tagEl = document.getElementById('food-modal-tag');
+
+            if (!modal || !imgEl || !titleEl || !tagEl) return;
+
+            imgEl.src = image || '';
+            imgEl.alt = alt || title || '';
+            titleEl.textContent = title || 'Dish';
+            tagEl.textContent = tag || 'Kitchen Special';
+
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeFoodCardModal() {
+            const modal = document.getElementById('food-card-modal');
+            if (!modal) return;
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            document.body.style.overflow = '';
+        }
+
+        function renderFoodCards() {
+            const container = document.getElementById('food-cards-container');
+            if (!container) return;
+            const cards = loadFoodCards();
+
+            if (!cards || cards.length === 0) return;
+
+            // Duplicate card set 3 times for seamless infinite forward looping
+            const renderCards = [...cards, ...cards, ...cards];
+
+            container.innerHTML = renderCards.map((card) => `
+                <div onclick="openFoodCardModal('${card.image || ''}', '${(card.title || '').replace(/'/g, "\\'")}', '${(card.tag || '').replace(/'/g, "\\'")}', '${(card.alt || '').replace(/'/g, "\\'")}')"
+                     class="glass-card rounded-2xl overflow-hidden p-2 group cursor-pointer shrink-0 w-[260px] sm:w-[300px] hover:scale-[1.02] transition-transform duration-300">
+                    <div class="relative h-48 sm:h-56 rounded-xl overflow-hidden">
+                        <img src="${card.image || ''}"
+                             onerror="this.onerror=null; this.src='https://placehold.co/800x600/1b3a2b/ffffff?text=${encodeURIComponent(card.title || 'Food Item')}';"
+                             alt="${card.alt || card.title || ''}"
+                             class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent flex items-end p-3 justify-between">
+                            <div>
+                                <span class="px-2 py-0.5 rounded-md bg-white/90 text-pub-deep text-[10px] font-bold uppercase tracking-wider mb-1 inline-block">${card.tag || ''}</span>
+                                <p class="text-white text-xs sm:text-sm font-bold drop-shadow-sm">${card.title || ''}</p>
+                            </div>
+                            <div class="w-8 h-8 rounded-full glass-pill flex items-center justify-center text-white bg-white/30 opacity-0 group-hover:opacity-100 transition-opacity">
+                                <i class="fas fa-expand text-xs"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            startFoodCardAutoScroll();
+        }
+
+        function startFoodCardAutoScroll() {
+            const container = document.getElementById('food-cards-container');
+            if (!container) return;
+
+            if (foodCardAutoScrollInterval) {
+                clearInterval(foodCardAutoScrollInterval);
+            }
+
+            foodCardAutoScrollInterval = setInterval(() => {
+                if (foodCardIsHovered || isModalOpen()) return;
+
+                const cards = loadFoodCards();
+                if (!cards || cards.length === 0) return;
+
+                const firstCard = container.children[0];
+                const set2FirstCard = container.children[cards.length];
+
+                if (!firstCard || !set2FirstCard) return;
+
+                const oneSetWidth = set2FirstCard.offsetLeft - firstCard.offsetLeft;
+
+                if (oneSetWidth <= 0) return;
+
+                if (container.scrollLeft >= oneSetWidth) {
+                    container.scrollLeft -= oneSetWidth;
+                }
+
+                container.scrollBy({ left: 1.5, behavior: 'auto' });
+            }, 30);
+        }
+
+        // Open Menu Modal
+        function openMenuModal(menuKey) {
+            activeMenuKey = menuKey;
+            renderActiveMenuModal();
+            const modal = document.getElementById('menu-modal');
+            if (modal) {
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function renderActiveMenuModal() {
+            if (!activeMenuKey) return;
+            const titleEl = document.getElementById('menu-modal-title');
+            const contentEl = document.getElementById('menu-modal-content');
+
+            const data = menuData[activeMenuKey];
+            if (!data || !titleEl || !contentEl) return;
+
+            titleEl.textContent = data.title;
+            contentEl.innerHTML = `
+                <div class="text-center pb-4 border-b border-emerald-900/10">
+                    <img src="images/logo.jpg" alt="White Horse Inn Logo" class="h-24 sm:h-28 mx-auto mb-2 object-contain rounded-xl shadow-sm">
+                    <h2 class="font-serif text-2xl font-bold text-pub-deep tracking-tight">${data.title}</h2>
+                    <p class="text-xs text-pub-sage font-serif tracking-widest uppercase mt-0.5">The White Horse Inn • Cromer</p>
+                </div>
+            `;
+
+            data.sections.forEach(sec => {
+                const secDiv = document.createElement('div');
+                secDiv.className = 'border-b border-emerald-900/10 pb-4 last:border-b-0';
+
+                let itemsHtml = sec.items.map(item => `
+                    <div class="flex flex-col sm:flex-row sm:items-baseline justify-between py-2 border-b border-gray-100 last:border-b-0">
+                        <div class="pr-4">
+                            <div class="flex items-center gap-2">
+                                <span class="font-bold text-pub-deep text-sm">${item.name}</span>
+                                ${item.tags ? item.tags.map(t => `<span class="px-1.5 py-0.5 rounded text-[9px] font-bold bg-pub-sage/10 text-pub-sage">${t}</span>`).join('') : ''}
+                            </div>
+                            <p class="text-xs text-gray-600">${item.desc || ''}</p>
+                        </div>
+                        <span class="font-bold text-pub-sage text-sm whitespace-nowrap mt-1 sm:mt-0">${item.price}</span>
+                    </div>
+                `).join('');
+
+                secDiv.innerHTML = `
+                    <h4 class="font-serif font-bold text-pub-deep text-base mb-2 text-pub-sage border-b border-pub-sage/20 pb-1">${sec.category}</h4>
+                    <div class="space-y-1">${itemsHtml}</div>
+                `;
+                contentEl.appendChild(secDiv);
+            });
+        }
+
+        // Privacy Policy Modal Handlers
+        function openPrivacyModal() {
+            const modal = document.getElementById('privacy-modal');
+            if (!modal) return;
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closePrivacyModal() {
+            const modal = document.getElementById('privacy-modal');
+            if (!modal) return;
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            document.body.style.overflow = '';
+        }
+
+        // Cookies Policy Modal Handlers
+        function openCookiesModal() {
+            const modal = document.getElementById('cookies-modal');
+            if (!modal) return;
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeCookiesModal() {
+            const modal = document.getElementById('cookies-modal');
+            if (!modal) return;
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            document.body.style.overflow = '';
+        }
+
+        // Close Menu Modal
+        function closeMenuModal() {
+            activeMenuKey = null;
+            const modal = document.getElementById('menu-modal');
+            if (!modal) return;
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            document.body.style.overflow = '';
+        }
+
+        // Toggle mobile menu drawer
+        function toggleMobileMenu() {
+            const mobileMenu = document.getElementById('mobile-menu');
+            if (mobileMenu) {
+                mobileMenu.classList.toggle('hidden');
+            }
+        }
+
+        // Open Reservation Modal with Tab Selection
+        function openBookingModal(tab = 'table') {
+            const modal = document.getElementById('booking-modal');
+            if (!modal) return;
+
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            document.body.style.overflow = 'hidden';
+
+            switchModalTab(tab);
+        }
+
+        // Close Reservation Modal
+        function closeBookingModal() {
+            const modal = document.getElementById('booking-modal');
+            if (!modal) return;
+
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            document.body.style.overflow = '';
+
+            const successMsg = document.getElementById('inquiry-success-msg');
+            if (successMsg) successMsg.classList.add('hidden');
+        }
+
+        // Switch Modal Tabs ('table' vs 'room')
+        function switchModalTab(tab) {
+            const tableContent = document.getElementById('modal-tab-table-content');
+            const roomContent = document.getElementById('modal-tab-room-content');
+            const btnTable = document.getElementById('tab-btn-table');
+            const btnRoom = document.getElementById('tab-btn-room');
+
+            if (!tableContent || !roomContent || !btnTable || !btnRoom) return;
+
+            if (tab === 'table') {
+                tableContent.classList.remove('hidden');
+                roomContent.classList.add('hidden');
+
+                btnTable.className = 'flex-1 py-2 px-2 sm:px-3 rounded-xl text-[11px] sm:text-xs font-bold transition cursor-pointer glass-button-primary text-white';
+                btnRoom.className = 'flex-1 py-2 px-2 sm:px-3 rounded-xl text-[11px] sm:text-xs font-bold transition cursor-pointer text-pub-deep hover:bg-white/60';
+            } else {
+                tableContent.classList.add('hidden');
+                roomContent.classList.remove('hidden');
+
+                btnRoom.className = 'flex-1 py-2 px-2 sm:px-3 rounded-xl text-[11px] sm:text-xs font-bold transition cursor-pointer glass-button-primary text-white';
+                btnTable.className = 'flex-1 py-2 px-2 sm:px-3 rounded-xl text-[11px] sm:text-xs font-bold transition cursor-pointer text-pub-deep hover:bg-white/60';
+
+                setTimeout(() => {
+                    window.dispatchEvent(new Event('resize'));
+                }, 50);
+            }
+        }
+
+        // Room Image Ticker / Carousel Handler
+        let currentRoomSlide = 0;
+        let roomTickerInterval = null;
+
+        function showRoomSlide(index) {
+            const slides = document.querySelectorAll('.room-slide');
+            const dots = document.querySelectorAll('.room-dot');
+            if (!slides.length) return;
+
+            if (index >= slides.length) currentRoomSlide = 0;
+            else if (index < 0) currentRoomSlide = slides.length - 1;
+            else currentRoomSlide = index;
+
+            slides.forEach((slide, i) => {
+                if (i === currentRoomSlide) {
+                    slide.classList.remove('opacity-0', 'z-0');
+                    slide.classList.add('opacity-100', 'z-10');
+                } else {
+                    slide.classList.remove('opacity-100', 'z-10');
+                    slide.classList.add('opacity-0', 'z-0');
+                }
+            });
+
+            dots.forEach((dot, i) => {
+                if (i === currentRoomSlide) {
+                    dot.className = 'room-dot w-2.5 h-2.5 rounded-full bg-white transition-all cursor-pointer opacity-100 scale-125';
+                } else {
+                    dot.className = 'room-dot w-2.5 h-2.5 rounded-full bg-white/50 transition-all cursor-pointer hover:bg-white';
+                }
+            });
+        }
+
+        function changeRoomSlide(direction) {
+            showRoomSlide(currentRoomSlide + direction);
+            resetRoomTicker();
+        }
+
+        function setRoomSlide(index) {
+            showRoomSlide(index);
+            resetRoomTicker();
+        }
+
+        function startRoomTicker() {
+            if (!roomTickerInterval) {
+                roomTickerInterval = setInterval(() => {
+                    if (!isModalOpen()) {
+                        showRoomSlide(currentRoomSlide + 1);
+                    }
+                }, 4000);
+            }
+        }
+
+        function resetRoomTicker() {
+            clearInterval(roomTickerInterval);
+            roomTickerInterval = null;
+            startRoomTicker();
+        }
+
+        // Display glassmorphic pop-up modal when room enquiry is submitted
+        function showEnquiryPopup() {
+            closeBookingModal();
+
+            const popup = document.createElement('div');
+            popup.id = 'enquiry-popup-toast';
+            popup.className = 'fixed inset-0 z-50 flex items-center justify-center p-4 modal-backdrop transition-all duration-300';
+            popup.innerHTML = `
+                <div class="glass-modal-tile rounded-3xl p-5 sm:p-8 max-w-md w-full text-center shadow-2xl border border-white/90">
+                    <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-emerald-100 text-pub-sage flex items-center justify-center text-xl sm:text-2xl mx-auto mb-4 shadow-inner">
+                        <i class="fas fa-envelope-open-text"></i>
+                    </div>
+                    <h3 class="font-serif font-bold text-pub-deep text-lg sm:text-2xl mb-2">Enquiry Received</h3>
+                    <p class="text-xs sm:text-sm text-gray-700 leading-relaxed mb-6 font-medium">
+                        A member of the team will be in contact with you soon with regards to your enquiry.
+                    </p>
+                    <button type="button" onclick="document.getElementById('enquiry-popup-toast').remove()" class="glass-button-primary text-white font-bold text-xs px-6 py-3.5 rounded-xl uppercase tracking-wider cursor-pointer w-full shadow-lg">
+                        Close
+                    </button>
+                </div>
+            `;
+            document.body.appendChild(popup);
+        }
+
         // Initialize event listeners
         window.addEventListener('DOMContentLoaded', () => {
             // Render food cards & events
@@ -1729,4 +2632,208 @@
 
             // Start automatic room ticker
             startRoomTicker();
-// ... existing code ... -->
+
+            // Wi-Fi Guest Form Submission Handler (Instant Reveal + Background Cloud Sync)
+            const wifiForm = document.getElementById('wifi-guest-form');
+            if (wifiForm) {
+                wifiForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    const nameInput = document.getElementById('wifi-guest-name');
+                    const emailInput = document.getElementById('wifi-guest-email');
+                    const consentInput = document.getElementById('wifi-marketing-consent');
+                    const revealEl = document.getElementById('wifi-password-reveal');
+                    const codeDisplay = document.getElementById('wifi-code-display');
+
+                    const guestName = nameInput ? nameInput.value.trim() : '';
+                    const guestEmail = emailInput ? emailInput.value.trim() : '';
+                    const marketingOptIn = consentInput ? consentInput.checked : false;
+
+                    if (!guestName || !guestEmail) return;
+
+                    // 1. Instantly show the Wi-Fi password on screen with zero delay
+                    if (codeDisplay) {
+                        codeDisplay.textContent = getWifiPassword();
+                    }
+                    wifiForm.classList.add('hidden');
+                    if (revealEl) {
+                        revealEl.classList.remove('hidden');
+                    }
+
+                    // 2. Save entry to localStorage immediately
+                    const entryId = 'wifi-' + Date.now();
+                    const newLead = {
+                        id: entryId,
+                        name: guestName,
+                        email: guestEmail,
+                        marketingOptIn: marketingOptIn,
+                        submittedAt: new Date().toISOString()
+                    };
+
+                    const currentLeads = getWifiLeads();
+                    currentLeads.unshift(newLead);
+                    localStorage.setItem('white_horse_wifi_leads', JSON.stringify(currentLeads));
+
+                    // 3. Sync to Firebase Firestore and Realtime Database in the background
+                    if (firestoreDb) {
+                        firestoreDb.collection('wifi_leads').doc(entryId).set(newLead).catch((err) => {
+                            console.warn("Error saving Wi-Fi lead to Firestore collection:", err);
+                        });
+                        firestoreDb.collection('white_horse_portal').doc('data').set({
+                            wifiLeads: currentLeads
+                        }, { merge: true }).catch((err) => {
+                            console.warn("Error updating portal doc wifiLeads:", err);
+                        });
+                    }
+
+                    if (realtimeDb) {
+                        realtimeDb.ref('wifi_leads/' + entryId).set(newLead).catch((err) => {
+                            console.warn("Error saving Wi-Fi lead to Realtime DB:", err);
+                        });
+                    }
+                });
+            }
+
+            // Wi-Fi Modal backdrop click handler
+            const wifiModal = document.getElementById('wifi-modal');
+            if (wifiModal) {
+                wifiModal.addEventListener('click', (e) => {
+                    if (e.target === wifiModal) {
+                        closeWifiModal();
+                    }
+                });
+            }
+
+            // Food cards carousel hover & touch pause logic
+            const foodCardsContainer = document.getElementById('food-cards-container');
+            if (foodCardsContainer) {
+                foodCardsContainer.addEventListener('mouseenter', () => { foodCardIsHovered = true; });
+                foodCardsContainer.addEventListener('mouseleave', () => { foodCardIsHovered = false; });
+                foodCardsContainer.addEventListener('touchstart', () => { foodCardIsHovered = true; }, { passive: true });
+                foodCardsContainer.addEventListener('touchend', () => { foodCardIsHovered = false; });
+            }
+
+            // Food Card Full Image Modal backdrop click handler
+            const foodCardModal = document.getElementById('food-card-modal');
+            if (foodCardModal) {
+                foodCardModal.addEventListener('click', (e) => {
+                    if (e.target === foodCardModal) {
+                        closeFoodCardModal();
+                    }
+                });
+            }
+
+            // Mobile Menu Button click handler
+            const mobileBtn = document.getElementById('mobile-menu-btn');
+            if (mobileBtn) {
+                mobileBtn.addEventListener('click', toggleMobileMenu);
+            }
+
+            // Close modals when clicking dark backdrop
+            const bookingModal = document.getElementById('booking-modal');
+            if (bookingModal) {
+                bookingModal.addEventListener('click', (e) => {
+                    if (e.target === bookingModal) {
+                        closeBookingModal();
+                    }
+                });
+            }
+            const menuModal = document.getElementById('menu-modal');
+            if (menuModal) {
+                menuModal.addEventListener('click', (e) => {
+                    if (e.target === menuModal) {
+                        closeMenuModal();
+                    }
+                });
+            }
+
+            // Scroll Handler for Back to Top Button
+            const backToTopBtn = document.getElementById('back-to-top');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 300) {
+                    backToTopBtn?.classList.remove('hidden');
+                } else {
+                    backToTopBtn?.classList.add('hidden');
+                }
+            });
+
+            // Privacy Modal handlers
+            const privacyModal = document.getElementById('privacy-modal');
+            if (privacyModal) {
+                privacyModal.addEventListener('click', (e) => {
+                    if (e.target === privacyModal) {
+                        closePrivacyModal();
+                    }
+                });
+            }
+
+            // Cookies Modal handlers
+            const cookiesModal = document.getElementById('cookies-modal');
+            if (cookiesModal) {
+                cookiesModal.addEventListener('click', (e) => {
+                    if (e.target === cookiesModal) {
+                        closeCookiesModal();
+                    }
+                });
+            }
+
+            // Close modal on Escape key
+            window.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    closeWifiModal();
+                    closeBookingModal();
+                    closeMenuModal();
+                    closePrivacyModal();
+                    closeCookiesModal();
+                    closeFoodCardModal();
+                }
+            });
+
+            // Handle room inquiry form submission
+            const inquiryForm = document.getElementById('room-inquiry-form');
+            if (inquiryForm) {
+                inquiryForm.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    
+                    const inquiryData = {
+                        name: document.getElementById('inquiry-name')?.value.trim() || '',
+                        email: document.getElementById('inquiry-email')?.value.trim() || '',
+                        phone: document.getElementById('inquiry-phone')?.value.trim() || '',
+                        checkin: document.getElementById('inquiry-checkin')?.value || '',
+                        checkout: document.getElementById('inquiry-checkout')?.value || '',
+                        guests: document.getElementById('inquiry-guests')?.value || '2',
+                        notes: document.getElementById('inquiry-notes')?.value.trim() || '',
+                        createdAt: new Date().toISOString()
+                    };
+
+                    if (firestoreDb) {
+                        try {
+                            await firestoreDb.collection('room_enquiries').add(inquiryData);
+                        } catch (err) {
+                            console.warn("Error writing room enquiry to Firestore:", err);
+                        }
+                    }
+
+                    if (realtimeDb) {
+                        try {
+                            await realtimeDb.ref('room_enquiries').push(inquiryData);
+                        } catch (err) {
+                            console.warn("Error writing room enquiry to Realtime DB:", err);
+                        }
+                    }
+
+                    const successMsg = document.getElementById('inquiry-success-msg');
+                    if (successMsg) {
+                        successMsg.classList.remove('hidden');
+                    }
+
+                    showEnquiryPopup();
+
+                    setTimeout(() => {
+                        inquiryForm.reset();
+                    }, 1000);
+                });
+            }
+        });
+    </script>
+</body>
+</html>
