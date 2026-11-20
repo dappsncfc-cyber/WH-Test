@@ -550,11 +550,16 @@
 </head>
 <body class="bg-mesh text-gray-800 font-sans antialiased min-h-screen relative selection:bg-pub-sage selection:text-white overflow-x-hidden max-w-full">
 
-    <!-- Announcement Header Bar -->
-    <div class="bg-pub-deep text-white text-xs py-2 px-4 text-center font-medium tracking-wide flex flex-wrap items-center justify-center gap-1.5 sm:gap-2">
-        <span class="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-        <span>Welcome to <strong>The White Horse Inn</strong>, 24 West Street, Cromer</span>
-        <span class="hidden sm:inline">• Fresh Food, Beer Garden, Real Ales, Rooms &amp; Table Reservations</span>
+    <!-- Announcement Header Bar with Free Wi-Fi Trigger -->
+    <div class="bg-pub-deep text-white text-xs py-2 px-4 text-center font-medium tracking-wide flex flex-wrap items-center justify-center gap-2 sm:gap-3">
+        <div class="flex items-center gap-1.5">
+            <span class="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            <span>Welcome to <strong>The White Horse Inn</strong>, 24 West Street, Cromer</span>
+            <span class="hidden md:inline">• Fresh Food, Beer Garden, Real Ales, Rooms &amp; Table Reservations</span>
+        </div>
+        <button type="button" onclick="openWifiModal()" class="inline-flex items-center gap-1.5 bg-white/15 hover:bg-white/25 text-white border border-white/30 px-3 py-1 rounded-full text-[11px] font-bold transition cursor-pointer shadow-sm">
+            <i class="fas fa-wifi text-emerald-300"></i> Free Guest Wi-Fi
+        </button>
     </div>
 
     <!-- Navigation Header -->
@@ -571,7 +576,7 @@
                 </a>
 
                 <!-- Desktop Navigation Links -->
-                <nav class="hidden md:flex items-center space-x-7">
+                <nav class="hidden md:flex items-center space-x-6 lg:space-x-7">
                     <a href="#food" class="text-sm font-semibold text-gray-700 hover:text-pub-deep transition">Dine &amp; Drink</a>
                     <a href="#garden" class="text-sm font-semibold text-gray-700 hover:text-pub-deep transition">Beer Garden</a>
                     <a href="#events" class="text-sm font-semibold text-gray-700 hover:text-pub-deep transition">Events</a>
@@ -580,6 +585,11 @@
                     <a href="#faq" class="text-sm font-semibold text-gray-700 hover:text-pub-deep transition">FAQ</a>
                     <a href="#contact" class="text-sm font-semibold text-gray-700 hover:text-pub-deep transition">Find Us</a>
                     
+                    <!-- Wi-Fi Password Button -->
+                    <button type="button" onclick="openWifiModal()" class="glass-pill hover:bg-white text-pub-deep text-xs font-bold px-3.5 py-2.5 rounded-xl inline-flex items-center gap-1.5 cursor-pointer uppercase tracking-wider transition">
+                        <i class="fas fa-wifi text-pub-sage"></i> Wi-Fi
+                    </button>
+
                     <!-- Table Booking Modal Trigger -->
                     <button type="button" onclick="openBookingModal('table')" class="glass-button-primary text-white text-xs font-bold px-5 py-2.5 rounded-xl inline-flex items-center gap-2 cursor-pointer uppercase tracking-wider">
                         <i class="fas fa-calendar-alt text-xs"></i> Make a Table Reservation
@@ -587,7 +597,10 @@
                 </nav>
 
                 <!-- Mobile Navigation Toggle -->
-                <div class="md:hidden flex items-center">
+                <div class="md:hidden flex items-center gap-2">
+                    <button type="button" onclick="openWifiModal()" aria-label="Wi-Fi Password" class="glass-pill px-3 py-2 rounded-xl text-pub-deep hover:text-pub-sage focus:outline-none cursor-pointer text-xs font-bold flex items-center gap-1.5">
+                        <i class="fas fa-wifi text-pub-sage"></i> Wi-Fi
+                    </button>
                     <button type="button" id="mobile-menu-btn" aria-label="Toggle Navigation Menu" class="glass-pill p-2.5 rounded-xl text-pub-deep hover:text-pub-sage focus:outline-none cursor-pointer">
                         <i class="fas fa-bars text-xl"></i>
                     </button>
@@ -605,6 +618,9 @@
                 <a href="#rooms" onclick="toggleMobileMenu()" class="block px-4 py-2.5 rounded-lg text-base font-semibold text-pub-deep hover:bg-white/60">Sleep / Rooms</a>
                 <a href="#faq" onclick="toggleMobileMenu()" class="block px-4 py-2.5 rounded-lg text-base font-semibold text-pub-deep hover:bg-white/60">FAQ</a>
                 <a href="#contact" onclick="toggleMobileMenu()" class="block px-4 py-2.5 rounded-lg text-base font-semibold text-pub-deep hover:bg-white/60">Find Us</a>
+                <button type="button" onclick="toggleMobileMenu(); openWifiModal();" class="w-full glass-pill text-pub-deep font-semibold py-3 rounded-xl flex items-center justify-center gap-2 cursor-pointer">
+                    <i class="fas fa-wifi text-pub-sage text-sm"></i> Get Free Wi-Fi Password
+                </button>
                 <button type="button" onclick="toggleMobileMenu(); openBookingModal('table');" class="w-full mt-2 glass-button-primary text-white font-semibold py-3 rounded-xl flex items-center justify-center gap-2 cursor-pointer">
                     <i class="fas fa-calendar-check text-sm"></i> Make a Table Reservation
                 </button>
@@ -717,7 +733,7 @@
                                 <i class="fas fa-star text-amber-300"></i>
                             </div>
                             <h3 class="font-serif font-bold text-base sm:text-lg text-pub-deep mb-1">Today's Specials</h3>
-                            <p class="text-xs text-gray-600 mb-4">Chef's daily coastal creations, seasonal catches & specialty dishes prepared fresh daily.</p>
+                            <p class="text-xs text-gray-600 mb-4">Chef's daily coastal creations, seasonal catches &amp; specialty dishes prepared fresh daily.</p>
                         </div>
                         <div>
                             <button type="button" onclick="openMenuModal('specials')" class="w-full glass-button-primary text-white text-xs font-bold py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 cursor-pointer uppercase tracking-wider transition">
@@ -1207,6 +1223,87 @@
     </footer>
 
 
+    <!-- FREE GUEST WI-FI GLASSMORPHIC POPUP MODAL -->
+    <div id="wifi-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-2.5 sm:p-4 modal-backdrop transition-opacity duration-300">
+        <div class="glass-modal-tile rounded-3xl w-full max-w-md flex flex-col overflow-hidden relative shadow-2xl border border-white/95">
+            <!-- Modal Header -->
+            <div class="px-4 sm:px-6 py-4 border-b border-emerald-900/10 flex items-center justify-between bg-white/40">
+                <div class="flex items-center gap-2">
+                    <i class="fas fa-wifi text-pub-sage text-lg"></i>
+                    <h3 class="font-serif font-bold text-pub-deep text-lg sm:text-xl">Guest Wi-Fi Access</h3>
+                </div>
+                <button type="button" onclick="closeWifiModal()" class="w-8 h-8 rounded-full glass-pill flex items-center justify-center text-gray-500 hover:text-pub-deep transition cursor-pointer" aria-label="Close Wi-Fi modal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <!-- Modal Content Body -->
+            <div class="p-5 sm:p-7">
+                <!-- Step 1: Guest Details & Marketing Opt-In Form -->
+                <form id="wifi-guest-form" class="space-y-4">
+                    <div class="text-center mb-2">
+                        <div class="w-12 h-12 rounded-2xl bg-pub-sage/10 text-pub-sage flex items-center justify-center text-xl mx-auto mb-3 shadow-inner">
+                            <i class="fas fa-wifi"></i>
+                        </div>
+                        <h4 class="font-serif font-bold text-pub-deep text-lg">Connect to White Horse Wi-Fi</h4>
+                        <p class="text-xs text-gray-600 mt-1">Enter your name and email address below to reveal our complimentary guest Wi-Fi password.</p>
+                    </div>
+
+                    <div>
+                        <label for="wifi-guest-name" class="block text-xs font-bold text-pub-deep mb-1">Full Name *</label>
+                        <input type="text" id="wifi-guest-name" required placeholder="e.g. Sarah Jenkins" class="w-full px-3.5 py-2.5 rounded-xl glass-input text-xs sm:text-sm text-gray-800 font-medium">
+                    </div>
+
+                    <div>
+                        <label for="wifi-guest-email" class="block text-xs font-bold text-pub-deep mb-1">Email Address *</label>
+                        <input type="email" id="wifi-guest-email" required placeholder="e.g. sarah@example.com" class="w-full px-3.5 py-2.5 rounded-xl glass-input text-xs sm:text-sm text-gray-800 font-medium">
+                    </div>
+
+                    <div class="bg-pub-light/80 p-3 rounded-xl border border-pub-sage/20">
+                        <label class="flex items-start gap-2.5 cursor-pointer">
+                            <input type="checkbox" id="wifi-marketing-consent" class="mt-0.5 rounded text-pub-sage focus:ring-pub-sage w-4 h-4 shrink-0">
+                            <span class="text-xs text-gray-700 leading-relaxed">
+                                <strong>I will accept marketing</strong> — Keep me updated with news, live music nights, seasonal menus and special offers from The White Horse Inn.
+                            </span>
+                        </label>
+                    </div>
+
+                    <button type="submit" id="wifi-submit-btn" class="w-full glass-button-primary text-white font-bold text-xs py-3.5 rounded-xl uppercase tracking-wider cursor-pointer shadow-lg flex items-center justify-center gap-2">
+                        <i class="fas fa-unlock-alt"></i> Get Wi-Fi Password
+                    </button>
+                </form>
+
+                <!-- Step 2: Revealed Wi-Fi Password Screen -->
+                <div id="wifi-password-reveal" class="hidden text-center space-y-4 py-2">
+                    <div class="w-14 h-14 rounded-2xl bg-emerald-100 text-pub-sage flex items-center justify-center text-2xl mx-auto shadow-inner">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-serif font-bold text-pub-deep text-xl">You're Ready to Connect!</h4>
+                        <p class="text-xs text-gray-600 mt-1">Select <strong>WhiteHorseGuest</strong> in your device's Wi-Fi settings and enter the password below:</p>
+                    </div>
+
+                    <div class="bg-pub-light border-2 border-dashed border-pub-sage/40 rounded-2xl p-4 relative">
+                        <span class="text-[10px] font-bold uppercase tracking-widest text-pub-sage block mb-1">Wi-Fi Password</span>
+                        <div id="wifi-code-display" class="font-mono text-xl sm:text-2xl font-extrabold text-pub-deep tracking-wider select-all">
+                            CromerCrab2026!
+                        </div>
+                    </div>
+
+                    <div class="flex items-center gap-2 pt-1">
+                        <button type="button" onclick="copyWifiPassword()" id="wifi-copy-btn" class="flex-1 glass-pill hover:bg-white text-pub-deep font-bold text-xs py-3 rounded-xl uppercase tracking-wider cursor-pointer transition flex items-center justify-center gap-1.5 shadow-sm">
+                            <i class="fas fa-copy text-pub-sage"></i> Copy Password
+                        </button>
+                        <button type="button" onclick="closeWifiModal()" class="flex-1 glass-button-primary text-white font-bold text-xs py-3 rounded-xl uppercase tracking-wider cursor-pointer shadow-md">
+                            Done
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <!-- PRIVACY POLICY GLASSMORPHIC MODAL -->
     <div id="privacy-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-2.5 sm:p-4 modal-backdrop transition-opacity duration-300">
         <div class="glass-modal-tile rounded-3xl w-full max-w-3xl max-h-[90vh] flex flex-col overflow-hidden relative shadow-2xl">
@@ -1483,6 +1580,75 @@
 
     <!-- JavaScript Application Handler -->
     <script>
+        // Default Wi-Fi Password
+        const DEFAULT_WIFI_PASSWORD = "CromerCrab2026!";
+
+        function getWifiPassword() {
+            const stored = localStorage.getItem('white_horse_wifi_password');
+            return (stored && stored.trim()) ? stored.trim() : DEFAULT_WIFI_PASSWORD;
+        }
+
+        function getWifiLeads() {
+            try {
+                const stored = localStorage.getItem('white_horse_wifi_leads');
+                if (stored) {
+                    const parsed = JSON.parse(stored);
+                    if (Array.isArray(parsed)) return parsed;
+                }
+            } catch (e) {
+                console.warn("Error loading Wi-Fi leads from localStorage:", e);
+            }
+            return [];
+        }
+
+        function openWifiModal() {
+            const modal = document.getElementById('wifi-modal');
+            const formEl = document.getElementById('wifi-guest-form');
+            const revealEl = document.getElementById('wifi-password-reveal');
+            const codeDisplay = document.getElementById('wifi-code-display');
+
+            if (!modal) return;
+
+            if (codeDisplay) {
+                codeDisplay.textContent = getWifiPassword();
+            }
+
+            if (formEl) {
+                formEl.reset();
+                formEl.classList.remove('hidden');
+            }
+            if (revealEl) {
+                revealEl.classList.add('hidden');
+            }
+
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeWifiModal() {
+            const modal = document.getElementById('wifi-modal');
+            if (!modal) return;
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            document.body.style.overflow = '';
+        }
+
+        function copyWifiPassword() {
+            const pw = getWifiPassword();
+            const copyBtn = document.getElementById('wifi-copy-btn');
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(pw).then(() => {
+                    if (copyBtn) {
+                        copyBtn.innerHTML = '<i class="fas fa-check text-emerald-600"></i> Copied!';
+                        setTimeout(() => {
+                            copyBtn.innerHTML = '<i class="fas fa-copy text-pub-sage"></i> Copy Password';
+                        }, 2500);
+                    }
+                }).catch(() => {});
+            }
+        }
+
         // Default Food Cards Data
         const defaultFoodCards = [
             {
@@ -1739,6 +1905,14 @@
                                 localStorage.setItem('white_horse_events', JSON.stringify(eventsData));
                                 renderEvents();
                             }
+                            if (val.wifiPassword) {
+                                localStorage.setItem('white_horse_wifi_password', val.wifiPassword);
+                                const codeDisplay = document.getElementById('wifi-code-display');
+                                if (codeDisplay) codeDisplay.textContent = val.wifiPassword;
+                            }
+                            if (val.wifiLeads && Array.isArray(val.wifiLeads)) {
+                                localStorage.setItem('white_horse_wifi_leads', JSON.stringify(val.wifiLeads));
+                            }
                             // Re-render menu modal if currently open
                             if (activeMenuKey) {
                                 renderActiveMenuModal();
@@ -1789,6 +1963,17 @@
                         }
                     }, (err) => {
                         console.warn("Realtime DB events listener error:", err);
+                    });
+
+                    realtimeDb.ref('white_horse_wifi_password').on('value', (snapshot) => {
+                        const val = snapshot.val();
+                        if (val && typeof val === 'string') {
+                            localStorage.setItem('white_horse_wifi_password', val);
+                            const codeDisplay = document.getElementById('wifi-code-display');
+                            if (codeDisplay) codeDisplay.textContent = val;
+                        }
+                    }, (err) => {
+                        console.warn("Realtime DB wifiPassword listener error:", err);
                     });
                 } catch (rtdbErr) {
                     console.warn("Realtime DB initialization failed:", rtdbErr);
@@ -2042,7 +2227,7 @@
         let foodCardIsHovered = false;
 
         function isModalOpen() {
-            const modalIds = ['food-card-modal', 'menu-modal', 'privacy-modal', 'cookies-modal', 'booking-modal', 'enquiry-popup-toast'];
+            const modalIds = ['wifi-modal', 'food-card-modal', 'menu-modal', 'privacy-modal', 'cookies-modal', 'booking-modal', 'enquiry-popup-toast'];
             return modalIds.some(id => {
                 const el = document.getElementById(id);
                 return el && !el.classList.contains('hidden');
@@ -2405,6 +2590,89 @@
             // Start automatic room ticker
             startRoomTicker();
 
+            // Handle Wi-Fi Guest Form Submission
+            const wifiForm = document.getElementById('wifi-guest-form');
+            if (wifiForm) {
+                wifiForm.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    const nameInput = document.getElementById('wifi-guest-name');
+                    const emailInput = document.getElementById('wifi-guest-email');
+                    const marketingCheckbox = document.getElementById('wifi-marketing-consent');
+                    const submitBtn = document.getElementById('wifi-submit-btn');
+                    const revealEl = document.getElementById('wifi-password-reveal');
+                    const codeDisplay = document.getElementById('wifi-code-display');
+
+                    const guestName = nameInput ? nameInput.value.trim() : '';
+                    const guestEmail = emailInput ? emailInput.value.trim() : '';
+                    const acceptedMarketing = marketingCheckbox ? marketingCheckbox.checked : false;
+
+                    if (!guestName || !guestEmail) return;
+
+                    if (submitBtn) {
+                        submitBtn.disabled = true;
+                        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Connecting...';
+                    }
+
+                    const leadRecord = {
+                        id: 'wifi-' + Date.now(),
+                        name: guestName,
+                        email: guestEmail,
+                        marketingAccepted: acceptedMarketing,
+                        createdAt: new Date().toISOString()
+                    };
+
+                    // Save locally
+                    const currentLeads = getWifiLeads();
+                    currentLeads.unshift(leadRecord);
+                    localStorage.setItem('white_horse_wifi_leads', JSON.stringify(currentLeads));
+
+                    // Save to Firebase Firestore
+                    if (firestoreDb) {
+                        try {
+                            await firestoreDb.collection('wifi_leads').add(leadRecord);
+                            await firestoreDb.collection('white_horse_portal').doc('data').set({
+                                wifiLeads: currentLeads
+                            }, { merge: true });
+                        } catch (fsErr) {
+                            console.warn("Error saving Wi-Fi lead to Firestore:", fsErr);
+                        }
+                    }
+
+                    // Save to Firebase Realtime Database
+                    if (realtimeDb) {
+                        try {
+                            await realtimeDb.ref('white_horse_wifi_leads').set(currentLeads);
+                        } catch (rtdbErr) {
+                            console.warn("Error saving Wi-Fi lead to Realtime DB:", rtdbErr);
+                        }
+                    }
+
+                    if (submitBtn) {
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = '<i class="fas fa-unlock-alt"></i> Get Wi-Fi Password';
+                    }
+
+                    if (codeDisplay) {
+                        codeDisplay.textContent = getWifiPassword();
+                    }
+
+                    wifiForm.classList.add('hidden');
+                    if (revealEl) {
+                        revealEl.classList.remove('hidden');
+                    }
+                });
+            }
+
+            // Close Wi-Fi modal on dark backdrop click
+            const wifiModal = document.getElementById('wifi-modal');
+            if (wifiModal) {
+                wifiModal.addEventListener('click', (e) => {
+                    if (e.target === wifiModal) {
+                        closeWifiModal();
+                    }
+                });
+            }
+
             // Food cards carousel hover & touch pause logic
             const foodCardsContainer = document.getElementById('food-cards-container');
             if (foodCardsContainer) {
@@ -2481,6 +2749,7 @@
             // Close modal on Escape key
             window.addEventListener('keydown', (e) => {
                 if (e.key === 'Escape') {
+                    closeWifiModal();
                     closeBookingModal();
                     closeMenuModal();
                     closePrivacyModal();
