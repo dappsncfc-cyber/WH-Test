@@ -2608,11 +2608,6 @@
 
                     if (!guestName || !guestEmail) return;
 
-                    if (submitBtn) {
-                        submitBtn.disabled = true;
-                        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Connecting...';
-                    }
-
                     const leadRecord = {
                         id: 'wifi-' + Date.now(),
                         name: guestName,
@@ -2621,44 +2616,36 @@
                         createdAt: new Date().toISOString()
                     };
 
-                    // Save locally
+                    // Save locally immediately
                     const currentLeads = getWifiLeads();
                     currentLeads.unshift(leadRecord);
                     localStorage.setItem('white_horse_wifi_leads', JSON.stringify(currentLeads));
 
-                    // Save to Firebase Firestore
-                    if (firestoreDb) {
-                        try {
-                            await firestoreDb.collection('wifi_leads').add(leadRecord);
-                            await firestoreDb.collection('white_horse_portal').doc('data').set({
-                                wifiLeads: currentLeads
-                            }, { merge: true });
-                        } catch (fsErr) {
-                            console.warn("Error saving Wi-Fi lead to Firestore:", fsErr);
-                        }
-                    }
-
-                    // Save to Firebase Realtime Database
-                    if (realtimeDb) {
-                        try {
-                            await realtimeDb.ref('white_horse_wifi_leads').set(currentLeads);
-                        } catch (rtdbErr) {
-                            console.warn("Error saving Wi-Fi lead to Realtime DB:", rtdbErr);
-                        }
-                    }
-
-                    if (submitBtn) {
-                        submitBtn.disabled = false;
-                        submitBtn.innerHTML = '<i class="fas fa-unlock-alt"></i> Get Wi-Fi Password';
-                    }
-
+                    // Instantly display the Wi-Fi password
                     if (codeDisplay) {
                         codeDisplay.textContent = getWifiPassword();
                     }
-
                     wifiForm.classList.add('hidden');
                     if (revealEl) {
                         revealEl.classList.remove('hidden');
+                    }
+
+                    // Sync to Firebase in the background without blocking UI
+                    if (firestoreDb) {
+                        firestoreDb.collection('wifi_leads').add(leadRecord).catch((fsErr) => {
+                            console.warn("Error saving Wi-Fi lead to Firestore:", fsErr);
+                        });
+                        firestoreDb.collection('white_horse_portal').doc('data').set({
+                            wifiLeads: currentLeads
+                        }, { merge: true }).catch((fsErr) => {
+                            console.warn("Error updating portal wifiLeads in Firestore:", fsErr);
+                        });
+                    }
+
+                    if (realtimeDb) {
+                        realtimeDb.ref('white_horse_wifi_leads').set(currentLeads).catch((rtdbErr) => {
+                            console.warn("Error saving Wi-Fi lead to Realtime DB:", rtdbErr);
+                        });
                     }
                 });
             }
